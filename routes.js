@@ -1,35 +1,14 @@
 const HTTPStatus = require("http-status");
 const userController = require("./controllers/user");
-const mysql = require("mysql");
-
-const headerMiddleware = (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, x-access-token, Content-Type, filters"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-};
-
-const databaseMiddleware = (req, res, next) => {
-  req.db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "lppm"
-  });
-  req.db.connect();
-
-  next();
-};
+const authController = require("./controllers/auth");
 
 module.exports = app => {
-  app.use(headerMiddleware, databaseMiddleware);
+  app.route("/").get((req, res) => {
+    res.status(200).send(req.session);
+  });
+  app.route("/login").post(authController.login);
+  app.route("/logout").get(authController.logout);
+
   app
     .route("/user")
     .get(userController.getAll)

@@ -3,6 +3,7 @@ const HTTPStatus = require("http-status");
 const getAll = (req, res) => {};
 const get = (req, res) => {
   const { id } = req.params;
+  result = {};
   req.db.query("SELECT * FROM `user` WHERE `id_user` = ?", [id], function(error, results, fields) {
     if (error) throw error;
     res.status(HTTPStatus.OK).send(results[0]);
