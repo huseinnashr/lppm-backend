@@ -1,3 +1,5 @@
+const util = require("util");
+
 const headerPublicAPI = (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
@@ -11,10 +13,14 @@ const headerPublicAPI = (req, res, next) => {
 
 const databaseConnection = db => (req, res, next) => {
   req.db = db;
+  req.db.asyncQuery = util.promisify(db.query).bind(db);
   next();
 };
 
+const asyncHandler = callback => (req, res, next) => callback(req, res, next).catch(next);
+
 module.exports = {
   headerPublicAPI,
-  databaseConnection
+  databaseConnection,
+  asyncHandler
 };

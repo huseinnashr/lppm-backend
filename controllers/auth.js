@@ -1,33 +1,55 @@
 const HTTPStatus = require("http-status");
 const bcrypt = require("bcrypt");
 
-const login = (req, res) => {
+const login = async (req, res) => {
   const { username, password } = req.body;
-  const loginQuery = "SELECT * FROM user WHERE username = ? LIMIT 1";
-  req.db.query(loginQuery, [username], function(error, results, fields) {
-    if (error) throw error;
-    if (results.length == 0) {
-      res.status(200).send({ error: "User tidak ditemukan" });
-      return;
-    }
-    let user = results[0];
-    if (!bcrypt.compareSync(password, user.password)) {
-      res.status(200).send({ error: "Password salah" });
-      return;
-    }
+  const loginQuery =
+    "SELECT * FROM user as u JOIN role as r ON r.id_role = u.id_role WHERE u.username = ? LIMIT 1";
 
-    req.session.user = user;
-    delete user.password;
-    res.status(200).send(user);
-  });
+  results = await req.db.asyncQuery(loginQuery, [username]);
+  if (results.length == 0) {
+    res.status(HTTPStatus.OK).send({ error: "User tidak ditemukan" });
+    return;
+  }
+  let user = results[0];
+  if (!(await bcrypt.compare(password, user.password))) {
+    res.status(HTTPStatus.OK).send({ error: "Password salah" });
+    return;
+  }
+
+  req.session.user = user;
+  delete user.password;
+  res.status(HTTPStatus.OK).send(user);
 };
 
-const logout = (req, res) => {
+const onlyAuthenticated = (req, res, next) => {
+  if (!req.session.user) {
+    res.status(HTTPStatus.UNAUTHORIZED).send({ error: "Belum login" });
+    return;
+  }
+  next();
+};
+
+const onlyRoles = nama_roles => (req, res, next) => {
+  if (!req.session.user) {
+    res.status(HTTPStatus.UNAUTHORIZED).send({ error: "Belum login" });
+    return;
+  }
+  if (!nama_roles.find(e => e == req.session.user.nama_role)) {
+    res.status(HTTPStatus.FORBIDDEN).send({ error: "Tidak punya akses" });
+    return;
+  }
+  next();
+};
+
+const logout = async (req, res) => {
   req.session.destroy();
   res.status(200).send({});
 };
 
 module.exports = {
   login,
+  onlyAuthenticated,
+  onlyRoles,
   logout
 };
