@@ -1,35 +1,37 @@
 const HTTPStatus = require("http-status");
 const { asyncHandler } = require("./custom-middlewares");
-const userController = require("./controllers/user");
-const authController = require("./controllers/auth");
+const userCtrl = require("./controllers/user");
+const authCtrl = require("./controllers/auth");
 
 module.exports = app => {
-  app.route("/").get(authController.onlyAuthenticated, (req, res) => {
+  app.route("/").get(authCtrl.onlyAuthenticated, (req, res) => {
     res.status(200).send(req.session);
   });
 
-  app.route("/login").post(asyncHandler(authController.login));
-  app.route("/logout").get(asyncHandler(authController.logout));
+  app.route("/login").post(asyncHandler(authCtrl.login));
+  app.route("/logout").get(asyncHandler(authCtrl.logout));
 
   app
     .route("/user")
-    .get(authController.onlyRoles(["admin"]), asyncHandler(userController.getAll))
-    .post(authController.onlyRoles(["admin"]), asyncHandler(userController.add));
+    .get(authCtrl.onlyRoles(["admin"]), asyncHandler(userCtrl.getAll))
+    .post(authCtrl.onlyRoles(["admin"]), asyncHandler(userCtrl.add));
 
   app
     .route("/user/:id")
-    .get(asyncHandler(userController.get))
-    .post(asyncHandler(userController.update))
-    .delete(asyncHandler(userController.remove));
+    .get(asyncHandler(userCtrl.get))
+    .post(userCtrl.ppUploader, asyncHandler(userCtrl.update))
+    .delete(asyncHandler(userCtrl.remove));
+
+  app.get("/uploads/profile_picturesx/:id", asyncHandler(userCtrl.getProfilePicture));
 
   app.get("*", (req, res) =>
     res.status(HTTPStatus.NOT_FOUND).send({
-      message: "URL tidak ditemukan"
+      error: "URL tidak ditemukan"
     })
   );
 
   app.use((err, req, res, next) => {
     console.log(err);
-    res.status(500).send("Something broke!");
+    res.status(500).send({ error: "Something broke!" });
   });
 };

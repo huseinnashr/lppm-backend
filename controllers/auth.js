@@ -8,12 +8,12 @@ const login = async (req, res) => {
 
   results = await req.db.asyncQuery(loginQuery, [username]);
   if (results.length == 0) {
-    res.status(HTTPStatus.OK).send({ error: "User tidak ditemukan" });
+    res.status(HTTPStatus.UNAUTHORIZED).send({ error: "User tidak ditemukan" });
     return;
   }
   let user = results[0];
   if (!(await bcrypt.compare(password, user.password))) {
-    res.status(HTTPStatus.OK).send({ error: "Password salah" });
+    res.status(HTTPStatus.UNAUTHORIZED).send({ error: "Password salah" });
     return;
   }
 

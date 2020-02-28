@@ -18,7 +18,6 @@ const databaseConnection = db => (req, res, next) => {
 };
 
 const asyncHandler = callback => (req, res, next) => callback(req, res, next).catch(next);
-
 module.exports = {
   headerPublicAPI,
   databaseConnection,
