@@ -9,7 +9,7 @@ module.exports = app => {
   });
 
   app.route("/login").post(asyncHandler(authCtrl.login));
-  app.route("/logout").get(asyncHandler(authCtrl.logout));
+  app.route("/logout").post(asyncHandler(authCtrl.logout));
 
   app
     .route("/user")
@@ -24,11 +24,15 @@ module.exports = app => {
 
   app.get("/uploads/profile_picturesx/:id", asyncHandler(userCtrl.getProfilePicture));
 
-  app.get("*", (req, res) =>
+  const notFound = (req, res) =>
     res.status(HTTPStatus.NOT_FOUND).send({
       error: "URL tidak ditemukan"
-    })
-  );
+    });
+  app
+    .route("*")
+    .get(notFound)
+    .post(notFound)
+    .delete(notFound);
 
   app.use((err, req, res, next) => {
     console.log(err);
