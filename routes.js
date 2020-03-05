@@ -2,6 +2,7 @@ const HTTPStatus = require("http-status");
 const { asyncHandler } = require("./custom-middlewares");
 const userCtrl = require("./controllers/user");
 const authCtrl = require("./controllers/auth");
+const roleCtrl = require("./controllers/role");
 
 module.exports = app => {
   app.route("/").get(authCtrl.onlyAuthenticated, (req, res) => {
@@ -21,6 +22,8 @@ module.exports = app => {
     .get(asyncHandler(userCtrl.get))
     .post(userCtrl.ppUploader, asyncHandler(userCtrl.update))
     .delete(asyncHandler(userCtrl.remove));
+
+  app.route("/role").get(authCtrl.onlyAuthenticated, asyncHandler(roleCtrl.getAll));
 
   app.get("/uploads/profile_picturesx/:id", asyncHandler(userCtrl.getProfilePicture));
 
