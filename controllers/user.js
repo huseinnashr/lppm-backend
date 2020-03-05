@@ -1,6 +1,6 @@
 const HTTPStatus = require("http-status");
 const multer = require("multer");
-const { serveFile } = require("../helper-functions");
+const { serveFile, arrayToAssoc } = require("../helper-functions");
 const bcrypt = require("bcrypt");
 
 const ALL_USER_QUERY =
@@ -8,7 +8,7 @@ const ALL_USER_QUERY =
 
 const getAll = async (req, res) => {
   const results = await req.db.asyncQuery(ALL_USER_QUERY + " ORDER BY u.id_user DESC");
-  res.status(HTTPStatus.OK).send(results);
+  res.status(HTTPStatus.OK).send(arrayToAssoc(results, "id_user"));
 };
 const get = async (req, res) => {
   const { id } = req.params;

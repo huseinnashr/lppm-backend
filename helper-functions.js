@@ -15,4 +15,12 @@ const serveFile = async (id, res, folder) => {
   fs.createReadStream(filePath).pipe(res);
 };
 
-module.exports = { serveFile };
+const arrayToAssoc = (arr, key) => {
+  const newArr = {};
+  arr.forEach(e => {
+    newArr[e[key]] = e;
+  });
+  return newArr;
+};
+
+module.exports = { serveFile, arrayToAssoc };
