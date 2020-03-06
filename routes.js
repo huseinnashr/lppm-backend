@@ -20,12 +20,13 @@ module.exports = app => {
   app
     .route("/user/:id")
     .get(asyncHandler(userCtrl.get))
-    .post(userCtrl.ppUploader, asyncHandler(userCtrl.update))
+    .post(asyncHandler(userCtrl.update))
     .delete(asyncHandler(userCtrl.remove));
 
   app.route("/role").get(authCtrl.onlyAuthenticated, asyncHandler(roleCtrl.getAll));
 
-  app.get("/uploads/profile_picturesx/:id", asyncHandler(userCtrl.getProfilePicture));
+  app.post("/profile_picture", userCtrl.ppUploader, asyncHandler(userCtrl.addProfilePicture));
+  app.get("/profile_picture/:id", asyncHandler(userCtrl.getProfilePicture));
 
   const notFound = (req, res) =>
     res.status(HTTPStatus.NOT_FOUND).send({

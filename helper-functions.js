@@ -2,6 +2,7 @@ const path = require("path");
 const readChunk = require("read-chunk");
 const FileType = require("file-type");
 const fs = require("fs");
+const HTTPStatus = require("http-status");
 
 const serveFile = async (id, res, folder) => {
   if (!/^[0-9A-F]{32}$/i.test(id)) {
@@ -23,4 +24,6 @@ const arrayToAssoc = (arr, key) => {
   return newArr;
 };
 
-module.exports = { serveFile, arrayToAssoc };
+const HOSTNAME = "http://localhost:8888/";
+
+module.exports = { serveFile, arrayToAssoc, HOSTNAME };

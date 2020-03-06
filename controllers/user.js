@@ -1,10 +1,10 @@
 const HTTPStatus = require("http-status");
 const multer = require("multer");
-const { serveFile, arrayToAssoc } = require("../helper-functions");
+const { serveFile, arrayToAssoc, HOSTNAME } = require("../helper-functions");
 const bcrypt = require("bcrypt");
 
 const ALL_USER_QUERY =
-  "SELECT u.id_user, u.username, u.nama_user, u.email, u.nohp, r.* FROM `user` as u JOIN role as r ON r.id_role = u.id_role";
+  "SELECT u.id_user, u.username, u.nama_user, u.email, u.nohp, u.profile_picture, r.* FROM `user` as u JOIN role as r ON r.id_role = u.id_role";
 
 const getAll = async (req, res) => {
   const results = await req.db.asyncQuery(ALL_USER_QUERY + " ORDER BY u.id_user DESC");
@@ -61,6 +61,13 @@ const getProfilePicture = async (req, res) => {
   await serveFile(req.params.id, res, "uploads/profile_pictures");
 };
 
+const addProfilePicture = async (req, res) => {
+  res.status(HTTPStatus.OK).send({
+    status: "done",
+    url: HOSTNAME + req.file.fieldname + "/" + req.file.filename
+  });
+};
+
 module.exports = {
   getAll,
   get,
@@ -68,5 +75,6 @@ module.exports = {
   update,
   remove,
   ppUploader,
-  getProfilePicture
+  getProfilePicture,
+  addProfilePicture
 };

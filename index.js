@@ -37,8 +37,6 @@ app.use(
     saveUninitialized: false
   })
 );
-app.use("/uploads/profile_pictures", express.static(__dirname + "/uploads/profile_pictures"));
-
 app.use(headerPublicAPI, databaseConnection(db));
 
 require("./routes")(app);
