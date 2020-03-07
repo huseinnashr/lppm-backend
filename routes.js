@@ -25,8 +25,17 @@ module.exports = app => {
 
   app.route("/role").get(authCtrl.onlyAuthenticated, asyncHandler(roleCtrl.getAll));
 
-  app.post("/profile_picture", userCtrl.ppUploader, asyncHandler(userCtrl.addProfilePicture));
-  app.get("/profile_picture/:id", asyncHandler(userCtrl.getProfilePicture));
+  app.post(
+    "/profile_picture",
+    authCtrl.onlyAuthenticated,
+    userCtrl.ppUploader,
+    asyncHandler(userCtrl.addProfilePicture)
+  );
+  app.get(
+    "/profile_picture/:id",
+    authCtrl.onlyAuthenticated,
+    asyncHandler(userCtrl.getProfilePicture)
+  );
 
   const notFound = (req, res) =>
     res.status(HTTPStatus.NOT_FOUND).send({
