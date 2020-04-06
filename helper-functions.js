@@ -18,12 +18,24 @@ const serveFile = async (id, res, folder) => {
 
 const arrayToAssoc = (arr, key) => {
   const newArr = {};
-  arr.forEach(e => {
+  arr.forEach((e) => {
     newArr[e[key]] = e;
+  });
+  return newArr;
+};
+
+const arrayToAssocComposite = (arr, keys, separator = ".") => {
+  const newArr = {};
+  arr.forEach((e) => {
+    var compositeKey = [];
+    keys.forEach((key) => {
+      compositeKey.push(e[key]);
+    });
+    newArr[compositeKey.join(separator)] = e;
   });
   return newArr;
 };
 
 const HOSTNAME = "http://localhost:8888/";
 
-module.exports = { serveFile, arrayToAssoc, HOSTNAME };
+module.exports = { serveFile, arrayToAssoc, arrayToAssocComposite, HOSTNAME };
