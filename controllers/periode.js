@@ -1,5 +1,4 @@
 const HTTPStatus = require("http-status");
-const { arrayToAssocComposite } = require("../helper-functions");
 
 const ALL_PERIODE_QUERY = `
   SELECT c.*, p.mulai, p.berakhir 
@@ -18,9 +17,7 @@ const getAll = async (req, res) => {
     ALL_PERIODE_QUERY + " WHERE c.id_program = ? AND c.tahun = ?",
     [id_program, tahun]
   );
-  res
-    .status(HTTPStatus.OK)
-    .send(arrayToAssocComposite(results, ["id_program", "tahun", "id_tahap"]));
+  res.status(HTTPStatus.OK).send(results);
 };
 const replace = async (req, res) => {
   const { id_program, tahun, id_tahap } = req.params;

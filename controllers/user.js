@@ -1,6 +1,6 @@
 const HTTPStatus = require("http-status");
 const multer = require("multer");
-const { serveFile, arrayToAssoc, HOSTNAME } = require("../helper-functions");
+const { serveFile, HOSTNAME } = require("../helper-functions");
 const bcrypt = require("bcrypt");
 
 const ALL_USER_QUERY =
@@ -8,7 +8,7 @@ const ALL_USER_QUERY =
 
 const getAll = async (req, res) => {
   const results = await req.db.asyncQuery(ALL_USER_QUERY + " ORDER BY u.id_user DESC");
-  res.status(HTTPStatus.OK).send(arrayToAssoc(results, "id_user"));
+  res.status(HTTPStatus.OK).send(results);
 };
 const get = async (req, res) => {
   const { id } = req.params;
@@ -19,7 +19,7 @@ const add = async (req, res) => {
   const user = req.body;
   user.password = await bcrypt.hash(user.password, 8);
   const existingUsers = await req.db.asyncQuery(ALL_USER_QUERY + " WHERE u.`username` = ?", [
-    user.username
+    user.username,
   ]);
   if (existingUsers.length != 0) {
     res.status(HTTPStatus.BAD_REQUEST).send({ error: "Username sudah dipakai" });
@@ -64,7 +64,7 @@ const getProfilePicture = async (req, res) => {
 const addProfilePicture = async (req, res) => {
   res.status(HTTPStatus.OK).send({
     status: "done",
-    url: HOSTNAME + req.file.fieldname + "/" + req.file.filename
+    url: HOSTNAME + req.file.fieldname + "/" + req.file.filename,
   });
 };
 
@@ -76,5 +76,5 @@ module.exports = {
   remove,
   ppUploader,
   getProfilePicture,
-  addProfilePicture
+  addProfilePicture,
 };
