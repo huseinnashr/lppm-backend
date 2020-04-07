@@ -11,15 +11,15 @@ const headerPublicAPI = (req, res, next) => {
   next();
 };
 
-const databaseConnection = db => (req, res, next) => {
+const databaseConnection = (db) => (req, res, next) => {
   req.db = db;
   req.db.asyncQuery = util.promisify(db.query).bind(db);
   next();
 };
 
-const asyncHandler = callback => (req, res, next) => callback(req, res, next).catch(next);
+const asyncHandler = (callback) => (req, res, next) => callback(req, res, next).catch(next);
 module.exports = {
   headerPublicAPI,
   databaseConnection,
-  asyncHandler
+  asyncHandler,
 };

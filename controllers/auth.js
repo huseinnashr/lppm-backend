@@ -30,12 +30,12 @@ const onlyAuthenticated = (req, res, next) => {
   next();
 };
 
-const onlyRoles = nama_roles => (req, res, next) => {
+const onlyRoles = (nama_roles) => (req, res, next) => {
   if (!req.session.user) {
     res.status(HTTPStatus.UNAUTHORIZED).send({ error: "Belum login" });
     return;
   }
-  if (!nama_roles.find(e => e == req.session.user.nama_role)) {
+  if (!nama_roles.find((e) => e == req.session.user.nama_role)) {
     res.status(HTTPStatus.FORBIDDEN).send({ error: "Tidak punya akses" });
     return;
   }
@@ -51,5 +51,5 @@ module.exports = {
   login,
   onlyAuthenticated,
   onlyRoles,
-  logout
+  logout,
 };
