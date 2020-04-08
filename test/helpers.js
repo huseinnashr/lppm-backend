@@ -1,3 +1,5 @@
+const HTTPStatus = require("http-status");
+
 const stringAgentRequest = (agent, method, endpoint) => {
   switch (method) {
     case "GET":
@@ -16,7 +18,7 @@ const stringAgentRequest = (agent, method, endpoint) => {
 const test_not_auth_unauthorized = (agent, method, endpoint) => {
   test("It should response 401 Unauthorized when not authenticated", async () => {
     const { statusCode } = await stringAgentRequest(agent, method, endpoint);
-    expect(statusCode).toBe(401);
+    expect(statusCode).toBe(HTTPStatus.UNAUTHORIZED);
   });
 };
 
@@ -27,7 +29,7 @@ const test_auth_forbidden = (agent, method, endpoint, CRED) => {
       "cookie",
       headers["set-cookie"]
     );
-    expect(statusCode).toBe(403);
+    expect(statusCode).toBe(HTTPStatus.FORBIDDEN);
   });
 };
 
