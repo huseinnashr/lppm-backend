@@ -20,11 +20,11 @@ jobs:
           MYSQL_PASSWORD: passw0rd
     steps:
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: update-npm
           command: "sudo npm install -g npm@latest"
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: install-npm-wee
           command: |
