@@ -1,3 +1,4 @@
 /node_modules/*
 /uploads/profile_pictures
 package-lock.json
+/coverage

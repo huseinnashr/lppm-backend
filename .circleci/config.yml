@@ -1,0 +1,47 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.5
+jobs:
+  build:
+    working_directory: ~/lppm-backend
+    docker:
+      - image: circleci/node:10.16.3
+        environment:
+          LOCAL_IP: 127.0.0.1
+          MYSQL_DATABASE: lppm
+          MYSQL_USER: user
+          MYSQL_PASSWORD: passw0rd
+      - image: circleci/mysql:latest
+        command: [--default-authentication-plugin=mysql_native_password]
+        environment:
+          MYSQL_ROOT_PASSWORD: rootpw
+          MYSQL_DATABASE: lppm
+          MYSQL_USER: user
+          MYSQL_PASSWORD: passw0rd
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: "sudo npm install -g npm@latest"
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Install MySQL CLI; Import dummy data;
+          command: |
+            sudo apt-get update
+            sudo apt-get install mysql-client
+            mysql -h 127.0.0.1 -u user -ppassw0rd lppm < lppm.sql
+      - run:
+          name: "Run Jest and Collect Coverage Reports"
+          command: npm run test:circleci
+      - store_test_results:
+          path: test-results
+      - codecov/upload:
+          flags: "integration"

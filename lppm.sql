@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.4.3 (64 bit)
-MySQL - 10.4.10-MariaDB : Database - lppm
+MySQL - 10.4.11-MariaDB : Database - lppm
 *********************************************************************
 */
 
@@ -1268,7 +1268,7 @@ CREATE TABLE `user` (
   `nama_user` varchar(255) DEFAULT NULL,
   `nohp` varchar(16) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `profile_picture` varchar(255) NOT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `user_username_uq` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;

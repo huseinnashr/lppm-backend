@@ -6,10 +6,10 @@ const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
 
 let databaseOptions = {
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "lppm",
+  host: process.env.LOCAL_IP,
+  database: process.env.MYSQL_DATABASE,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
 };
 
 let app = express();
