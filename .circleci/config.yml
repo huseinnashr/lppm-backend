@@ -11,7 +11,7 @@ jobs:
           MYSQL_DATABASE: lppm
           MYSQL_USER: user
           MYSQL_PASSWORD: passw0rd
-      - image: circleci/mysql:latest
+      - image: circleci/mysql:8.0.4
         command: [--default-authentication-plugin=mysql_native_password]
         environment:
           MYSQL_ROOT_PASSWORD: rootpw
@@ -20,22 +20,15 @@ jobs:
           MYSQL_PASSWORD: passw0rd
     steps:
       - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: update-npm
+          name: Update npm CLI
           command: "sudo npm install -g npm@latest"
       - run:
-          name: install-npm-wee
+          name: Install npm packages
           command: |
             npm install
-            npm config set package-lock true
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
       - run:
-          name: Install MySQL CLI; Import dummy data;
+          name: Install MySQL CLI & Migrate
           command: |
             sudo apt-get update
             sudo apt-get install mysql-client
