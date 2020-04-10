@@ -1,4 +1,5 @@
 const HTTPStatus = require("http-status");
+const fs = require("fs");
 
 const stringAgentRequest = (agent, method, endpoint) => {
   switch (method) {
@@ -33,7 +34,20 @@ const test_auth_forbidden = (agent, method, endpoint, CRED) => {
   });
 };
 
+const get_auth = async (agent, CRED) => {
+  const { headers } = await agent.post("/login").send(CRED);
+  return headers["set-cookie"];
+};
+
+const delete_uploaded_file = (url, folder) => {
+  const url_segments = url.split("/");
+  const id = url_segments[url_segments.length - 1];
+  fs.unlinkSync(folder + id);
+};
+
 module.exports = {
   test_not_auth_unauthorized,
   test_auth_forbidden,
+  get_auth,
+  delete_uploaded_file,
 };

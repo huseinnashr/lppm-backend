@@ -1,6 +1,11 @@
 const HTTPStatus = require("http-status");
 const { ADMIN_CRED, DOSEN1_CRED } = require("./consts");
-const { test_not_auth_unauthorized, test_auth_forbidden } = require("./helpers");
+const {
+  test_not_auth_unauthorized,
+  test_auth_forbidden,
+  get_auth,
+  delete_uploaded_file,
+} = require("./helpers");
 const agent = require("supertest")(require("../app"));
 
 describe("Route GET /user", () => {
@@ -79,8 +84,8 @@ describe("Route PATCH /user/:id_user", () => {
   test("It should response 422 UNPROCESSABLE_ENTITY and error when username exist", async () => {
     const { headers } = await agent.post("/login").send(ADMIN_CRED);
     const { statusCode, body } = await agent
-      .patch("/user/2")
-      .send({ username: "dosen2" })
+      .patch("/user/6")
+      .send({ username: "dosen1" })
       .set("cookie", headers["set-cookie"]);
     expect(statusCode).toBe(HTTPStatus.UNPROCESSABLE_ENTITY);
     expect(body).toMatchObject({ error: "Username sudah dipakai" });
@@ -89,11 +94,11 @@ describe("Route PATCH /user/:id_user", () => {
   test("It should response 200 OK and return user on correct payload", async () => {
     const { headers } = await agent.post("/login").send(ADMIN_CRED);
     const { statusCode, body } = await agent
-      .patch("/user/2")
-      .send({ username: "dosen1e" })
+      .patch("/user/6")
+      .send({ username: "dosen3e" })
       .set("cookie", headers["set-cookie"]);
     expect(statusCode).toBe(HTTPStatus.OK);
-    expect(body).toMatchObject({ id_user: 2, username: "dosen1e" });
+    expect(body).toMatchObject({ id_user: 6, username: "dosen3e" });
   });
 });
 
@@ -101,5 +106,45 @@ describe("Route DELETE /user/:id_user", () => {
   test("It should response 200 OK and on correct payload", async () => {
     const { statusCode } = await agent.delete("/user/31");
     expect(statusCode).toBe(HTTPStatus.OK);
+  });
+});
+
+describe("Route GET /profile_picture/:id_profile_picture", () => {
+  test_not_auth_unauthorized(agent, "GET", "/profile_picture/id");
+
+  test("It should response 400 Bad Request and return error when bad id", async () => {
+    const { statusCode, body } = await agent
+      .get("/profile_picture/bad_param")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
+    expect(statusCode).toBe(HTTPStatus.BAD_REQUEST);
+    expect(body).toMatchObject({ error: "Sepesifikasi request tidak bisa dipenuhi" });
+  });
+  test("It should response 404 Not Found and return error when not exist", async () => {
+    const { statusCode, body } = await agent
+      .get("/profile_picture/ed7f4836c70302f37508119a841165e4")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
+    expect(statusCode).toBe(HTTPStatus.NOT_FOUND);
+    expect(body).toMatchObject({ error: "File tidak ditemukan" });
+  });
+  test("It should response 200 OK and return buffer when exist", async () => {
+    const { statusCode, body } = await agent
+      .get("/profile_picture/ed7f4836c70302f37508119a841165e3")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(Buffer.isBuffer(body)).toBeTruthy();
+  });
+});
+
+describe("Route POST /profile_picture/", () => {
+  test_not_auth_unauthorized(agent, "POST", "/profile_picture");
+
+  test("It should response 200 OK and return url on correct payload", async () => {
+    const { statusCode, body } = await agent
+      .post("/profile_picture")
+      .attach("profile_picture", "./test/files/profile-pictures.jpg")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(body).toHaveProperty("url");
+    delete_uploaded_file(body.url, "./uploads/profile_pictures/");
   });
 });

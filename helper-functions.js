@@ -10,32 +10,16 @@ const serveFile = async (id, res, folder) => {
     return false;
   }
   const filePath = path.join(folder, id);
+  if (!fs.existsSync(filePath)) {
+    res.status(HTTPStatus.NOT_FOUND).send({ error: "File tidak ditemukan" });
+    return false;
+  }
   const buffer = readChunk.sync(filePath, 0, 4100);
   const storedMimeType = await FileType.fromBuffer(buffer);
   res.setHeader("Content-Type", storedMimeType.mime);
   fs.createReadStream(filePath).pipe(res);
 };
 
-const arrayToAssoc = (arr, key) => {
-  const newArr = {};
-  arr.forEach((e) => {
-    newArr[e[key]] = e;
-  });
-  return newArr;
-};
+const HOSTNAME = "http://" + process.env.LOCAL_IP + ":8888/";
 
-const arrayToAssocComposite = (arr, keys, separator = ".") => {
-  const newArr = {};
-  arr.forEach((e) => {
-    var compositeKey = [];
-    keys.forEach((key) => {
-      compositeKey.push(e[key]);
-    });
-    newArr[compositeKey.join(separator)] = e;
-  });
-  return newArr;
-};
-
-const HOSTNAME = "http://localhost:8888/";
-
-module.exports = { serveFile, arrayToAssoc, arrayToAssocComposite, HOSTNAME };
+module.exports = { serveFile, HOSTNAME };

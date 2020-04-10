@@ -43,9 +43,10 @@ const update = async (req, res) => {
     return;
   }
 
-  const results = await req.db.asyncQuery("SELECT username from user WHERE username = ?", [
-    user.username,
-  ]);
+  const results = await req.db.asyncQuery(
+    "SELECT username from user WHERE username = ? AND id_user != ?",
+    [user.username, id]
+  );
   if (results.length != 0) {
     res.status(HTTPStatus.UNPROCESSABLE_ENTITY).send({ error: "Username sudah dipakai" });
     return;

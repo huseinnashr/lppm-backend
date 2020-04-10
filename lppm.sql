@@ -1277,11 +1277,11 @@ CREATE TABLE `user` (
 
 insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`,`nama_user`,`nohp`,`email`,`profile_picture`) values 
 (1,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3'),
-(2,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com','http://localhost:8888/profile_picture/8ee8f942e2fa696484bee22ec11b258e'),
-(3,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com','http://localhost:8888/profile_picture/581ddfc5c6f5b93a5d7b1c96c6af61bd'),
-(6,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com','http://localhost:8888/profile_picture/4ed9d0803bbf7081f58a45871ea40c54'),
-(28,1,1,'husein','$2b$08$mq2IfcNNZgX/z5Efxkh6SuKyGHvaTflwz8MGw89fn.OZZTcQ0OGvC','Husein nashr','1231231231241','husein@gmail.com','http://localhost:8888/profile_picture/6d8272809413e2b6ceb284f1c3205c89'),
-(31,1,0,'postman','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Nama Updated','23124123123123','updated@a.com','http://localhost:8888/profile_picture/6d8272809413e2b6ceb284f1c3205c89');
+(2,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com',NULL),
+(3,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com',NULL),
+(6,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com',NULL),
+(28,1,1,'husein','$2b$08$mq2IfcNNZgX/z5Efxkh6SuKyGHvaTflwz8MGw89fn.OZZTcQ0OGvC','Husein nashr','1231231231241','husein@gmail.com',NULL),
+(31,1,0,'postman','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Nama Updated','23124123123123','updated@a.com',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
