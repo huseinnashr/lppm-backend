@@ -13,10 +13,9 @@ describe("Route GET /user", () => {
   test_auth_forbidden(agent, "GET", "/user", DOSEN1_CRED);
 
   test("It should response 200 OK and return users when admin", async () => {
-    const { headers } = await agent.post("/login").send(ADMIN_CRED);
     const { statusCode, body: users } = await agent
       .get("/user")
-      .set("cookie", headers["set-cookie"]);
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(Array.isArray(users) && (users.length == 0 || users[0]["id_user"])).toBeTruthy();
   });
@@ -27,7 +26,6 @@ describe("Route POST /user", () => {
   test_auth_forbidden(agent, "POST", "/user", DOSEN1_CRED);
 
   test("It should response 422 UNPROCESSABLE_ENTITY and error when username exist", async () => {
-    const { headers } = await agent.post("/login").send(ADMIN_CRED);
     const payload = {
       username: "dosen1",
       password: "wasdwasd",
@@ -37,13 +35,12 @@ describe("Route POST /user", () => {
     const { statusCode, body } = await agent
       .post("/user")
       .send(payload)
-      .set("cookie", headers["set-cookie"]);
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.UNPROCESSABLE_ENTITY);
     expect(body).toMatchObject({ error: "Username sudah dipakai" });
   });
 
   test("It should response 200 OK and return user when admin", async () => {
-    const { headers } = await agent.post("/login").send(ADMIN_CRED);
     const payload = {
       username: "new_user_1",
       password: "wasdwasd",
@@ -53,7 +50,7 @@ describe("Route POST /user", () => {
     const { statusCode, body: user } = await agent
       .post("/user")
       .send(payload)
-      .set("cookie", headers["set-cookie"]);
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(user).toHaveProperty("id_user");
     delete payload.password;
@@ -82,21 +79,19 @@ describe("Route PATCH /user/:id_user", () => {
   });
 
   test("It should response 422 UNPROCESSABLE_ENTITY and error when username exist", async () => {
-    const { headers } = await agent.post("/login").send(ADMIN_CRED);
     const { statusCode, body } = await agent
       .patch("/user/6")
       .send({ username: "dosen1" })
-      .set("cookie", headers["set-cookie"]);
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.UNPROCESSABLE_ENTITY);
     expect(body).toMatchObject({ error: "Username sudah dipakai" });
   });
 
   test("It should response 200 OK and return user on correct payload", async () => {
-    const { headers } = await agent.post("/login").send(ADMIN_CRED);
     const { statusCode, body } = await agent
       .patch("/user/6")
       .send({ username: "dosen3e" })
-      .set("cookie", headers["set-cookie"]);
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(body).toMatchObject({ id_user: 6, username: "dosen3e" });
   });
