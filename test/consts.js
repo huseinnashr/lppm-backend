@@ -22,9 +22,12 @@ const WRONG_CRED = {
   nama_role: "Admin",
 };
 
+const TAHAP_LENGTH = 9;
+
 module.exports = {
   ADMIN_CRED,
   DOSEN1_CRED,
   UNKNOWN_CRED,
   WRONG_CRED,
+  TAHAP_LENGTH,
 };

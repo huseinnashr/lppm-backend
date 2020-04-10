@@ -504,6 +504,10 @@ CREATE TABLE `periode` (
 
 /*Data for the table `periode` */
 
+insert  into `periode`(`id_program`,`id_tahap`,`tahun`,`mulai`,`berakhir`) values 
+('01','1',2020,'2020-04-04','2020-04-05'),
+('01','2',2020,'2020-06-01','2020-06-02');
+
 /*Table structure for table `program` */
 
 DROP TABLE IF EXISTS `program`;

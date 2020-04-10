@@ -17,14 +17,14 @@ const stringAgentRequest = (agent, method, endpoint) => {
 };
 
 const test_not_auth_unauthorized = (agent, method, endpoint) => {
-  test("It should response 401 Unauthorized when not authenticated", async () => {
+  test("It should not accept request from unauthorized user", async () => {
     const { statusCode } = await stringAgentRequest(agent, method, endpoint);
     expect(statusCode).toBe(HTTPStatus.UNAUTHORIZED);
   });
 };
 
 const test_auth_forbidden = (agent, method, endpoint, CRED) => {
-  test("It should response 403 Forbidden when " + CRED.nama_role, async () => {
+  test("It should not accept request from " + CRED.nama_role + " role", async () => {
     const { headers } = await agent.post("/login").send(CRED);
     const { statusCode } = await stringAgentRequest(agent, method, endpoint).set(
       "cookie",

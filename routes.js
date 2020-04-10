@@ -26,28 +26,27 @@ module.exports = (app) => {
 
   app.route("/role").get(authCtrl.onlyAuthenticated, asyncHandler(roleCtrl.getAll));
 
-  app.post(
-    "/profile_picture",
-    authCtrl.onlyAuthenticated,
-    userCtrl.ppUploader,
-    asyncHandler(userCtrl.addProfilePicture)
-  );
-  app.get(
-    "/profile_picture/:id",
-    authCtrl.onlyAuthenticated,
-    asyncHandler(userCtrl.getProfilePicture)
-  );
-
-  app.route("/program/:id_program/periode/:tahun").get(asyncHandler(periodeCtrl.getAll));
   app
-    .route("/program/:id_program/periode/:tahun/tahap/:id_tahap")
-    .put(asyncHandler(periodeCtrl.replace));
+    .route("/profile_picture")
+    .post(
+      authCtrl.onlyAuthenticated,
+      userCtrl.ppUploader,
+      asyncHandler(userCtrl.addProfilePicture)
+    );
+  app
+    .route("/profile_picture/:id")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(userCtrl.getProfilePicture));
 
-  const notFound = (req, res) =>
+  app
+    .route("/program/:id_program/tahun/:tahun/periode")
+    .get(asyncHandler(periodeCtrl.getAll))
+    .put(authCtrl.onlyRoles(["admin"]), asyncHandler(periodeCtrl.replace));
+
+  app.route("*").all((req, res) => {
     res.status(HTTPStatus.NOT_FOUND).send({
       error: "URL tidak ditemukan",
     });
-  app.route("*").get(notFound).post(notFound).delete(notFound);
+  });
 
   app.use((err, req, res, next) => {
     console.log(err);

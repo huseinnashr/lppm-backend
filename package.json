@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "(mysql -u root lppm < lppm.sql) && jest --forceExit",
+    "resetdb": "(mysql -u root lppm < lppm.sql)",
+    "test": "npm run resetdb && jest --forceExit",
     "test:circleci": "jest --collectCoverage=true --reporters=default --reporters=jest-junit --forceExit"
   },
   "jest-junit": {
