@@ -1090,7 +1090,7 @@ CREATE TABLE `sbk` (
 
 insert  into `sbk`(`id_sbk`,`nama_sbk`,`tkt_min`,`tkt_max`) values 
 (1,'SBK Riset Dasar',1,3),
-(2,'SBK Riset Terapan ',4,6),
+(2,'SBK Riset Terapan',4,6),
 (3,'SBK Riset Pengembangan',7,9);
 
 /*Table structure for table `sessions` */

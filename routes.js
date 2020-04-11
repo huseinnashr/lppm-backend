@@ -6,6 +6,7 @@ const roleCtrl = require("./controllers/role");
 const programCtrl = require("./controllers/program");
 const fakultasCtrl = require("./controllers/fakultas");
 const programStudiCtrl = require("./controllers/program-studi");
+const sbkCtrl = require("./controllers/sbk");
 const periodeCtrl = require("./controllers/periode");
 
 module.exports = (app) => {
@@ -33,6 +34,7 @@ module.exports = (app) => {
   app
     .route("/program-studi")
     .get(authCtrl.onlyAuthenticated, asyncHandler(programStudiCtrl.getAll));
+  app.route("/sbk").get(authCtrl.onlyAuthenticated, asyncHandler(sbkCtrl.getAll));
 
   app
     .route("/profile_picture")
