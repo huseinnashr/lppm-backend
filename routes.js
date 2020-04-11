@@ -14,6 +14,7 @@ const jenisTopikCtrl = require("./controllers/jenis-topik");
 const jenisBelanjaCtrl = require("./controllers/jenis-belanja");
 const jenisLuaranCtrl = require("./controllers/jenis-luaran");
 const subJenisLuaranCtrl = require("./controllers/sub-jenis-luaran");
+const indexingInstitutionCtrl = require("./controllers/indexing-institution");
 const periodeCtrl = require("./controllers/periode");
 
 module.exports = (app) => {
@@ -53,6 +54,9 @@ module.exports = (app) => {
   app
     .route("/sub-jenis-luaran")
     .get(authCtrl.onlyAuthenticated, asyncHandler(subJenisLuaranCtrl.getAll));
+  app
+    .route("/indexing-institution")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(indexingInstitutionCtrl.getAll));
 
   app
     .route("/profile_picture")
