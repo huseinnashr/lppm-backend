@@ -24,6 +24,7 @@ const WRONG_CRED = {
 
 const TAHAP_LENGTH = 9;
 const ROLE_LENGTH = 2;
+const PROGRAM_LENGTH = 6;
 
 module.exports = {
   ADMIN_CRED,
@@ -32,4 +33,5 @@ module.exports = {
   WRONG_CRED,
   TAHAP_LENGTH,
   ROLE_LENGTH,
+  PROGRAM_LENGTH,
 };
