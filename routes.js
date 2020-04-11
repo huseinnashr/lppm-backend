@@ -8,6 +8,7 @@ const fakultasCtrl = require("./controllers/fakultas");
 const programStudiCtrl = require("./controllers/program-studi");
 const sbkCtrl = require("./controllers/sbk");
 const tktCtrl = require("./controllers/tkt");
+const jenisFokusCtrl = require("./controllers/jenis-fokus");
 const periodeCtrl = require("./controllers/periode");
 
 module.exports = (app) => {
@@ -37,6 +38,7 @@ module.exports = (app) => {
     .get(authCtrl.onlyAuthenticated, asyncHandler(programStudiCtrl.getAll));
   app.route("/sbk").get(authCtrl.onlyAuthenticated, asyncHandler(sbkCtrl.getAll));
   app.route("/tkt").get(authCtrl.onlyAuthenticated, asyncHandler(tktCtrl.getAll));
+  app.route("/jenis-fokus").get(authCtrl.onlyAuthenticated, asyncHandler(jenisFokusCtrl.getAll));
 
   app
     .route("/profile_picture")
