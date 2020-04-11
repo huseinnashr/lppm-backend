@@ -1163,13 +1163,13 @@ DROP TABLE IF EXISTS `sub_jenis_luaran`;
 CREATE TABLE `sub_jenis_luaran` (
   `id_sub_jenis_luaran` varchar(4) NOT NULL,
   `id_jenis_luaran` varchar(2) NOT NULL,
-  `nama_jenis_sub_luaran` varchar(255) NOT NULL,
+  `nama_sub_jenis_luaran` varchar(255) NOT NULL,
   PRIMARY KEY (`id_sub_jenis_luaran`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `sub_jenis_luaran` */
 
-insert  into `sub_jenis_luaran`(`id_sub_jenis_luaran`,`id_jenis_luaran`,`nama_jenis_sub_luaran`) values 
+insert  into `sub_jenis_luaran`(`id_sub_jenis_luaran`,`id_jenis_luaran`,`nama_sub_jenis_luaran`) values 
 ('0101','01','Proceeding Internasional'),
 ('0102','01','Proceeding Nasional'),
 ('0103','01','Proceeding Lokal'),
