@@ -26,6 +26,7 @@ const TAHAP_LENGTH = 9;
 const ROLE_LENGTH = 2;
 const PROGRAM_LENGTH = 6;
 const FAKULTAS_LENGTH = 14;
+const PROGRAM_STUDI_LENGTH = 118;
 
 module.exports = {
   ADMIN_CRED,
@@ -36,4 +37,5 @@ module.exports = {
   ROLE_LENGTH,
   PROGRAM_LENGTH,
   FAKULTAS_LENGTH,
+  PROGRAM_STUDI_LENGTH,
 };
