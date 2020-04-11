@@ -78,6 +78,8 @@ describe("Route GET /user/:id_user", () => {
 });
 
 describe("Route PATCH /user/:id_user", () => {
+  test_auth_forbidden(agent, "PATCH", "/user/6", DOSEN1_CRED);
+
   test("It should response 404 Not Found and return error when not exist", async () => {
     const { statusCode, body } = await agent
       .patch("/user/not_exist")

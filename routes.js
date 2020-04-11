@@ -44,6 +44,10 @@ module.exports = (app) => {
     .get(asyncHandler(periodeCtrl.getAll))
     .put(authCtrl.onlyRoles(["admin"]), asyncHandler(periodeCtrl.replace));
 
+  app.route("/test-500").all((req, res, next) => {
+    next("Test 500");
+  });
+
   app.route("*").all((req, res) => {
     res.status(HTTPStatus.NOT_FOUND).send({
       error: "URL tidak ditemukan",

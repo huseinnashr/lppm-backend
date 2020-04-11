@@ -21,3 +21,11 @@ describe("Route GET /", () => {
     expect(statusCode).toBe(HTTPStatus.OK);
   });
 });
+
+describe("Route /test-500", () => {
+  test("It should response 500 Internal Server Error on GET", async () => {
+    const { statusCode, body } = await agent.get("/test-500");
+    expect(statusCode).toBe(HTTPStatus.INTERNAL_SERVER_ERROR);
+    expect(body).toEqual({ error: "Something broke!" });
+  });
+});
