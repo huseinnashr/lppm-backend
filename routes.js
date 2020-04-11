@@ -12,6 +12,7 @@ const jenisFokusCtrl = require("./controllers/jenis-fokus");
 const jenisTemaCtrl = require("./controllers/jenis-tema");
 const jenisTopikCtrl = require("./controllers/jenis-topik");
 const jenisBelanjaCtrl = require("./controllers/jenis-belanja");
+const jenisLuaranCtrl = require("./controllers/jenis-luaran");
 const periodeCtrl = require("./controllers/periode");
 
 module.exports = (app) => {
@@ -47,6 +48,7 @@ module.exports = (app) => {
   app
     .route("/jenis-belanja")
     .get(authCtrl.onlyAuthenticated, asyncHandler(jenisBelanjaCtrl.getAll));
+  app.route("/jenis-luaran").get(authCtrl.onlyAuthenticated, asyncHandler(jenisLuaranCtrl.getAll));
 
   app
     .route("/profile_picture")
