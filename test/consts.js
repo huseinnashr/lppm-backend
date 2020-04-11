@@ -30,6 +30,7 @@ const PROGRAM_STUDI_LENGTH = 118;
 const SBK_LENGTH = 3;
 const TKT_LENGTH = 9;
 const JENIS_FOKUS_LENGTH = 9;
+const JENIS_TEMA_LENGTH = 39;
 
 module.exports = {
   ADMIN_CRED,
@@ -44,4 +45,5 @@ module.exports = {
   SBK_LENGTH,
   TKT_LENGTH,
   JENIS_FOKUS_LENGTH,
+  JENIS_TEMA_LENGTH,
 };
