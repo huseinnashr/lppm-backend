@@ -4,6 +4,7 @@ const userCtrl = require("./controllers/user");
 const authCtrl = require("./controllers/auth");
 const roleCtrl = require("./controllers/role");
 const programCtrl = require("./controllers/program");
+const fakultasCtrl = require("./controllers/fakultas");
 const periodeCtrl = require("./controllers/periode");
 
 module.exports = (app) => {
@@ -27,6 +28,7 @@ module.exports = (app) => {
 
   app.route("/role").get(authCtrl.onlyAuthenticated, asyncHandler(roleCtrl.getAll));
   app.route("/program").get(authCtrl.onlyAuthenticated, asyncHandler(programCtrl.getAll));
+  app.route("/fakultas").get(authCtrl.onlyAuthenticated, asyncHandler(fakultasCtrl.getAll));
 
   app
     .route("/profile_picture")
