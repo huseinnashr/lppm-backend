@@ -28,6 +28,7 @@ const PROGRAM_LENGTH = 6;
 const FAKULTAS_LENGTH = 14;
 const PROGRAM_STUDI_LENGTH = 118;
 const SBK_LENGTH = 3;
+const TKT_LENGTH = 9;
 
 module.exports = {
   ADMIN_CRED,
@@ -40,4 +41,5 @@ module.exports = {
   FAKULTAS_LENGTH,
   PROGRAM_STUDI_LENGTH,
   SBK_LENGTH,
+  TKT_LENGTH,
 };
