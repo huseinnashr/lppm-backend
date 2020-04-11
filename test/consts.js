@@ -23,6 +23,7 @@ const WRONG_CRED = {
 };
 
 const TAHAP_LENGTH = 9;
+const ROLE_LENGTH = 2;
 
 module.exports = {
   ADMIN_CRED,
@@ -30,4 +31,5 @@ module.exports = {
   UNKNOWN_CRED,
   WRONG_CRED,
   TAHAP_LENGTH,
+  ROLE_LENGTH,
 };
