@@ -6,7 +6,7 @@ const agent = require("supertest")(require("../app"));
 describe("Route GET /jenis-fokus", () => {
   test_not_auth_unauthorized(agent, "GET", "/jenis-fokus");
 
-  test("It should response 200 OK and return program studi", async () => {
+  test("It should response 200 OK and return jenis fokus", async () => {
     const { statusCode, body: jenisFokus } = await agent
       .get("/jenis-fokus")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
