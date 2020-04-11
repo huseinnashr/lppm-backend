@@ -59,13 +59,19 @@ describe("Route POST /user", () => {
 });
 
 describe("Route GET /user/:id_user", () => {
+  test_not_auth_unauthorized(agent, "GET", "/user/1");
+
   test("It should response 404 Not Found and return error when not exist", async () => {
-    const { statusCode, body } = await agent.get("/user/not_exist");
+    const { statusCode, body } = await agent
+      .get("/user/not_exist")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(statusCode).toBe(HTTPStatus.NOT_FOUND);
     expect(body).toMatchObject({ error: "User tidak ditemukan" });
   });
   test("It should response 200 OK and return user when exist", async () => {
-    const { statusCode, body: user } = await agent.get("/user/1");
+    const { statusCode, body: user } = await agent
+      .get("/user/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(user).toMatchObject({ id_user: 1 });
   });
@@ -73,7 +79,9 @@ describe("Route GET /user/:id_user", () => {
 
 describe("Route PATCH /user/:id_user", () => {
   test("It should response 404 Not Found and return error when not exist", async () => {
-    const { statusCode, body } = await agent.patch("/user/not_exist");
+    const { statusCode, body } = await agent
+      .patch("/user/not_exist")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.NOT_FOUND);
     expect(body).toMatchObject({ error: "User tidak ditemukan" });
   });
@@ -90,7 +98,7 @@ describe("Route PATCH /user/:id_user", () => {
   test("It should response 200 OK and return user on correct payload", async () => {
     const { statusCode, body } = await agent
       .patch("/user/6")
-      .send({ username: "dosen3e" })
+      .send({ username: "dosen3e", password: "wasdwasd" })
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(body).toMatchObject({ id_user: 6, username: "dosen3e" });
@@ -98,8 +106,12 @@ describe("Route PATCH /user/:id_user", () => {
 });
 
 describe("Route DELETE /user/:id_user", () => {
+  test_auth_forbidden(agent, "DELETE", "/user/31", DOSEN1_CRED);
+
   test("It should response 200 OK and on correct payload", async () => {
-    const { statusCode } = await agent.delete("/user/31");
+    const { statusCode } = await agent
+      .delete("/user/31")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
   });
 });

@@ -3,6 +3,7 @@ const { asyncHandler } = require("./custom-middlewares");
 const userCtrl = require("./controllers/user");
 const authCtrl = require("./controllers/auth");
 const roleCtrl = require("./controllers/role");
+const programCtrl = require("./controllers/program");
 const periodeCtrl = require("./controllers/periode");
 
 module.exports = (app) => {
@@ -20,11 +21,12 @@ module.exports = (app) => {
 
   app
     .route("/user/:id")
-    .get(asyncHandler(userCtrl.get))
-    .patch(asyncHandler(userCtrl.update))
-    .delete(asyncHandler(userCtrl.remove));
+    .get(authCtrl.onlyAuthenticated, asyncHandler(userCtrl.get))
+    .patch(authCtrl.onlyRoles(["admin"]), asyncHandler(userCtrl.update))
+    .delete(authCtrl.onlyRoles(["admin"]), asyncHandler(userCtrl.remove));
 
   app.route("/role").get(authCtrl.onlyAuthenticated, asyncHandler(roleCtrl.getAll));
+  app.route("/program").get(authCtrl.onlyAuthenticated, asyncHandler(programCtrl.getAll));
 
   app
     .route("/profile_picture")

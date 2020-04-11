@@ -4,7 +4,7 @@ const { get_auth, test_not_auth_unauthorized } = require("./helpers");
 const agent = require("supertest")(require("../app"));
 
 describe("Route GET /role", () => {
-  test_not_auth_unauthorized(agent, "POST", "/profile_picture");
+  test_not_auth_unauthorized(agent, "GET", "/role");
 
   test("It should response 200 OK and return roles", async () => {
     const { statusCode, body: roles } = await agent
