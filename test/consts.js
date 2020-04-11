@@ -31,6 +31,7 @@ const SBK_LENGTH = 3;
 const TKT_LENGTH = 9;
 const JENIS_FOKUS_LENGTH = 9;
 const JENIS_TEMA_LENGTH = 39;
+const JENIS_TOPIK_LENGTH = 115;
 
 module.exports = {
   ADMIN_CRED,
@@ -46,4 +47,5 @@ module.exports = {
   TKT_LENGTH,
   JENIS_FOKUS_LENGTH,
   JENIS_TEMA_LENGTH,
+  JENIS_TOPIK_LENGTH,
 };
