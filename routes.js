@@ -4,6 +4,7 @@ const userCtrl = require("./controllers/user");
 const authCtrl = require("./controllers/auth");
 const roleCtrl = require("./controllers/role");
 const programCtrl = require("./controllers/program");
+const skemaCtrl = require("./controllers/skema");
 const fakultasCtrl = require("./controllers/fakultas");
 const programStudiCtrl = require("./controllers/program-studi");
 const sbkCtrl = require("./controllers/sbk");
@@ -37,7 +38,6 @@ module.exports = (app) => {
     .delete(authCtrl.onlyRoles(["admin"]), asyncHandler(userCtrl.remove));
 
   app.route("/role").get(authCtrl.onlyAuthenticated, asyncHandler(roleCtrl.getAll));
-  app.route("/program").get(authCtrl.onlyAuthenticated, asyncHandler(programCtrl.getAll));
   app.route("/fakultas").get(authCtrl.onlyAuthenticated, asyncHandler(fakultasCtrl.getAll));
   app
     .route("/program-studi")
@@ -69,6 +69,10 @@ module.exports = (app) => {
     .route("/profile_picture/:id")
     .get(authCtrl.onlyAuthenticated, asyncHandler(userCtrl.getProfilePicture));
 
+  app.route("/program").get(authCtrl.onlyAuthenticated, asyncHandler(programCtrl.getAll));
+  app
+    .route("/program/:id_program/skema")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(skemaCtrl.getAll));
   app
     .route("/program/:id_program/tahun/:tahun/periode")
     .get(asyncHandler(periodeCtrl.getAll))

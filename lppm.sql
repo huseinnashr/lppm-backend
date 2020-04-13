@@ -59,6 +59,32 @@ insert  into `indexing_institution`(`id_indexing_institution`,`nama_indexing_ins
 ('98','Lainnya'),
 ('99','Tidak Ada');
 
+/*Table structure for table `jabatan_fungsional` */
+
+DROP TABLE IF EXISTS `jabatan_fungsional`;
+
+CREATE TABLE `jabatan_fungsional` (
+  `id_jabatan_fungsional` int(2) unsigned NOT NULL,
+  `kode_jabatan_fungsional` varchar(16) NOT NULL,
+  `nama_jabatan_fungsional` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_jabatan_fungsional`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `jabatan_fungsional` */
+
+insert  into `jabatan_fungsional`(`id_jabatan_fungsional`,`kode_jabatan_fungsional`,`nama_jabatan_fungsional`) values 
+(1,'GB','Profesor'),
+(2,'LKS3','Lektor Kepala S3'),
+(3,'LKS2','Lektor Kepala S2'),
+(4,'LKS1','Lektor Kepala S1'),
+(5,'LS3','Lektor S3'),
+(6,'LS2','Lektor S2'),
+(7,'LS1','Lektor S1'),
+(8,'AAS3','Asisten Ahli S3'),
+(9,'AAS2','Asisten Ahli S2'),
+(10,'AAS1','Asisten Ahli S1'),
+(11,'TP','Tenaga Pengajar');
+
 /*Table structure for table `jenis_belanja` */
 
 DROP TABLE IF EXISTS `jenis_belanja`;
@@ -308,15 +334,15 @@ insert  into `jenis_topik`(`id_jenis_topik`,`id_jenis_tema`,`nama_jenis_topik`) 
 DROP TABLE IF EXISTS `jenjang_pendidikan`;
 
 CREATE TABLE `jenjang_pendidikan` (
-  `id_jenajang_pendidikan` int(2) unsigned NOT NULL,
+  `id_jenjang_pendidikan` int(2) unsigned NOT NULL,
   `nama_jenjang_pendidikan` varchar(255) NOT NULL,
   `singkatan` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_jenajang_pendidikan`)
+  PRIMARY KEY (`id_jenjang_pendidikan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `jenjang_pendidikan` */
 
-insert  into `jenjang_pendidikan`(`id_jenajang_pendidikan`,`nama_jenjang_pendidikan`,`singkatan`) values 
+insert  into `jenjang_pendidikan`(`id_jenjang_pendidikan`,`nama_jenjang_pendidikan`,`singkatan`) values 
 (0,'Diploma III','DIII'),
 (1,'Strata 1','S1'),
 (2,'Strata 2','S2'),
@@ -1124,37 +1150,37 @@ CREATE TABLE `skema` (
   `tkt_max` int(2) unsigned DEFAULT NULL,
   `luaran_wajib` varchar(255) DEFAULT NULL,
   `luaran_pilihan` varchar(255) DEFAULT NULL,
-  `ids_jabatan_fungsional` varchar(255) DEFAULT NULL,
-  `ids_jenjang_pendidikan` varchar(255) DEFAULT NULL,
+  `min_jabatan_fungsional` int(2) unsigned DEFAULT NULL,
+  `min_jenjang_pendidikan` int(2) unsigned DEFAULT NULL,
   PRIMARY KEY (`id_skema`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `skema` */
 
-insert  into `skema`(`id_skema`,`id_program`,`nama_skema`,`dana_maksimum`,`lama_maksimum`,`tkt_min`,`tkt_max`,`luaran_wajib`,`luaran_pilihan`,`ids_jabatan_fungsional`,`ids_jenjang_pendidikan`) values 
-('0101','01','Sains dan Teknologi',40000000,1,1,3,'1;Sertifikat Sebagai Penyaji Pada Seminar Internasional Bereputasi Terindeks Scopus','5','TP,AAS1,AAS2,AAS3,LS1,LS2,LS3,LKS1,LKS2,LKS3','S1,S2,S3,Profesional,Spesialis,SubSpesialis,MPK,Rektorat'),
-('0102','01','Unggulan Kompetitif',75000000,2,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5','TP,AAS1,AAS2,AAS3,LS1,LS2,LS3,LKS1,LKS2,LKS3,GB','S1,S2,S3,Profesional,Spesialis,SubSpesialis,MPK,Rektorat'),
-('0103','01','Unggulan Profesi',250000000,4,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5','GB','S3,Profesional,Spesialis,SubSpesialis,MPK,Rektorat'),
-('0104','01','Unggulan Profesi (NIDK)',75000000,4,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5','GB','S3,Profesional,Spesialis,SubSpesialis,MPK,Rektorat'),
-('0105','01','Unggulan Inovasi',150000000,3,7,9,'6;Purwarupa Hasil Kerjasama','4#5',NULL,NULL),
-('0106','01','Matching Grant',200000000,2,5,9,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi#6;Purwarupa Hasil Kerjasama','',NULL,NULL),
-('0107','01','Tenaga Kependidikan (Tendik)',15000000,1,2,3,'5;Dokumen SOP','2',NULL,NULL),
-('0201','02','Sains dan Teknologi',40000000,1,1,9,'','',NULL,NULL),
-('0202','02','Unggulan Fakultas',4294967295,1,1,9,'','',NULL,NULL),
-('0203','02','Kerjasama',4294967295,1,1,9,'','',NULL,NULL),
-('0301','03','Penelitian Terapan Unggulan Perguruan Tinggi',4294967295,1,1,9,'','',NULL,NULL),
-('0302','03','Penelitian Tim Pasca Sarjana',4294967295,1,1,9,'','',NULL,NULL),
-('0303','03','Penelitian Disertasi Doktor',4294967295,1,1,9,'','',NULL,NULL),
-('0304','03','Penelitian Strategis Nasional Institusi',4294967295,1,1,9,'','',NULL,NULL),
-('0305','03','Penelitian Berbasis Kompetensi',4294967295,1,1,9,'','',NULL,NULL),
-('0306','03','Penelitian Pendidikan Magister menuju Doktor untuk Sarjana Unggul',4294967295,1,1,9,'','',NULL,NULL),
-('0307','03','Penelitian Dasar\r\n',4294967295,1,1,9,'','',NULL,NULL),
-('0308','03','Penelitian Terapan\r\n',4294967295,1,1,9,'','',NULL,NULL),
-('0401','04','Pengabdian Regular',12500000,1,1,9,'2;Artikel Ilmiah Pada Jurnal Nasional/Internasional Bereputasi','','TP,AAS1,AAS2,AAS3,LS1,LS2,LKS1,LKS2,GB',NULL),
-('0402','04','Pengabdian Inovasi',30000000,1,1,9,'5;produk berupa alat, protitpe, sistem, aplikasi, software','',NULL,NULL),
-('0403','04','KKN Tematik',20000000,1,1,9,'','',NULL,NULL),
-('0404','04','Pengabdian Desa Binaan',25000000,1,1,9,'','',NULL,NULL),
-('0501','05','Pengabdian Regular',12500000,1,1,9,'','',NULL,NULL);
+insert  into `skema`(`id_skema`,`id_program`,`nama_skema`,`dana_maksimum`,`lama_maksimum`,`tkt_min`,`tkt_max`,`luaran_wajib`,`luaran_pilihan`,`min_jabatan_fungsional`,`min_jenjang_pendidikan`) values 
+('0101','01','Sains dan Teknologi',40000000,1,1,3,'1;Sertifikat Sebagai Penyaji Pada Seminar Internasional Bereputasi Terindeks Scopus','5',11,1),
+('0102','01','Unggulan Kompetitif',75000000,2,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5',11,1),
+('0103','01','Unggulan Profesi',250000000,4,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5',1,3),
+('0104','01','Unggulan Profesi (NIDK)',75000000,4,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5',1,3),
+('0105','01','Unggulan Inovasi',150000000,3,7,9,'6;Purwarupa Hasil Kerjasama','4#5',11,0),
+('0106','01','Matching Grant',200000000,2,5,9,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi#6;Purwarupa Hasil Kerjasama','',11,0),
+('0107','01','Tenaga Kependidikan (Tendik)',15000000,1,2,3,'5;Dokumen SOP','2',11,0),
+('0201','02','Sains dan Teknologi',40000000,1,1,9,'','',11,0),
+('0202','02','Unggulan Fakultas',4294967295,1,1,9,'','',11,0),
+('0203','02','Kerjasama',4294967295,1,1,9,'','',11,0),
+('0301','03','Penelitian Terapan Unggulan Perguruan Tinggi',4294967295,1,1,9,'','',11,0),
+('0302','03','Penelitian Tim Pasca Sarjana',4294967295,1,1,9,'','',11,0),
+('0303','03','Penelitian Disertasi Doktor',4294967295,1,1,9,'','',11,0),
+('0304','03','Penelitian Strategis Nasional Institusi',4294967295,1,1,9,'','',11,0),
+('0305','03','Penelitian Berbasis Kompetensi',4294967295,1,1,9,'','',11,0),
+('0306','03','Penelitian Pendidikan Magister menuju Doktor untuk Sarjana Unggul',4294967295,1,1,9,'','',11,0),
+('0307','03','Penelitian Dasar\r\n',4294967295,1,1,9,'','',11,0),
+('0308','03','Penelitian Terapan\r\n',4294967295,1,1,9,'','',11,0),
+('0401','04','Pengabdian Regular',12500000,1,1,9,'2;Artikel Ilmiah Pada Jurnal Nasional/Internasional Bereputasi','',11,0),
+('0402','04','Pengabdian Inovasi',30000000,1,1,9,'5;produk berupa alat, protitpe, sistem, aplikasi, software','',11,0),
+('0403','04','KKN Tematik',20000000,1,1,9,'','',11,0),
+('0404','04','Pengabdian Desa Binaan',25000000,1,1,9,'','',11,0),
+('0501','05','Pengabdian Regular',12500000,1,1,9,'','',11,0);
 
 /*Table structure for table `sub_jenis_luaran` */
 
@@ -1273,19 +1299,21 @@ CREATE TABLE `user` (
   `nohp` varchar(16) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `profile_picture` varchar(255) DEFAULT NULL,
+  `id_jabatan_fungsional` int(2) unsigned DEFAULT NULL,
+  `id_jenjang_pendidikan` int(2) unsigned DEFAULT NULL,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `user_username_uq` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `user` */
 
-insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`,`nama_user`,`nohp`,`email`,`profile_picture`) values 
-(1,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3'),
-(2,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com',NULL),
-(3,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com',NULL),
-(6,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com',NULL),
-(28,1,1,'husein','$2b$08$mq2IfcNNZgX/z5Efxkh6SuKyGHvaTflwz8MGw89fn.OZZTcQ0OGvC','Husein nashr','1231231231241','husein@gmail.com',NULL),
-(31,1,0,'postman','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Nama Updated','23124123123123','updated@a.com',NULL);
+insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`,`nama_user`,`nohp`,`email`,`profile_picture`,`id_jabatan_fungsional`,`id_jenjang_pendidikan`) values 
+(1,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3',NULL,NULL),
+(2,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com',NULL,11,1),
+(3,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com',NULL,1,3),
+(6,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com',NULL,NULL,NULL),
+(28,1,1,'husein','$2b$08$mq2IfcNNZgX/z5Efxkh6SuKyGHvaTflwz8MGw89fn.OZZTcQ0OGvC','Husein nashr','1231231231241','husein@gmail.com',NULL,NULL,NULL),
+(31,1,0,'postman','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Nama Updated','23124123123123','updated@a.com',NULL,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

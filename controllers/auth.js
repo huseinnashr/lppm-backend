@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const login = async (req, res) => {
   const { username, password } = req.body;
   const loginQuery =
-    "SELECT u.*, r.*, ps.id_fakultas, ps.id_program_studi, ps.nama_program_studi FROM `user` as u JOIN role as r ON r.id_role = u.id_role JOIN program_studi as ps ON ps.id_program_studi = u.id_program_studi WHERE u.username = ? LIMIT 1";
+    "SELECT u.*, r.*, jf.*, jp.*, ps.id_fakultas, ps.id_program_studi, ps.nama_program_studi FROM `user` as u JOIN role as r ON r.id_role = u.id_role JOIN program_studi as ps ON ps.id_program_studi = u.id_program_studi LEFT JOIN jabatan_fungsional as jf ON jf.id_jabatan_fungsional = u.id_jabatan_fungsional LEFT JOIN jenjang_pendidikan as jp ON jp.id_jenjang_pendidikan = u.id_jenjang_pendidikan WHERE u.username = ? LIMIT 1";
 
   results = await req.db.asyncQuery(loginQuery, [username]);
   if (results.length == 0) {
