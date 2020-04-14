@@ -10,6 +10,10 @@ let databaseOptions = {
   database: process.env.MYSQL_DATABASE,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
+  typeCast: (field, next) => {
+    if (field.type === "JSON") return JSON.parse(field.string());
+    else return next();
+  },
 };
 
 let app = express();
