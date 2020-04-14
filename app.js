@@ -22,6 +22,8 @@ let db = mysql.createConnection(databaseOptions);
 let sessionStore = new MySQLStore({}, db);
 db.connect();
 
+db.query("SET SESSION group_concat_max_len = 2048");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
