@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.4.3 (64 bit)
-MySQL - 10.4.11-MariaDB : Database - lppm
+MySQL - 8.0.19 : Database - lppm
 *********************************************************************
 */
 
@@ -17,11 +17,11 @@ MySQL - 10.4.11-MariaDB : Database - lppm
 DROP TABLE IF EXISTS `fakultas`;
 
 CREATE TABLE `fakultas` (
-  `id_fakultas` int(2) unsigned NOT NULL,
+  `id_fakultas` int unsigned NOT NULL,
   `nama_fakultas` varchar(255) NOT NULL,
   `singkatan` varchar(20) NOT NULL,
   PRIMARY KEY (`id_fakultas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `fakultas` */
 
@@ -49,7 +49,7 @@ CREATE TABLE `indexing_institution` (
   `id_indexing_institution` varchar(2) NOT NULL,
   `nama_indexing_institution` varchar(255) NOT NULL,
   PRIMARY KEY (`id_indexing_institution`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `indexing_institution` */
 
@@ -64,11 +64,11 @@ insert  into `indexing_institution`(`id_indexing_institution`,`nama_indexing_ins
 DROP TABLE IF EXISTS `jabatan_fungsional`;
 
 CREATE TABLE `jabatan_fungsional` (
-  `id_jabatan_fungsional` int(2) unsigned NOT NULL,
+  `id_jabatan_fungsional` int unsigned NOT NULL,
   `kode_jabatan_fungsional` varchar(16) NOT NULL,
   `nama_jabatan_fungsional` varchar(255) NOT NULL,
   PRIMARY KEY (`id_jabatan_fungsional`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `jabatan_fungsional` */
 
@@ -93,7 +93,7 @@ CREATE TABLE `jenis_belanja` (
   `id_jenis_belanja` varchar(2) NOT NULL,
   `nama_jenis_belanja` varchar(255) NOT NULL,
   PRIMARY KEY (`id_jenis_belanja`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `jenis_belanja` */
 
@@ -110,7 +110,7 @@ CREATE TABLE `jenis_fokus` (
   `id_jenis_fokus` varchar(2) NOT NULL,
   `nama_jenis_fokus` varchar(255) NOT NULL,
   PRIMARY KEY (`id_jenis_fokus`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `jenis_fokus` */
 
@@ -133,7 +133,7 @@ CREATE TABLE `jenis_luaran` (
   `id_jenis_luaran` varchar(2) NOT NULL,
   `nama_jenis_luaran` varchar(255) NOT NULL,
   PRIMARY KEY (`id_jenis_luaran`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `jenis_luaran` */
 
@@ -154,7 +154,7 @@ CREATE TABLE `jenis_tema` (
   `id_jenis_fokus` varchar(2) NOT NULL,
   `nama_jenis_tema` varchar(255) NOT NULL,
   PRIMARY KEY (`id_jenis_tema`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `jenis_tema` */
 
@@ -208,7 +208,7 @@ CREATE TABLE `jenis_topik` (
   `id_jenis_tema` varchar(4) NOT NULL,
   `nama_jenis_topik` varchar(255) NOT NULL,
   PRIMARY KEY (`id_jenis_topik`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `jenis_topik` */
 
@@ -334,11 +334,11 @@ insert  into `jenis_topik`(`id_jenis_topik`,`id_jenis_tema`,`nama_jenis_topik`) 
 DROP TABLE IF EXISTS `jenjang_pendidikan`;
 
 CREATE TABLE `jenjang_pendidikan` (
-  `id_jenjang_pendidikan` int(2) unsigned NOT NULL,
+  `id_jenjang_pendidikan` int unsigned NOT NULL,
   `nama_jenjang_pendidikan` varchar(255) NOT NULL,
   `singkatan` varchar(20) NOT NULL,
   PRIMARY KEY (`id_jenjang_pendidikan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `jenjang_pendidikan` */
 
@@ -358,162 +358,213 @@ insert  into `jenjang_pendidikan`(`id_jenjang_pendidikan`,`nama_jenjang_pendidik
 DROP TABLE IF EXISTS `kegiatan`;
 
 CREATE TABLE `kegiatan` (
-  `id_kegiatan` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_user` int(10) unsigned NOT NULL,
+  `id_kegiatan` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_user` int unsigned NOT NULL,
   `id_skema` varchar(4) NOT NULL,
   `id_jenis_topik` varchar(6) NOT NULL,
-  `id_sbk` int(2) unsigned NOT NULL,
-  `id_tkt` int(2) unsigned NOT NULL,
+  `id_sbk` int unsigned NOT NULL,
+  `id_tkt` int unsigned NOT NULL,
   `judul` varchar(255) NOT NULL,
-  `tanggal_entri` timestamp NOT NULL DEFAULT current_timestamp(),
-  `tahun` year(4) NOT NULL,
-  `lama` int(10) unsigned NOT NULL,
+  `tanggal_entri` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tahun` year NOT NULL,
+  `lama` int unsigned NOT NULL,
   `proposal` varchar(255) DEFAULT NULL,
-  `approval` enum('DITERIMA','DITOLAK','BELUm') NOT NULL DEFAULT 'BELUm',
+  `approval` enum('DITERIMA','DITOLAK','BELUM') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'BELUM',
   `mode` enum('VIEW','EDIT') NOT NULL DEFAULT 'EDIT',
   PRIMARY KEY (`id_kegiatan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan` */
+
+insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_sbk`,`id_tkt`,`judul`,`tanggal_entri`,`tahun`,`lama`,`proposal`,`approval`,`mode`) values 
+(1,1,'0102','101020',2,4,'Are we alone in this universe?','2020-04-14 18:52:19',2020,2,NULL,'BELUM','EDIT'),
+(2,2,'0103','101010',2,6,'Living Simulation, a thought experiment','2020-04-16 16:10:16',2020,1,NULL,'BELUM','EDIT');
 
 /*Table structure for table `kegiatan_anggota` */
 
 DROP TABLE IF EXISTS `kegiatan_anggota`;
 
 CREATE TABLE `kegiatan_anggota` (
-  `id_kegiatan_anggota` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_kegiatan` int(10) unsigned NOT NULL,
-  `id_user` int(10) unsigned NOT NULL,
+  `id_kegiatan_anggota` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_kegiatan` int unsigned NOT NULL,
+  `id_user` int unsigned NOT NULL,
   `posisi` enum('KETUA','ANGGOTA') NOT NULL,
   `status` enum('DITERIMA','DITOLAK','BELUM') NOT NULL DEFAULT 'BELUM',
   PRIMARY KEY (`id_kegiatan_anggota`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_anggota` */
+
+insert  into `kegiatan_anggota`(`id_kegiatan_anggota`,`id_kegiatan`,`id_user`,`posisi`,`status`) values 
+(1,1,1,'KETUA','DITERIMA'),
+(2,1,2,'ANGGOTA','BELUM'),
+(3,2,2,'KETUA','DITERIMA'),
+(4,2,3,'ANGGOTA','BELUM');
 
 /*Table structure for table `kegiatan_feedback` */
 
 DROP TABLE IF EXISTS `kegiatan_feedback`;
 
 CREATE TABLE `kegiatan_feedback` (
-  `id_kegiatan_reviewer` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_tahap` int(2) unsigned NOT NULL,
+  `id_kegiatan_reviewer` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_tahap` int unsigned NOT NULL,
   `feedback` varchar(255) NOT NULL,
   PRIMARY KEY (`id_kegiatan_reviewer`,`id_tahap`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_feedback` */
+
+insert  into `kegiatan_feedback`(`id_kegiatan_reviewer`,`id_tahap`,`feedback`) values 
+(1,4,'Keg #1 Rev #1 Tahap 4'),
+(1,7,'Keg #1, Rev #1, Tahap 7'),
+(2,7,'Keg #1, Rev #2, Tahap 7');
 
 /*Table structure for table `kegiatan_grade` */
 
 DROP TABLE IF EXISTS `kegiatan_grade`;
 
 CREATE TABLE `kegiatan_grade` (
-  `id_kegiatan_reviewer` int(10) unsigned NOT NULL,
-  `id_tahap` int(2) unsigned NOT NULL,
+  `id_kegiatan_reviewer` int unsigned NOT NULL,
+  `id_tahap` int unsigned NOT NULL,
   `id_review_question` varchar(6) NOT NULL,
   `id_review_answer` varchar(8) NOT NULL,
   PRIMARY KEY (`id_kegiatan_reviewer`,`id_tahap`,`id_review_question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_grade` */
+
+insert  into `kegiatan_grade`(`id_kegiatan_reviewer`,`id_tahap`,`id_review_question`,`id_review_answer`) values 
+(1,4,'042201','04220102'),
+(1,4,'042202','04220203'),
+(2,4,'042201','04220101');
 
 /*Table structure for table `kegiatan_luaran` */
 
 DROP TABLE IF EXISTS `kegiatan_luaran`;
 
 CREATE TABLE `kegiatan_luaran` (
-  `id_kegiatan_luaran` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_kegiatan` int(10) unsigned NOT NULL,
+  `id_kegiatan_luaran` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_kegiatan` int unsigned NOT NULL,
   `id_jenis_luaran` varchar(2) NOT NULL,
-  `id_luaran` int(10) unsigned DEFAULT NULL,
+  `id_luaran` int unsigned DEFAULT NULL,
   `deskripsi_luaran` varchar(255) NOT NULL,
   PRIMARY KEY (`id_kegiatan_luaran`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_luaran` */
+
+insert  into `kegiatan_luaran`(`id_kegiatan_luaran`,`id_kegiatan`,`id_jenis_luaran`,`id_luaran`,`deskripsi_luaran`) values 
+(1,1,'2',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi'),
+(2,1,'4',NULL,'Deskripsi Luaran #2'),
+(3,2,'2',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi');
 
 /*Table structure for table `kegiatan_mahasiswa` */
 
 DROP TABLE IF EXISTS `kegiatan_mahasiswa`;
 
 CREATE TABLE `kegiatan_mahasiswa` (
-  `id_kegiatan_mahasiswa` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_kegiatan` int(10) unsigned NOT NULL,
-  `id_program_studi` int(10) unsigned NOT NULL,
+  `id_kegiatan_mahasiswa` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_kegiatan` int unsigned NOT NULL,
+  `id_program_studi` int unsigned NOT NULL,
   `id_mahasiswa` varchar(16) NOT NULL,
   `nama_mahasiswa` varchar(255) NOT NULL,
-  `angkatan` year(4) NOT NULL,
+  `angkatan` year NOT NULL,
   PRIMARY KEY (`id_kegiatan_mahasiswa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_mahasiswa` */
+
+insert  into `kegiatan_mahasiswa`(`id_kegiatan_mahasiswa`,`id_kegiatan`,`id_program_studi`,`id_mahasiswa`,`nama_mahasiswa`,`angkatan`) values 
+(1,1,3,'123123123','Mahasiswa #1',2019),
+(2,1,2,'456456456','Mahasiswa 2',2017);
 
 /*Table structure for table `kegiatan_rab` */
 
 DROP TABLE IF EXISTS `kegiatan_rab`;
 
 CREATE TABLE `kegiatan_rab` (
-  `id_kegiatan_rab` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_kegiatan` int(10) unsigned NOT NULL,
+  `id_kegiatan_rab` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_kegiatan` int unsigned NOT NULL,
   `id_jenis_belanja` varchar(2) NOT NULL,
-  `tahun_ke` int(1) unsigned NOT NULL,
+  `tahun_ke` int unsigned NOT NULL,
   `nama_item` varchar(255) NOT NULL,
   `satuan` varchar(20) NOT NULL,
-  `vol` int(11) unsigned NOT NULL,
-  `biaya_satuan` int(11) unsigned NOT NULL,
+  `vol` int unsigned NOT NULL,
+  `biaya_satuan` int unsigned NOT NULL,
   PRIMARY KEY (`id_kegiatan_rab`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_rab` */
+
+insert  into `kegiatan_rab`(`id_kegiatan_rab`,`id_kegiatan`,`id_jenis_belanja`,`tahun_ke`,`nama_item`,`satuan`,`vol`,`biaya_satuan`) values 
+(1,1,'03',1,'Printer #1','Buah',2,2000000),
+(2,1,'01',1,'Gaji Mahasiswa','Orang',4,1500000),
+(3,2,'03',1,'Scanner #1','Buah',3,1200000),
+(4,2,'03',1,'Laptop #1','Buah',2,6000000);
 
 /*Table structure for table `kegiatan_reviewer` */
 
 DROP TABLE IF EXISTS `kegiatan_reviewer`;
 
 CREATE TABLE `kegiatan_reviewer` (
-  `id_kegiatan_reviewer` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_kegiatan` int(10) unsigned NOT NULL,
-  `id_user` int(10) unsigned NOT NULL,
+  `id_kegiatan_reviewer` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_kegiatan` int unsigned NOT NULL,
+  `id_user` int unsigned NOT NULL,
   PRIMARY KEY (`id_kegiatan_reviewer`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_reviewer` */
+
+insert  into `kegiatan_reviewer`(`id_kegiatan_reviewer`,`id_kegiatan`,`id_user`) values 
+(1,1,4),
+(2,1,5);
 
 /*Table structure for table `luaran` */
 
 DROP TABLE IF EXISTS `luaran`;
 
 CREATE TABLE `luaran` (
-  `id_luaran` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_user` int(10) unsigned NOT NULL,
+  `id_luaran` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_user` int unsigned NOT NULL,
   `id_sub_jenis_luaran` varchar(4) NOT NULL,
   `id_indexing_institution` varchar(2) NOT NULL,
   `judul` varchar(255) NOT NULL,
-  `tahun` year(4) NOT NULL,
+  `tahun` year NOT NULL,
   `penerbit` varchar(255) DEFAULT NULL,
-  `jumlah_halaman` int(11) DEFAULT NULL,
+  `jumlah_halaman` int DEFAULT NULL,
   `isbn` varchar(40) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   `attachment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_luaran`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `luaran` */
+
+insert  into `luaran`(`id_luaran`,`id_user`,`id_sub_jenis_luaran`,`id_indexing_institution`,`judul`,`tahun`,`penerbit`,`jumlah_halaman`,`isbn`,`url`,`attachment`) values 
+(1,1,'0201','1','The effect of long sleep',2018,'Dark Room',666,'s-t-n-230','https://www.youtube.com/watch?v=oHg5SJYRHA0',NULL),
+(2,1,'0401','1','Portable Bed',2017,'IKEA',10,'bbb-sleep','ikea.com',NULL),
+(3,2,'0201','1','Purple & Bad Luck, study of corelation',2016,'PSA',313,'ttt-ygood','brian.com',NULL);
 
 /*Table structure for table `luaran_anggota` */
 
 DROP TABLE IF EXISTS `luaran_anggota`;
 
 CREATE TABLE `luaran_anggota` (
-  `id_luaran_anggota` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_luaran` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
+  `id_luaran_anggota` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_luaran` int NOT NULL,
+  `id_user` int NOT NULL,
   `posisi` enum('KETUA','ANGGOTA') NOT NULL,
   PRIMARY KEY (`id_luaran_anggota`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `luaran_anggota` */
+
+insert  into `luaran_anggota`(`id_luaran_anggota`,`id_luaran`,`id_user`,`posisi`) values 
+(1,1,1,'KETUA'),
+(2,1,2,'ANGGOTA'),
+(3,2,1,'KETUA'),
+(4,3,2,'KETUA'),
+(5,2,1,'ANGGOTA');
 
 /*Table structure for table `periode` */
 
@@ -522,11 +573,11 @@ DROP TABLE IF EXISTS `periode`;
 CREATE TABLE `periode` (
   `id_program` varchar(4) NOT NULL,
   `id_tahap` varchar(4) NOT NULL,
-  `tahun` year(4) NOT NULL,
+  `tahun` year NOT NULL,
   `mulai` date NOT NULL,
   `berakhir` date NOT NULL,
   PRIMARY KEY (`id_program`,`id_tahap`,`tahun`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `periode` */
 
@@ -542,7 +593,7 @@ CREATE TABLE `program` (
   `id_program` varchar(2) NOT NULL,
   `nama_program` varchar(255) NOT NULL,
   PRIMARY KEY (`id_program`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `program` */
 
@@ -559,13 +610,13 @@ insert  into `program`(`id_program`,`nama_program`) values
 DROP TABLE IF EXISTS `program_studi`;
 
 CREATE TABLE `program_studi` (
-  `id_program_studi` int(4) unsigned NOT NULL,
-  `id_fakultas` int(2) unsigned NOT NULL,
-  `id_jenjang_pendidikan` int(2) unsigned NOT NULL,
+  `id_program_studi` int unsigned NOT NULL,
+  `id_fakultas` int unsigned NOT NULL,
+  `id_jenjang_pendidikan` int unsigned NOT NULL,
   `nama_program_studi` varchar(255) NOT NULL,
   `kelompok` enum('SAINS','SOSHUM') DEFAULT NULL,
   PRIMARY KEY (`id_program_studi`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `program_studi` */
 
@@ -697,9 +748,9 @@ CREATE TABLE `review_answer` (
   `id_review_answer` varchar(8) NOT NULL,
   `id_review_question` varchar(6) NOT NULL,
   `review_answer` varchar(255) NOT NULL,
-  `score` int(11) NOT NULL,
+  `score` int NOT NULL,
   PRIMARY KEY (`id_review_answer`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `review_answer` */
 
@@ -1010,12 +1061,12 @@ CREATE TABLE `review_question` (
   `id_review_question` varchar(6) NOT NULL,
   `jenis_question` enum('JEJAK','ISI') NOT NULL,
   `ids_skema` varchar(255) NOT NULL,
-  `id_tahap` int(2) unsigned NOT NULL,
+  `id_tahap` int unsigned NOT NULL,
   `review_question` varchar(255) NOT NULL,
-  `bobot` int(10) unsigned NOT NULL,
-  `max_score` int(11) unsigned NOT NULL,
+  `bobot` int unsigned NOT NULL,
+  `max_score` int unsigned NOT NULL,
   PRIMARY KEY (`id_review_question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `review_question` */
 
@@ -1088,11 +1139,11 @@ insert  into `review_question`(`id_review_question`,`jenis_question`,`ids_skema`
 DROP TABLE IF EXISTS `role`;
 
 CREATE TABLE `role` (
-  `id_role` int(2) unsigned NOT NULL,
+  `id_role` int unsigned NOT NULL,
   `nama_role` varchar(32) NOT NULL,
   `title_role` varchar(64) NOT NULL,
   PRIMARY KEY (`id_role`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `role` */
 
@@ -1105,12 +1156,12 @@ insert  into `role`(`id_role`,`nama_role`,`title_role`) values
 DROP TABLE IF EXISTS `sbk`;
 
 CREATE TABLE `sbk` (
-  `id_sbk` int(2) unsigned NOT NULL,
+  `id_sbk` int unsigned NOT NULL,
   `nama_sbk` varchar(255) NOT NULL,
-  `tkt_min` int(2) unsigned NOT NULL,
-  `tkt_max` int(2) unsigned NOT NULL,
+  `tkt_min` int unsigned NOT NULL,
+  `tkt_max` int unsigned NOT NULL,
   PRIMARY KEY (`id_sbk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `sbk` */
 
@@ -1125,10 +1176,10 @@ DROP TABLE IF EXISTS `sessions`;
 
 CREATE TABLE `sessions` (
   `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `expires` int(11) unsigned NOT NULL,
-  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `expires` int unsigned NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   PRIMARY KEY (`session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `sessions` */
 
@@ -1144,16 +1195,16 @@ CREATE TABLE `skema` (
   `id_skema` varchar(4) NOT NULL,
   `id_program` varchar(2) NOT NULL,
   `nama_skema` varchar(255) NOT NULL,
-  `dana_maksimum` int(11) unsigned NOT NULL,
-  `lama_maksimum` int(2) NOT NULL,
-  `tkt_min` int(2) unsigned DEFAULT NULL,
-  `tkt_max` int(2) unsigned DEFAULT NULL,
+  `dana_maksimum` int unsigned NOT NULL,
+  `lama_maksimum` int NOT NULL,
+  `tkt_min` int unsigned DEFAULT NULL,
+  `tkt_max` int unsigned DEFAULT NULL,
   `luaran_wajib` varchar(255) DEFAULT NULL,
   `luaran_pilihan` varchar(255) DEFAULT NULL,
-  `min_jabatan_fungsional` int(2) unsigned DEFAULT NULL,
-  `min_jenjang_pendidikan` int(2) unsigned DEFAULT NULL,
+  `min_jabatan_fungsional` int unsigned DEFAULT NULL,
+  `min_jenjang_pendidikan` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id_skema`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `skema` */
 
@@ -1191,7 +1242,7 @@ CREATE TABLE `sub_jenis_luaran` (
   `id_jenis_luaran` varchar(2) NOT NULL,
   `nama_sub_jenis_luaran` varchar(255) NOT NULL,
   PRIMARY KEY (`id_sub_jenis_luaran`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `sub_jenis_luaran` */
 
@@ -1228,10 +1279,10 @@ insert  into `sub_jenis_luaran`(`id_sub_jenis_luaran`,`id_jenis_luaran`,`nama_su
 DROP TABLE IF EXISTS `tahap`;
 
 CREATE TABLE `tahap` (
-  `id_tahap` int(2) unsigned NOT NULL,
+  `id_tahap` int unsigned NOT NULL,
   `nama_tahap` varchar(255) NOT NULL,
   PRIMARY KEY (`id_tahap`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `tahap` */
 
@@ -1251,9 +1302,9 @@ insert  into `tahap`(`id_tahap`,`nama_tahap`) values
 DROP TABLE IF EXISTS `tahun`;
 
 CREATE TABLE `tahun` (
-  `tahun` year(4) NOT NULL,
+  `tahun` year NOT NULL,
   PRIMARY KEY (`tahun`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `tahun` */
 
@@ -1267,10 +1318,10 @@ insert  into `tahun`(`tahun`) values
 DROP TABLE IF EXISTS `tkt`;
 
 CREATE TABLE `tkt` (
-  `id_tkt` int(2) unsigned NOT NULL,
+  `id_tkt` int unsigned NOT NULL,
   `nama_tkt` varchar(255) NOT NULL,
   PRIMARY KEY (`id_tkt`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `tkt` */
 
@@ -1290,30 +1341,33 @@ insert  into `tkt`(`id_tkt`,`nama_tkt`) values
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-  `id_user` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_role` int(2) unsigned NOT NULL,
-  `id_program_studi` int(4) NOT NULL,
+  `id_user` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_role` int unsigned NOT NULL,
+  `id_program_studi` int NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(60) NOT NULL,
   `nama_user` varchar(255) DEFAULT NULL,
   `nohp` varchar(16) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `profile_picture` varchar(255) DEFAULT NULL,
-  `id_jabatan_fungsional` int(2) unsigned DEFAULT NULL,
-  `id_jenjang_pendidikan` int(2) unsigned DEFAULT NULL,
+  `id_jabatan_fungsional` int unsigned DEFAULT NULL,
+  `id_jenjang_pendidikan` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `user_username_uq` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `user` */
 
 insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`,`nama_user`,`nohp`,`email`,`profile_picture`,`id_jabatan_fungsional`,`id_jenjang_pendidikan`) values 
-(1,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3',NULL,NULL),
-(2,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com',NULL,11,1),
-(3,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com',NULL,1,3),
-(6,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com',NULL,NULL,NULL),
-(28,1,1,'husein','$2b$08$mq2IfcNNZgX/z5Efxkh6SuKyGHvaTflwz8MGw89fn.OZZTcQ0OGvC','Husein nashr','1231231231241','husein@gmail.com',NULL,NULL,NULL),
-(31,1,0,'postman','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Nama Updated','23124123123123','updated@a.com',NULL,NULL,NULL);
+(1,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com',NULL,11,1),
+(2,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com',NULL,1,3),
+(3,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com',NULL,11,1),
+(4,2,1,'dosen4','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #4','084323515536','dosen4@lppm.com',NULL,1,3),
+(5,2,2,'dosen5','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #5','084323515536','dosen5@lppm.com',NULL,1,3),
+(6,2,2,'dosen6','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #6','084323515536','dosen6@lppm.com',NULL,11,1),
+(991,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3',NULL,NULL),
+(992,1,0,'delete_this','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Delete This','23124123123123','deletethis@lppm.com',NULL,NULL,NULL),
+(993,2,1,'edit_this','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Edit This','084323515536','editthis@lppm.com',NULL,11,1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

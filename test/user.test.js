@@ -78,7 +78,7 @@ describe("Route GET /user/:id_user", () => {
 });
 
 describe("Route PATCH /user/:id_user", () => {
-  test_auth_forbidden(agent, "PATCH", "/user/6", DOSEN1_CRED);
+  test_auth_forbidden(agent, "PATCH", "/user/993", DOSEN1_CRED);
 
   test("It should response 404 Not Found and return error when not exist", async () => {
     const { statusCode, body } = await agent
@@ -90,7 +90,7 @@ describe("Route PATCH /user/:id_user", () => {
 
   test("It should response 422 UNPROCESSABLE_ENTITY and error when username exist", async () => {
     const { statusCode, body } = await agent
-      .patch("/user/6")
+      .patch("/user/993")
       .send({ username: "dosen1" })
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.UNPROCESSABLE_ENTITY);
@@ -99,20 +99,20 @@ describe("Route PATCH /user/:id_user", () => {
 
   test("It should response 200 OK and return user on correct payload", async () => {
     const { statusCode, body } = await agent
-      .patch("/user/6")
-      .send({ username: "dosen3e", password: "wasdwasd" })
+      .patch("/user/993")
+      .send({ username: "edited", password: "wasdwasd" })
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
-    expect(body).toMatchObject({ id_user: 6, username: "dosen3e" });
+    expect(body).toMatchObject({ id_user: 993, username: "edited" });
   });
 });
 
 describe("Route DELETE /user/:id_user", () => {
-  test_auth_forbidden(agent, "DELETE", "/user/31", DOSEN1_CRED);
+  test_auth_forbidden(agent, "DELETE", "/user/992", DOSEN1_CRED);
 
   test("It should response 200 OK and on correct payload", async () => {
     const { statusCode } = await agent
-      .delete("/user/31")
+      .delete("/user/992")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
   });
