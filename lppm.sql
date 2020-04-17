@@ -85,6 +85,22 @@ insert  into `jabatan_fungsional`(`id_jabatan_fungsional`,`kode_jabatan_fungsion
 (10,'AAS1','Asisten Ahli S1'),
 (11,'TP','Tenaga Pengajar');
 
+/*Table structure for table `jabatan_struktural` */
+
+DROP TABLE IF EXISTS `jabatan_struktural`;
+
+CREATE TABLE `jabatan_struktural` (
+  `id_jabatan_struktural` int unsigned NOT NULL,
+  `nama_jabatan_struktural` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_jabatan_struktural`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `jabatan_struktural` */
+
+insert  into `jabatan_struktural`(`id_jabatan_struktural`,`nama_jabatan_struktural`) values 
+(1,'Rektor'),
+(2,'Dekan');
+
 /*Table structure for table `jenis_belanja` */
 
 DROP TABLE IF EXISTS `jenis_belanja`;
@@ -1149,7 +1165,9 @@ CREATE TABLE `role` (
 
 insert  into `role`(`id_role`,`nama_role`,`title_role`) values 
 (1,'admin','Admin'),
-(2,'dosen','Dosen');
+(2,'dosen','Dosen'),
+(3,'reviewer','Reviewer'),
+(4,'pimpinan_fakultas','Pimpinan Fakultas');
 
 /*Table structure for table `sbk` */
 
@@ -1351,6 +1369,7 @@ CREATE TABLE `user` (
   `email` varchar(255) DEFAULT NULL,
   `profile_picture` varchar(255) DEFAULT NULL,
   `id_jabatan_fungsional` int unsigned DEFAULT NULL,
+  `id_jabatan_struktural` int unsigned DEFAULT NULL,
   `id_jenjang_pendidikan` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `user_username_uq` (`username`)
@@ -1358,16 +1377,16 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`,`nama_user`,`nohp`,`email`,`profile_picture`,`id_jabatan_fungsional`,`id_jenjang_pendidikan`) values 
-(1,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com',NULL,11,1),
-(2,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com',NULL,1,3),
-(3,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com',NULL,11,1),
-(4,2,1,'dosen4','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #4','084323515536','dosen4@lppm.com',NULL,1,3),
-(5,2,2,'dosen5','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #5','084323515536','dosen5@lppm.com',NULL,1,3),
-(6,2,2,'dosen6','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #6','084323515536','dosen6@lppm.com',NULL,11,1),
-(991,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3',NULL,NULL),
-(992,1,0,'delete_this','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Delete This','23124123123123','deletethis@lppm.com',NULL,NULL,NULL),
-(993,2,1,'edit_this','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Edit This','084323515536','editthis@lppm.com',NULL,11,1);
+insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`,`nama_user`,`nohp`,`email`,`profile_picture`,`id_jabatan_fungsional`,`id_jabatan_struktural`,`id_jenjang_pendidikan`) values 
+(1,2,1,'dosen1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #1','083251252245','dosen1@lppm.com',NULL,11,NULL,1),
+(2,2,1,'dosen2','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #2','084323515536','dosen2@lppm.com',NULL,1,2,3),
+(3,2,1,'dosen3','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #3','084323515536','dosen3@lppm.com',NULL,11,NULL,1),
+(4,2,1,'dosen4','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #4','084323515536','dosen4@lppm.com',NULL,1,NULL,3),
+(5,2,2,'dosen5','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #5','084323515536','dosen5@lppm.com',NULL,1,NULL,3),
+(6,2,2,'dosen6','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #6','084323515536','dosen6@lppm.com',NULL,11,NULL,1),
+(991,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3',NULL,NULL,NULL),
+(992,1,0,'delete_this','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Delete This','23124123123123','deletethis@lppm.com',NULL,NULL,NULL,NULL),
+(993,2,1,'edit_this','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Edit This','084323515536','editthis@lppm.com',NULL,11,NULL,1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

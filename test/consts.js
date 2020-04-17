@@ -10,6 +10,12 @@ const DOSEN1_CRED = {
   nama_role: "Dosen",
 };
 
+const DOSEN2_CRED = {
+  username: "dosen2",
+  password: "wasdwasd",
+  nama_role: "Dosen",
+};
+
 const UNKNOWN_CRED = {
   username: "unkwon_credential",
   password: "wasdwasd",
@@ -41,6 +47,7 @@ const SKEMA01_LENGTH = 7;
 module.exports = {
   ADMIN_CRED,
   DOSEN1_CRED,
+  DOSEN2_CRED,
   UNKNOWN_CRED,
   WRONG_CRED,
   TAHAP_LENGTH,

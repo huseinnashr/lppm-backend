@@ -1,5 +1,6 @@
 const HTTPStatus = require("http-status");
-const { ADMIN_CRED, DOSEN1_CRED, UNKNOWN_CRED, WRONG_CRED } = require("./consts");
+const { ADMIN_CRED, DOSEN1_CRED, DOSEN2_CRED, UNKNOWN_CRED, WRONG_CRED } = require("./consts");
+const { get_auth, test_not_auth_unauthorized } = require("./helpers");
 const agent = require("supertest")(require("../app"));
 
 describe("Route POST /login", () => {
@@ -22,6 +23,55 @@ describe("Route POST /login", () => {
     const { statusCode, body } = await agent.post("/login").send(WRONG_CRED);
     expect(statusCode).toBe(HTTPStatus.UNAUTHORIZED);
     expect(body.error).toBe("Password salah");
+  });
+});
+
+describe("Route POST /change-role", () => {
+  test_not_auth_unauthorized(agent, "GET", "/program");
+
+  test("It should response 403 Forbidden on role to admin", async () => {
+    const { statusCode, body } = await agent
+      .post("/change-role")
+      .send({ id_role: 1 })
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.FORBIDDEN);
+    expect(body).toEqual({ error: "Tidak bisa ganti role dari/jadi admin" });
+  });
+
+  test("It should response 200 OK and return user on role to dosen", async () => {
+    const { statusCode, body: user } = await agent
+      .post("/change-role")
+      .send({ id_role: 2 })
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(user).toMatchObject({ nama_role: "dosen" });
+  });
+
+  test("It should response 200 OK and return user on role to reviewer", async () => {
+    const { statusCode, body: user } = await agent
+      .post("/change-role")
+      .send({ id_role: 3 })
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(user).toMatchObject({ nama_role: "reviewer" });
+  });
+
+  test("It'd response 403 Forbidden on role to pimpinan fakultas for non JS dekan", async () => {
+    const { statusCode, body } = await agent
+      .post("/change-role")
+      .send({ id_role: 4 })
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.FORBIDDEN);
+    expect(body).toEqual({ error: "Tidak sesuai dengan jabatan struktural" });
+  });
+
+  test("It'd response 200 OK and user on role to pimpinan fakultas for JS dekan", async () => {
+    const { statusCode, body: user } = await agent
+      .post("/change-role")
+      .send({ id_role: 4 })
+      .set("cookie", await get_auth(agent, DOSEN2_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(user).toMatchObject({ nama_role: "pimpinan_fakultas" });
   });
 });
 

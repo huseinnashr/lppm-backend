@@ -25,6 +25,7 @@ module.exports = (app) => {
   });
 
   app.route("/login").post(asyncHandler(authCtrl.login));
+  app.route("/change-role").post(authCtrl.onlyAuthenticated, asyncHandler(authCtrl.changeRole));
   app.route("/logout").post(asyncHandler(authCtrl.logout));
 
   app
