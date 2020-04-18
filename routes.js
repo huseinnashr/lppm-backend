@@ -18,6 +18,7 @@ const subJenisLuaranCtrl = require("./controllers/sub-jenis-luaran");
 const indexingInstitutionCtrl = require("./controllers/indexing-institution");
 const reviewQuestionCtrl = require("./controllers/review-question");
 const periodeCtrl = require("./controllers/periode");
+const kegiatanCtrl = require("./controllers/kegiatan");
 
 module.exports = (app) => {
   app.route("/").get(authCtrl.onlyAuthenticated, (req, res) => {
@@ -79,9 +80,14 @@ module.exports = (app) => {
     .route("/program/:id_program/skema")
     .get(authCtrl.onlyAuthenticated, asyncHandler(skemaCtrl.getAll));
   app
-    .route("/program/:id_program/tahun/:tahun/periode")
+    .route("/periode")
     .get(asyncHandler(periodeCtrl.getAll))
     .put(authCtrl.onlyRoles(["admin"]), asyncHandler(periodeCtrl.replace));
+
+  app
+    .route("/kegiatan/dosen")
+    .get(authCtrl.onlyRoles(["dosen"]), asyncHandler(kegiatanCtrl.getKegiatanDosen));
+  app.route("/kegiatan").post(authCtrl.onlyRoles(["dosen"]), asyncHandler(kegiatanCtrl.add));
 
   app.route("/test-500").all((req, res, next) => {
     next("Test 500");

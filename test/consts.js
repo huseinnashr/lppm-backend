@@ -28,7 +28,6 @@ const WRONG_CRED = {
   nama_role: "Admin",
 };
 
-const TAHAP_LENGTH = 9;
 const ROLE_LENGTH = 2;
 const PROGRAM_LENGTH = 6;
 const FAKULTAS_LENGTH = 14;
@@ -50,7 +49,6 @@ module.exports = {
   DOSEN2_CRED,
   UNKNOWN_CRED,
   WRONG_CRED,
-  TAHAP_LENGTH,
   ROLE_LENGTH,
   PROGRAM_LENGTH,
   FAKULTAS_LENGTH,

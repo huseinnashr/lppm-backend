@@ -1,45 +1,42 @@
 const HTTPStatus = require("http-status");
-const { ADMIN_CRED, DOSEN1_CRED, TAHAP_LENGTH } = require("./consts");
+const { ADMIN_CRED, DOSEN1_CRED } = require("./consts");
 const { test_not_auth_unauthorized, test_auth_forbidden, get_auth } = require("./helpers");
 const agent = require("supertest")(require("../app"));
 
-describe("Route GET program/:id_program/tahun/:tahun/periode", () => {
+describe("Route GET periode", () => {
   test("It should response 200 OK and return periodes when admin", async () => {
     const { statusCode, body: periodes } = await agent
-      .get("/program/01/tahun/2020/periode")
+      .get("/periode")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
-    expect(periodes.length).toEqual(TAHAP_LENGTH);
-    expect(periodes[1]).toEqual({
-      id_program: "01",
-      tahun: 2020,
-      id_tahap: 2,
+    const periode = periodes.find(
+      (p) => p.tahun == 2020 && p.id_program == "01" && p.id_tahap == 2
+    );
+    expect(periode).toMatchObject({
       nama_tahap: "Review Pimpinan",
-      mulai: new Date("2020-06-01 00:00").toISOString(),
-      berakhir: new Date("2020-06-02 00:00").toISOString(),
+      mulai: "2020-06-01",
+      berakhir: "2020-06-02",
     });
   });
 });
 
-describe("Route PUT /program/:id_program/tahun/:tahun/periode", () => {
-  test_not_auth_unauthorized(agent, "PUT", "/program/01/tahun/2020/periode");
-  test_auth_forbidden(agent, "PUT", "/program/01/tahun/2020/periode", DOSEN1_CRED);
+describe("Route PUT /periode", () => {
+  test_not_auth_unauthorized(agent, "PUT", "/periode");
+  test_auth_forbidden(agent, "PUT", "/periode", DOSEN1_CRED);
 
   test("It should response 200 OK and return user when admin", async () => {
     const payload = {
+      id_program: "04",
+      tahun: 2020,
       id_tahap: 3,
-      mulai: "2020-07-05 00:00",
-      berakhir: "2020-07-06 00:00",
+      mulai: "2020-04-01",
+      berakhir: "2050-04-01",
     };
     const { statusCode, body: periode } = await agent
-      .put("/program/01/tahun/2020/periode")
+      .put("/periode")
       .send(payload)
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
-    expect(periode).toMatchObject({
-      id_tahap: payload.id_tahap,
-      mulai: new Date(payload.mulai).toISOString(),
-      berakhir: new Date(payload.berakhir).toISOString(),
-    });
+    expect(periode).toMatchObject({ ...payload, status: "BERJALAN" });
   });
 });
