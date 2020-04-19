@@ -1,3 +1,10 @@
+const DATABASE_OPTIONS = {
+  host: process.env.LOCAL_IP,
+  database: process.env.MYSQL_DATABASE,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+};
+
 const ADMIN_CRED = {
   username: "admin",
   password: "wasdwasd",
@@ -44,6 +51,7 @@ const INDEXING_INSTITUTION_LENGTH = 4;
 const SKEMA01_LENGTH = 7;
 
 module.exports = {
+  DATABASE_OPTIONS,
   ADMIN_CRED,
   DOSEN1_CRED,
   DOSEN2_CRED,

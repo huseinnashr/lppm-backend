@@ -2,9 +2,15 @@ const HTTPStatus = require("http-status");
 const { ADMIN_CRED, DOSEN1_CRED } = require("./consts");
 const { test_not_auth_unauthorized, test_auth_forbidden, get_auth } = require("./helpers");
 const agent = require("supertest")(require("../app"));
+const periodeTable = require("./periode.table");
+
+afterAll(async () => {
+  await periodeTable.reset();
+});
 
 describe("Route GET periode", () => {
   test("It should response 200 OK and return periodes when admin", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 2 }, -3);
     const { statusCode, body: periodes } = await agent
       .get("/periode")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
@@ -14,8 +20,7 @@ describe("Route GET periode", () => {
     );
     expect(periode).toMatchObject({
       nama_tahap: "Review Pimpinan",
-      mulai: "2020-06-01",
-      berakhir: "2020-06-02",
+      status: "BERAKHIR",
     });
   });
 });
