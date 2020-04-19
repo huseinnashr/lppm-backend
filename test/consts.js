@@ -35,7 +35,7 @@ const WRONG_CRED = {
   nama_role: "Admin",
 };
 
-const ROLE_LENGTH = 2;
+const ROLE_LENGTH = 4;
 const PROGRAM_LENGTH = 6;
 const FAKULTAS_LENGTH = 14;
 const PROGRAM_STUDI_LENGTH = 118;
