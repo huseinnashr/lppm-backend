@@ -20,6 +20,18 @@ const serveFile = async (id, res, folder) => {
   fs.createReadStream(filePath).pipe(res);
 };
 
+const toAssocCompositeKey = (arr = [], keys = [], separator = "") => {
+  const newArr = {};
+  arr.forEach((e) => {
+    var compositeKey = [];
+    keys.forEach((key) => {
+      compositeKey.push(e[key]);
+    });
+    newArr[compositeKey.join(separator)] = e;
+  });
+  return newArr;
+};
+
 const HOSTNAME = "http://" + process.env.LOCAL_IP + ":8888/";
 
-module.exports = { serveFile, HOSTNAME };
+module.exports = { serveFile, toAssocCompositeKey, HOSTNAME };

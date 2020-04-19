@@ -385,16 +385,19 @@ CREATE TABLE `kegiatan` (
   `tahun` year NOT NULL,
   `lama` int unsigned NOT NULL,
   `proposal` varchar(255) DEFAULT NULL,
+  `laporan_kemajuan` varchar(255) DEFAULT NULL,
+  `laporan_akhir` varchar(255) DEFAULT NULL,
   `approval` enum('DITERIMA','DITOLAK','BELUM') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'BELUM',
   `is_submitted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_kegiatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan` */
 
-insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_sbk`,`id_tkt`,`judul`,`tanggal_entri`,`tahun`,`lama`,`proposal`,`approval`,`is_submitted`) values 
-(1,1,'0102','101020',2,4,'Are we alone in this universe?','2020-04-14 18:52:19',2020,2,NULL,'DITERIMA',1),
-(2,2,'0103','101010',2,6,'Living Simulation, a thought experiment','2020-04-16 16:10:16',2020,1,NULL,'BELUM',0);
+insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_sbk`,`id_tkt`,`judul`,`tanggal_entri`,`tahun`,`lama`,`proposal`,`laporan_kemajuan`,`laporan_akhir`,`approval`,`is_submitted`) values 
+(1,1,'0102','101020',2,4,'Are we alone in this universe?','2020-04-14 18:52:19',2020,2,'p','lk','la','DITERIMA',1),
+(2,2,'0103','101010',2,6,'Living Simulation, a thought experiment','2020-04-16 16:10:16',2020,1,NULL,NULL,NULL,'BELUM',0),
+(3,2,'0103','101010',2,6,'Living Matrix, a meal experiment','2020-04-20 01:44:36',2020,1,NULL,NULL,NULL,'BELUM',1);
 
 /*Table structure for table `kegiatan_anggota` */
 

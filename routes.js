@@ -88,6 +88,9 @@ module.exports = (app) => {
     .route("/kegiatan/dosen")
     .get(authCtrl.onlyRoles(["dosen"]), asyncHandler(kegiatanCtrl.getKegiatanDosen));
   app.route("/kegiatan").post(authCtrl.onlyRoles(["dosen"]), asyncHandler(kegiatanCtrl.add));
+  app
+    .route("/kegiatan/:id_kegiatan")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.get));
 
   app.route("/test-500").all((req, res, next) => {
     next("Test 500");
