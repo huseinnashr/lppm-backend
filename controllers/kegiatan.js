@@ -64,12 +64,18 @@ const get = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const kegiatan = req.body;
-  const { insertId } = await req.db.asyncQuery("INSERT INTO `kegiatan` SET ?", kegiatan);
-  const newKegiatans = await req.db.asyncQuery(ALL_KEGIATAN_QUERY + " WHERE u.`id_kegiatan` = ?", [
+  const { id_user } = req.session.user;
+
+  const newKegiatan = { ...req.body, id_user };
+  const { insertId } = await req.db.asyncQuery("INSERT INTO `kegiatan` SET ?", newKegiatan);
+
+  const newAnggota = { id_kegiatan: insertId, id_user, posisi: "KETUA", status: "DITERIMA" };
+  await req.db.asyncQuery("INSERT INTO `kegiatan_anggota` SET ?", newAnggota);
+
+  const results = await req.db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
     insertId,
   ]);
-  res.status(HTTPStatus.OK).send(newKegiatans[0]);
+  res.status(HTTPStatus.OK).send((await __mapAddStatus(req.db, results))[0]);
 };
 
 module.exports = {

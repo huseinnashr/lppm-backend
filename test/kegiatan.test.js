@@ -90,28 +90,34 @@ describe("Route GET /kegiatan/:id_kegiatan", () => {
   });
 });
 
-// describe("Route POST /kegiatan", () => {
-//   test_auth_forbidden(agent, "POST", "/kegiatan", ADMIN_CRED);
+describe("Route POST /kegiatan", () => {
+  afterAll(async () => {
+    await periodeTable.reset();
+  });
 
-//   test("It should response 200 OK and return kegiatan when dosen", async () => {
-//     const newKegiatan = {
-//       judul: "Don't Give Up on Me!",
-//       skema: "0101",
-//       id_jenis_topik: "101010",
-//       id_sbk: 1,
-//       id_tkt: 2,
-//       lama: 1,
-//     };
-//     const { statusCode, body: kegiatan } = await agent
-//       .post("/kegiatan")
-//       .send({})
-//       .set("cookie", await get_auth(agent, DOSEN1_CRED));
-//     expect(statusCode).toBe(HTTPStatus.OK);
-//     expect(kegiatan).toMatchObject({
-//       ...newKegiatan,
-//       light: "ORANGE",
-//       message: "Menunggu Submission",
-//     });
-//     expect(kegiatan["anggota"][0]).toMatchObject({ username: DOSEN1_CRED.username });
-//   });
-// });
+  test_auth_forbidden(agent, "POST", "/kegiatan", ADMIN_CRED);
+
+  test("It should response 200 OK and return kegiatan when dosen", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const newKegiatan = {
+      judul: "Don't Give Up on Me!",
+      id_skema: "0101",
+      id_jenis_topik: "101010",
+      id_sbk: 1,
+      id_tkt: 2,
+      lama: 1,
+      tahun: 2020,
+    };
+    const { statusCode, body: kegiatan } = await agent
+      .post("/kegiatan")
+      .send(newKegiatan)
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(kegiatan).toMatchObject({
+      ...newKegiatan,
+      light: "ORANGE",
+      message: "Usulan belum di submit",
+    });
+    expect(kegiatan["anggota"][0]).toMatchObject({ username: DOSEN1_CRED.username });
+  });
+});

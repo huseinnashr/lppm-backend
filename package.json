@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "resetdb": "(mysql -uuser -ppassword lppm < lppm.sql)",
-    "test": "npm run resetdb && jest --forceExit",
-    "test:circleci": "jest --collectCoverage=true --reporters=default --reporters=jest-junit --forceExit"
+    "test": "npm run resetdb && jest --forceExit --runInBand",
+    "test:circleci": "jest --collectCoverage=true --reporters=default --reporters=jest-junit --forceExit --runInBand"
   },
   "jest-junit": {
     "outputDirectory": "./test-results/jest",

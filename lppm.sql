@@ -390,14 +390,17 @@ CREATE TABLE `kegiatan` (
   `approval` enum('DITERIMA','DITOLAK','BELUM') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'BELUM',
   `is_submitted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_kegiatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan` */
 
 insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_sbk`,`id_tkt`,`judul`,`tanggal_entri`,`tahun`,`lama`,`proposal`,`laporan_kemajuan`,`laporan_akhir`,`approval`,`is_submitted`) values 
 (1,1,'0102','101020',2,4,'Are we alone in this universe?','2020-04-14 18:52:19',2020,2,'p','lk','la','DITERIMA',1),
 (2,2,'0103','101010',2,6,'Living Simulation, a thought experiment','2020-04-16 16:10:16',2020,1,NULL,NULL,NULL,'BELUM',0),
-(3,2,'0103','101010',2,6,'Living Matrix, a meal experiment','2020-04-20 01:44:36',2020,1,NULL,NULL,NULL,'BELUM',1);
+(3,2,'0103','101010',2,6,'Living Matrix, a meal experiment','2020-04-20 01:44:36',2020,1,NULL,NULL,NULL,'BELUM',1),
+(4,2,'0103','101010',2,6,'Living Matrix, a meal experiment 2','2020-04-20 19:24:33',2020,1,NULL,NULL,NULL,'DITERIMA',1),
+(5,2,'0103','101010',2,6,'Living Matrix, a meal experiment 3','2020-04-20 19:25:15',2020,1,NULL,NULL,'1a','DITERIMA',1),
+(6,2,'0103','101010',2,6,'Living Matrix, a meal experiment 4','2020-04-20 19:27:30',2020,1,NULL,'1a','1a','DITERIMA',1);
 
 /*Table structure for table `kegiatan_anggota` */
 
