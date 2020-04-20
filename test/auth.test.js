@@ -38,6 +38,15 @@ describe("Route POST /change-role", () => {
     expect(body).toEqual({ error: "Tidak bisa ganti role dari/jadi admin" });
   });
 
+  test("It should response 422 Unprocessable Entity on role to unknown", async () => {
+    const { statusCode, body } = await agent
+      .post("/change-role")
+      .send({ id_role: "not-exist" })
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.UNPROCESSABLE_ENTITY);
+    expect(body).toEqual({ error: "Role baru tidak ditemukan" });
+  });
+
   test("It should response 200 OK and return user on role to dosen", async () => {
     const { statusCode, body: user } = await agent
       .post("/change-role")
