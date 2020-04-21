@@ -114,6 +114,154 @@ describe("Route GET /kegiatan/:id_kegiatan", () => {
     expect(kegiatan["light"]).toBe("RED");
     expect(kegiatan["message"]).toBe("Reviewer tidak di assign");
   });
+
+  test("It'd ret kegiatan light=GREEN on reviewed usulan on/after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 4 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("GREEN");
+    expect(kegiatan["message"]).toBe("Usulan telah di review");
+  });
+
+  test("It'd ret kegiatan light=ORANGE on unreviewed usulan on the periode", async () => {
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/5")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("ORANGE");
+    expect(kegiatan["message"]).toBe("Usulan belum di review");
+  });
+
+  test("It'd ret kegiatan light=RED on unreviewed usulan after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 4 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/5")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("RED");
+    expect(kegiatan["message"]).toBe("Usulan tidak di review");
+  });
+
+  test("It'd ret kegiatan light=ORANGE on perbaikan usulan on the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 5 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/6")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("ORANGE");
+    expect(kegiatan["message"]).toBe("Periode revisi usulan");
+  });
+
+  test("It'd ret kegiatan light=GREEN on perbaikan usulan after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 5 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/6")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("GREEN");
+    expect(kegiatan["message"]).toBe("Periode revisi telah selesai");
+  });
+
+  test("It'd ret kegiatan light=GREEN on uploaded kemajuan usulan on/after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("GREEN");
+    expect(kegiatan["message"]).toBe("Laporan Kemajuan telah di upload");
+  });
+
+  test("It'd ret kegiatan light=ORANGE on uploaded kemajuan on the periode", async () => {
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/6")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("ORANGE");
+    expect(kegiatan["message"]).toBe("Laporan Kemajuan belum di upload");
+  });
+
+  test("It'd ret kegiatan light=RED on uploaded kemajuan after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/6")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("RED");
+    expect(kegiatan["message"]).toBe("Laporan Kemajuan tidak di upload");
+  });
+
+  test("It'd ret kegiatan light=GREEN on reviewed laporan kemajuan on/after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 7 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("GREEN");
+    expect(kegiatan["message"]).toBe("Laporan Kemajuan telah di review");
+  });
+
+  test("It'd ret kegiatan light=ORANGE on unreviewed laporan kemajuan on the periode", async () => {
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/7")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("ORANGE");
+    expect(kegiatan["message"]).toBe("Laporan Kemajuan belum di review");
+  });
+
+  test("It'd ret kegiatan light=RED on unreviewed laporan kemajuan after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 7 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/7")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("RED");
+    expect(kegiatan["message"]).toBe("Laporan Kemajuan tidak di review");
+  });
+
+  test("It'd ret kegiatan light=GREEN on uploaded laporan akhir on/after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 8 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("GREEN");
+    expect(kegiatan["message"]).toBe("Laporan Akhir telah di upload");
+  });
+
+  test("It'd ret kegiatan light=ORANGE on unuploaded laporan akhir on the periode", async () => {
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/8")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("ORANGE");
+    expect(kegiatan["message"]).toBe("Laporan Akhir belum di upload");
+  });
+
+  test("It'd ret kegiatan light=RED on unuploaded laporan akhir after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 8 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/8")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("RED");
+    expect(kegiatan["message"]).toBe("Laporan Akhir tidak di upload");
+  });
+
+  test("It'd ret kegiatan light=GREEN on reviewed laporan akhir on/after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 9 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("GREEN");
+    expect(kegiatan["message"]).toBe("Laporan Akhir telah di review");
+  });
+
+  test("It'd ret kegiatan light=ORANGE on unreviewed laporan akhir on the periode", async () => {
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/9")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("ORANGE");
+    expect(kegiatan["message"]).toBe("Laporan Akhir belum di review");
+  });
+
+  test("It'd ret kegiatan light=RED on unreviewed laporan akhir after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 9 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/9")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("RED");
+    expect(kegiatan["message"]).toBe("Laporan Akhir tidak di review");
+  });
 });
 
 describe("Route POST /kegiatan", () => {

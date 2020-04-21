@@ -14,11 +14,11 @@ const KEGIATAN_REVIEWER_STATUS = `
   LEFT JOIN kegiatan_reviewer AS kegr
       ON kegr.id_kegiatan = keg.id_kegiatan 
   LEFT JOIN kegiatan_feedback AS kegf4 ON kegf4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf4.id_tahap = 4
-  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg4 GROUP BY kegg4.id_kegiatan_reviewer) AS kegg4 ON kegg4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg4.id_tahap = 4
+  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg4 GROUP BY kegg4.id_kegiatan_reviewer, kegg4.id_tahap) AS kegg4 ON kegg4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg4.id_tahap = 4
   LEFT JOIN kegiatan_feedback AS kegf7 ON kegf7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf7.id_tahap = 7
-  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg7 GROUP BY kegg7.id_kegiatan_reviewer) AS kegg7 ON kegg7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg7.id_tahap = 7
+  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg7 GROUP BY kegg7.id_kegiatan_reviewer, kegg7.id_tahap) AS kegg7 ON kegg7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg7.id_tahap = 7
   LEFT JOIN kegiatan_feedback AS kegf9 ON kegf9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf9.id_tahap = 9
-  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg9 GROUP BY kegg9.id_kegiatan_reviewer) AS kegg9 ON kegg9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg9.id_tahap = 9
+  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg9 GROUP BY kegg9.id_kegiatan_reviewer, kegg9.id_tahap) AS kegg9 ON kegg9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg9.id_tahap = 9
   GROUP BY keg.id_kegiatan
 `;
 
@@ -91,6 +91,87 @@ const __mapAddStatus = async (db, kegiatan) => {
 
     const { status: status_t4 } = periode[k.tahun + k.id_program + "4"];
     if (status_t4 == "BELUM") return { ...k, light: "GREEN", message: "Reviewer telah di assign" };
+
+    if (k.total_reviewer - k.total_reviewed_04 != 0) {
+      return {
+        ...k,
+        light: status_t4 == "BERJALAN" ? "ORANGE" : "RED",
+        message: status_t4 == "BERJALAN" ? "Usulan belum di review" : "Usulan tidak di review",
+      };
+    }
+
+    const { status: status_t5 } = periode[k.tahun + k.id_program + "5"];
+    if (status_t5 == "BELUM") return { ...k, light: "GREEN", message: "Usulan telah di review" };
+
+    if (status_t5 == "BERJALAN") {
+      return {
+        ...k,
+        light: "ORANGE",
+        message: "Periode revisi usulan",
+      };
+    }
+
+    const { status: status_t6 } = periode[k.tahun + k.id_program + "6"];
+    if (status_t6 == "BELUM")
+      return { ...k, light: "GREEN", message: "Periode revisi telah selesai" };
+
+    if (!k.laporan_kemajuan) {
+      return {
+        ...k,
+        light: status_t6 == "BERJALAN" ? "ORANGE" : "RED",
+        message:
+          status_t6 == "BERJALAN"
+            ? "Laporan Kemajuan belum di upload"
+            : "Laporan Kemajuan tidak di upload",
+      };
+    }
+
+    const { status: status_t7 } = periode[k.tahun + k.id_program + "7"];
+    if (status_t7 == "BELUM")
+      return { ...k, light: "GREEN", message: "Laporan Kemajuan telah di upload" };
+
+    if (k.total_reviewer - k.total_reviewed_07 != 0) {
+      return {
+        ...k,
+        light: status_t7 == "BERJALAN" ? "ORANGE" : "RED",
+        message:
+          status_t7 == "BERJALAN"
+            ? "Laporan Kemajuan belum di review"
+            : "Laporan Kemajuan tidak di review",
+      };
+    }
+
+    const { status: status_t8 } = periode[k.tahun + k.id_program + "8"];
+    if (status_t8 == "BELUM")
+      return { ...k, light: "GREEN", message: "Laporan Kemajuan telah di review" };
+
+    if (!k.laporan_akhir) {
+      return {
+        ...k,
+        light: status_t8 == "BERJALAN" ? "ORANGE" : "RED",
+        message:
+          status_t8 == "BERJALAN"
+            ? "Laporan Akhir belum di upload"
+            : "Laporan Akhir tidak di upload",
+      };
+    }
+
+    const { status: status_t9 } = periode[k.tahun + k.id_program + "9"];
+    if (status_t9 == "BELUM")
+      return { ...k, light: "GREEN", message: "Laporan Akhir telah di upload" };
+
+    if (k.total_reviewer - k.total_reviewed_09 != 0) {
+      return {
+        ...k,
+        light: status_t9 == "BERJALAN" ? "ORANGE" : "RED",
+        message:
+          status_t9 == "BERJALAN"
+            ? "Laporan Akhir belum di review"
+            : "Laporan Akhir tidak di review",
+      };
+    }
+
+    return { ...k, light: "GREEN", message: "Laporan Akhir telah di review" };
   });
 };
 

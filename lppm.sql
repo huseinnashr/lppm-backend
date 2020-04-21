@@ -390,17 +390,20 @@ CREATE TABLE `kegiatan` (
   `approval` enum('DITERIMA','DITOLAK','BELUM') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'BELUM',
   `is_submitted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_kegiatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan` */
 
 insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_sbk`,`id_tkt`,`judul`,`tanggal_entri`,`tahun`,`lama`,`proposal`,`laporan_kemajuan`,`laporan_akhir`,`approval`,`is_submitted`) values 
 (1,1,'0102','101020',2,4,'Are we alone in this universe?','2020-04-14 18:52:19',2020,2,'p','lk','la','DITERIMA',1),
-(2,2,'0103','101010',2,6,'Living Simulation, a thought experiment','2020-04-16 16:10:16',2020,1,NULL,NULL,NULL,'BELUM',0),
-(3,2,'0103','101010',2,6,'Living Matrix, a meal experiment','2020-04-20 01:44:36',2020,1,NULL,NULL,NULL,'BELUM',1),
-(4,2,'0103','101010',2,6,'Living Matrix, a meal experiment 2','2020-04-20 19:24:33',2020,1,NULL,NULL,NULL,'DITERIMA',1),
-(5,2,'0103','101010',2,6,'Living Matrix, a meal experiment 3','2020-04-20 19:25:15',2020,1,NULL,NULL,'1a','DITERIMA',1),
-(6,2,'0103','101010',2,6,'Living Matrix, a meal experiment 4','2020-04-20 19:27:30',2020,1,NULL,'1a','1a','DITERIMA',1);
+(2,2,'0103','101010',2,6,'Living Simulation, a thought experiment','2020-04-16 16:10:16',2020,1,'1a',NULL,NULL,'BELUM',0),
+(3,2,'0103','101010',2,6,'Living Matrix, a meal experiment','2020-04-20 01:44:36',2020,1,'1a',NULL,NULL,'BELUM',1),
+(4,2,'0103','101010',2,6,'Living Matrix, a meal experiment 4','2020-04-20 19:24:33',2020,1,'1a',NULL,NULL,'DITERIMA',1),
+(5,2,'0103','101010',2,6,'Living Matrix, a meal experiment 5','2020-04-20 19:24:33',2020,1,'1a',NULL,NULL,'DITERIMA',1),
+(6,2,'0103','101010',2,6,'Living Matrix, a meal experiment 6','2020-04-20 19:25:15',2020,1,'1a',NULL,NULL,'DITERIMA',1),
+(7,2,'0103','101010',2,6,'Living Matrix, a meal experiment 6','2020-04-20 19:25:15',2020,1,'1a','1a',NULL,'DITERIMA',1),
+(8,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a',NULL,'DITERIMA',1),
+(9,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a','1a','DITERIMA',1);
 
 /*Table structure for table `kegiatan_anggota` */
 
@@ -428,18 +431,27 @@ insert  into `kegiatan_anggota`(`id_kegiatan_anggota`,`id_kegiatan`,`id_user`,`p
 DROP TABLE IF EXISTS `kegiatan_feedback`;
 
 CREATE TABLE `kegiatan_feedback` (
-  `id_kegiatan_reviewer` int unsigned NOT NULL AUTO_INCREMENT,
+  `id_kegiatan_reviewer` int unsigned NOT NULL,
   `id_tahap` int unsigned NOT NULL,
   `feedback` varchar(255) NOT NULL,
   PRIMARY KEY (`id_kegiatan_reviewer`,`id_tahap`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_feedback` */
 
 insert  into `kegiatan_feedback`(`id_kegiatan_reviewer`,`id_tahap`,`feedback`) values 
 (1,4,'Keg #1 Rev #1 Tahap 4'),
 (1,7,'Keg #1, Rev #1, Tahap 7'),
-(2,7,'Keg #1, Rev #2, Tahap 7');
+(1,9,'Keg #1, Rev #1, Tahap 9'),
+(2,4,'Keg #1, Rev #2, Tahap 4'),
+(2,7,'Keg #1, Rev #2, Tahap 7'),
+(2,9,'Keg #1, Rev #2, Tahap 9'),
+(6,4,'64'),
+(7,4,'74'),
+(8,4,'84'),
+(8,7,'87'),
+(9,4,'94'),
+(9,7,'97');
 
 /*Table structure for table `kegiatan_grade` */
 
@@ -457,8 +469,17 @@ CREATE TABLE `kegiatan_grade` (
 
 insert  into `kegiatan_grade`(`id_kegiatan_reviewer`,`id_tahap`,`id_review_question`,`id_review_answer`) values 
 (1,4,'042201','04220102'),
-(1,4,'042202','04220203'),
-(2,4,'042201','04220101');
+(1,7,'042202','04220203'),
+(1,9,'042202','04220203'),
+(2,4,'042201','04220101'),
+(2,7,'042201','04220101'),
+(2,9,'042201','04220101'),
+(6,4,'040201','04220101'),
+(7,4,'040201','04220101'),
+(8,4,'040201','04220101'),
+(8,7,'040201','04220101'),
+(9,4,'040201','04220101'),
+(9,7,'040201','04220101');
 
 /*Table structure for table `kegiatan_luaran` */
 
@@ -533,13 +554,18 @@ CREATE TABLE `kegiatan_reviewer` (
   `id_kegiatan` int unsigned NOT NULL,
   `id_user` int unsigned NOT NULL,
   PRIMARY KEY (`id_kegiatan_reviewer`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_reviewer` */
 
 insert  into `kegiatan_reviewer`(`id_kegiatan_reviewer`,`id_kegiatan`,`id_user`) values 
 (1,1,4),
-(2,1,5);
+(2,1,5),
+(5,5,5),
+(6,6,5),
+(7,7,5),
+(8,8,5),
+(9,9,5);
 
 /*Table structure for table `luaran` */
 
