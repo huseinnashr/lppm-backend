@@ -14,11 +14,11 @@ const KEGIATAN_REVIEWER_STATUS = `
   LEFT JOIN kegiatan_reviewer AS kegr
       ON kegr.id_kegiatan = keg.id_kegiatan 
   LEFT JOIN kegiatan_feedback AS kegf4 ON kegf4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf4.id_tahap = 4
-  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg4 GROUP BY kegg4.id_kegiatan_reviewer, kegg4.id_tahap) AS kegg4 ON kegg4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg4.id_tahap = 4
+  LEFT JOIN (SELECT id_kegiatan_reviewer, id_tahap FROM kegiatan_grade GROUP BY id_kegiatan_reviewer, id_tahap) AS kegg4 ON kegg4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg4.id_tahap = 4
   LEFT JOIN kegiatan_feedback AS kegf7 ON kegf7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf7.id_tahap = 7
-  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg7 GROUP BY kegg7.id_kegiatan_reviewer, kegg7.id_tahap) AS kegg7 ON kegg7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg7.id_tahap = 7
+  LEFT JOIN (SELECT id_kegiatan_reviewer, id_tahap FROM kegiatan_grade GROUP BY id_kegiatan_reviewer, id_tahap) AS kegg7 ON kegg7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg7.id_tahap = 7
   LEFT JOIN kegiatan_feedback AS kegf9 ON kegf9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf9.id_tahap = 9
-  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg9 GROUP BY kegg9.id_kegiatan_reviewer, kegg9.id_tahap) AS kegg9 ON kegg9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg9.id_tahap = 9
+  LEFT JOIN (SELECT id_kegiatan_reviewer, id_tahap FROM kegiatan_grade GROUP BY id_kegiatan_reviewer, id_tahap) AS kegg9 ON kegg9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg9.id_tahap = 9
   GROUP BY keg.id_kegiatan
 `;
 
