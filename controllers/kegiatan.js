@@ -42,7 +42,7 @@ const ALL_KEGIATAN_QUERY = (where) => `
       ON tkt.id_tkt = keg.id_tkt
     LEFT JOIN kegiatan_anggota AS kan
       ON kan.id_kegiatan = keg.id_kegiatan
-    LEFT JOIN USER
+    LEFT JOIN user
       ON user.id_user = kan.id_user
     LEFT JOIN (${KEGIATAN_REVIEWER_STATUS}) as kegrs ON kegrs.id_kegiatan = keg.id_kegiatan
      ${where} 
