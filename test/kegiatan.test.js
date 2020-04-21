@@ -88,6 +88,32 @@ describe("Route GET /kegiatan/:id_kegiatan", () => {
     expect(kegiatan["light"]).toBe("RED");
     expect(kegiatan["message"]).toBe("Usulan ditolak");
   });
+
+  test("It'd ret kegiatan light=GREEN on assigned reviewer on/after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 3 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("GREEN");
+    expect(kegiatan["message"]).toBe("Reviewer telah di assign");
+  });
+
+  test("It'd ret kegiatan light=ORANGE on unassigned reviewer on the periode", async () => {
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/4")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("ORANGE");
+    expect(kegiatan["message"]).toBe("Reviewer belum di assign");
+  });
+
+  test("It'd ret kegiatan light=RED on unassigned kegiatan after the periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 3 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/4")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(kegiatan["light"]).toBe("RED");
+    expect(kegiatan["message"]).toBe("Reviewer tidak di assign");
+  });
 });
 
 describe("Route POST /kegiatan", () => {

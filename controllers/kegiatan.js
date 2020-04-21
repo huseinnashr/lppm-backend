@@ -2,10 +2,52 @@ const HTTPStatus = require("http-status");
 const { __getAll: getAllPeriode } = require("./periode");
 const { toAssocCompositeKey } = require("../helper-functions");
 
-const ALL_KEGIATAN_QUERY = (where) =>
-  "SELECT keg.*, ske.id_program, ske.nama_skema, jto.`nama_jenis_topik`, jte.`nama_jenis_tema`, jfo.`nama_jenis_fokus`, sbk.`nama_sbk`, tkt.`nama_tkt`, CAST(CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id_user', kan.`id_user`, 'posisi', kan.`posisi`, 'username', user.`username`, 'nama_user', user.`nama_user`) ORDER BY kan.`id_kegiatan_anggota` ASC SEPARATOR ', '), ']') AS JSON) AS anggota FROM kegiatan keg LEFT JOIN skema AS ske ON ske.id_skema = keg.id_skema LEFT JOIN jenis_topik AS jto ON jto.`id_jenis_topik` = keg.`id_jenis_topik` LEFT JOIN jenis_tema AS jte ON jte.`id_jenis_tema` = jto.`id_jenis_tema` LEFT JOIN jenis_fokus AS jfo ON jfo.`id_jenis_fokus` = jte.id_jenis_fokus LEFT JOIN sbk ON sbk.`id_sbk` = keg.`id_sbk` LEFT JOIN tkt ON tkt.`id_tkt` = keg.`id_tkt` LEFT JOIN kegiatan_anggota AS kan ON kan.`id_kegiatan` = keg.`id_kegiatan` LEFT JOIN user ON user.`id_user` = kan.`id_user` " +
-  where +
-  " GROUP BY keg.`id_kegiatan`";
+const KEGIATAN_REVIEWER_STATUS = `
+  SELECT
+    keg.id_kegiatan,
+    COUNT(kegr.id_kegiatan_reviewer) AS total_reviewer,
+    SUM(!(ISNULL(kegf4.id_kegiatan_reviewer) OR ISNULL(kegg4.id_kegiatan_reviewer))) AS total_reviewed_04,
+    SUM(!(ISNULL(kegf7.id_kegiatan_reviewer) OR ISNULL(kegg7.id_kegiatan_reviewer))) AS total_reviewed_07,
+    SUM(!(ISNULL(kegf9.id_kegiatan_reviewer) OR ISNULL(kegg9.id_kegiatan_reviewer))) AS total_reviewed_09
+  FROM
+    kegiatan AS keg
+  LEFT JOIN kegiatan_reviewer AS kegr
+      ON kegr.id_kegiatan = keg.id_kegiatan 
+  LEFT JOIN kegiatan_feedback AS kegf4 ON kegf4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf4.id_tahap = 4
+  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg4 GROUP BY kegg4.id_kegiatan_reviewer) AS kegg4 ON kegg4.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg4.id_tahap = 4
+  LEFT JOIN kegiatan_feedback AS kegf7 ON kegf7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf7.id_tahap = 7
+  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg7 GROUP BY kegg7.id_kegiatan_reviewer) AS kegg7 ON kegg7.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg7.id_tahap = 7
+  LEFT JOIN kegiatan_feedback AS kegf9 ON kegf9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegf9.id_tahap = 9
+  LEFT JOIN (SELECT * FROM kegiatan_grade AS kegg9 GROUP BY kegg9.id_kegiatan_reviewer) AS kegg9 ON kegg9.id_kegiatan_reviewer = kegr.id_kegiatan_reviewer AND kegg9.id_tahap = 9
+  GROUP BY keg.id_kegiatan
+`;
+
+const ALL_KEGIATAN_QUERY = (where) => `
+  SELECT
+    keg.*, ske.id_program, ske.nama_skema, jto.nama_jenis_topik, jte.nama_jenis_tema, jfo.nama_jenis_fokus, sbk.nama_sbk, tkt.nama_tkt, kegrs.total_reviewer, kegrs.total_reviewed_04, kegrs.total_reviewed_07, kegrs.total_reviewed_09,
+    CAST(CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id_user', kan.id_user, 'posisi', kan.posisi, 'username', user.username, 'nama_user', user.nama_user) ORDER BY kan.id_kegiatan_anggota ASC SEPARATOR ', '), ']') AS JSON) AS anggota
+  FROM
+    kegiatan keg
+    LEFT JOIN skema AS ske
+      ON ske.id_skema = keg.id_skema
+    LEFT JOIN jenis_topik AS jto
+      ON jto.id_jenis_topik = keg.id_jenis_topik
+    LEFT JOIN jenis_tema AS jte
+      ON jte.id_jenis_tema = jto.id_jenis_tema
+    LEFT JOIN jenis_fokus AS jfo
+      ON jfo.id_jenis_fokus = jte.id_jenis_fokus
+    LEFT JOIN sbk
+      ON sbk.id_sbk = keg.id_sbk
+    LEFT JOIN tkt
+      ON tkt.id_tkt = keg.id_tkt
+    LEFT JOIN kegiatan_anggota AS kan
+      ON kan.id_kegiatan = keg.id_kegiatan
+    LEFT JOIN USER
+      ON user.id_user = kan.id_user
+    LEFT JOIN (${KEGIATAN_REVIEWER_STATUS}) as kegrs ON kegrs.id_kegiatan = keg.id_kegiatan
+     ${where} 
+    GROUP BY keg.id_kegiatan
+`;
 
 const __mapAddStatus = async (db, kegiatan) => {
   const periode = toAssocCompositeKey(await getAllPeriode(db), ["tahun", "id_program", "id_tahap"]);
@@ -36,7 +78,19 @@ const __mapAddStatus = async (db, kegiatan) => {
       };
     }
 
-    return { ...k, light: "GREEN", message: "Usulan di approve" };
+    const { status: status_t3 } = periode[k.tahun + k.id_program + "3"];
+    if (status_t3 == "BELUM") return { ...k, light: "GREEN", message: "Usulan di approve" };
+
+    if (k.total_reviewer == 0) {
+      return {
+        ...k,
+        light: status_t3 == "BERJALAN" ? "ORANGE" : "RED",
+        message: status_t3 == "BERJALAN" ? "Reviewer belum di assign" : "Reviewer tidak di assign",
+      };
+    }
+
+    const { status: status_t4 } = periode[k.tahun + k.id_program + "4"];
+    if (status_t4 == "BELUM") return { ...k, light: "GREEN", message: "Reviewer telah di assign" };
   });
 };
 
