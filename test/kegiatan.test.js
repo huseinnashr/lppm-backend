@@ -1,5 +1,5 @@
 const HTTPStatus = require("http-status");
-const { ADMIN_CRED, DOSEN1_CRED } = require("./consts");
+const { ADMIN_CRED, DOSEN1_CRED, DOSEN4_CRED, PIMPINAN1_CRED } = require("./consts");
 const { test_not_auth_unauthorized, test_auth_forbidden, get_auth } = require("./helpers");
 const agent = require("supertest")(require("../app"));
 const periodeTable = require("./periode.table");
@@ -261,6 +261,72 @@ describe("Route GET /kegiatan/:id_kegiatan", () => {
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(kegiatan["light"]).toBe("RED");
     expect(kegiatan["message"]).toBe("Laporan Akhir tidak di review");
+  });
+});
+
+describe("Check editable rule of /kegiatan/:id_kegiatan", () => {
+  afterAll(async () => {
+    await periodeTable.reset();
+  });
+
+  test("Not a kegiatan owner", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/9")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    const editable = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 1);
+    expect(editable["message"]).toBe("Bukan owner kegiatan");
+  });
+
+  test("Owner kegiatan but not on periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, -2);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    const editable = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 1);
+    expect(editable["message"]).toBe("Tidak dalam periode Usulan Baru");
+  });
+
+  test("Owner kegiatan and on periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    const editable1 = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 1);
+    expect(editable1["message"]).toBe(null);
+    const editable2 = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 2);
+    expect(editable2["message"]).toBe("Bukan Pimpinan Fakultas");
+    const editable3 = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 3);
+    expect(editable3["message"]).toBe("Bukan Admin");
+    const editable4 = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 4);
+    expect(editable4["message"]).toBe("Bukan reviewer kegiatan");
+  });
+
+  test("Admin and on periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 2 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, PIMPINAN1_CRED));
+    const editable = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 2);
+    expect(editable["message"]).toBe(null);
+  });
+
+  test("Admin and on periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 3 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
+    const editable = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 3);
+    expect(editable["message"]).toBe(null);
+  });
+
+  test("Reviewer and on periode", async () => {
+    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 4 }, 0);
+    const { body: kegiatan } = await agent
+      .get("/kegiatan/1")
+      .set("cookie", await get_auth(agent, DOSEN4_CRED));
+    const editable = kegiatan["editables"].find(({ id_tahap }) => id_tahap == 4);
+    expect(editable["message"]).toBe(null);
   });
 });
 

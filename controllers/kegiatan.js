@@ -1,5 +1,6 @@
 const HTTPStatus = require("http-status");
 const { __getAll: getAllPeriode } = require("./periode");
+const { __isReviewer: isReviewer } = require("./kegiatan-reviewer");
 const { toAssocCompositeKey } = require("../helper-functions");
 
 const KEGIATAN_REVIEWER_STATUS = `
@@ -175,6 +176,32 @@ const __mapAddStatus = async (db, kegiatan) => {
   });
 };
 
+const __addEditable = async (db, { kegiatan, user }) => {
+  const { id_kegiatan, tahun, id_program } = kegiatan;
+  const { id_user, id_role } = user;
+  const periode = await getAllPeriode(db, { tahun, id_program });
+  const is_owner = kegiatan.id_user == id_user;
+  const is_reviewer = await isReviewer(db, { id_kegiatan, id_user });
+  const is_pimpinan = id_role == 4;
+  const is_admin = id_role == 1;
+
+  const editables = periode.map(({ id_tahap, status, nama_tahap }) => {
+    if (!is_owner && (id_tahap == 1 || id_tahap == 5 || id_tahap == 6 || id_tahap == 8))
+      return { id_tahap, editable: false, message: "Bukan owner kegiatan" };
+    if (!is_reviewer && (id_tahap == 4 || id_tahap == 7 || id_tahap == 9))
+      return { id_tahap, editable: false, message: "Bukan reviewer kegiatan" };
+    if (!is_pimpinan && id_tahap == 2)
+      return { id_tahap, editable: false, message: "Bukan Pimpinan Fakultas" };
+    if (!is_admin && id_tahap == 3) return { id_tahap, editable: false, message: "Bukan Admin" };
+
+    if (status != "BERJALAN")
+      return { id_tahap, editable: false, message: "Tidak dalam periode " + nama_tahap };
+
+    return { id_tahap, editable: true, message: null };
+  });
+  return { ...kegiatan, editables };
+};
+
 const getKegiatanDosen = async (req, res) => {
   const { id_user } = req.session.user;
   const results = await req.db.asyncQuery(
@@ -186,16 +213,24 @@ const getKegiatanDosen = async (req, res) => {
   res.status(HTTPStatus.OK).send(await __mapAddStatus(req.db, results));
 };
 
-const get = async (req, res) => {
-  const { id_kegiatan } = req.params;
-  const results = await req.db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
+const __get = async (db, { id_kegiatan, user }) => {
+  const results = await db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
     id_kegiatan,
   ]);
-  if (results.length == 0) {
+  if (results.length == 0) return null;
+
+  const kegiatan = (await __mapAddStatus(db, results))[0];
+  return await __addEditable(db, { kegiatan, user });
+};
+
+const get = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const kegiatan = await __get(req.db, { id_kegiatan, user: req.session.user });
+  if (!kegiatan) {
     res.status(HTTPStatus.NOT_FOUND).send({ error: "Kegiatan tidak ditemukan" });
     return;
   }
-  res.status(HTTPStatus.OK).send((await __mapAddStatus(req.db, results))[0]);
+  res.status(HTTPStatus.OK).send(kegiatan);
 };
 
 const add = async (req, res) => {

@@ -15,8 +15,16 @@ const ALL_PERIODE_QUERY = `
   LEFT JOIN periode AS p ON p.id_program = c.id_program AND p.id_tahap = c.id_tahap AND p.tahun = c.tahun
 `;
 
-const __getAll = async (db) => {
-  const results = await db.asyncQuery(ALL_PERIODE_QUERY);
+const __getAll = async (db, { tahun = null, id_program = null } = {}) => {
+  let results = null;
+  if (tahun && id_program) {
+    results = await db.asyncQuery(ALL_PERIODE_QUERY + " WHERE c.id_program = ? AND c.tahun = ?", [
+      id_program,
+      tahun,
+    ]);
+  } else {
+    results = await db.asyncQuery(ALL_PERIODE_QUERY);
+  }
   return results;
 };
 

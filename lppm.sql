@@ -403,7 +403,8 @@ insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_
 (6,2,'0103','101010',2,6,'Living Matrix, a meal experiment 6','2020-04-20 19:25:15',2020,1,'1a',NULL,NULL,'DITERIMA',1),
 (7,2,'0103','101010',2,6,'Living Matrix, a meal experiment 6','2020-04-20 19:25:15',2020,1,'1a','1a',NULL,'DITERIMA',1),
 (8,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a',NULL,'DITERIMA',1),
-(9,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a','1a','DITERIMA',1);
+(9,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a','1a','DITERIMA',1),
+(10,1,'0103','101010',2,6,'Test Kegiatan','2020-04-22 16:28:05',2020,1,NULL,NULL,NULL,'BELUM',0);
 
 /*Table structure for table `kegiatan_anggota` */
 
@@ -1412,6 +1413,7 @@ insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`
 (4,2,1,'dosen4','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #4','084323515536','dosen4@lppm.com',NULL,1,NULL,3),
 (5,2,2,'dosen5','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #5','084323515536','dosen5@lppm.com',NULL,1,NULL,3),
 (6,2,2,'dosen6','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #6','084323515536','dosen6@lppm.com',NULL,11,NULL,1),
+(900,4,1,'pimpinan1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Pimpinan Fakultas #1','2202','pimpinanfakultas1@lppm.com',NULL,1,NULL,3),
 (991,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3',NULL,NULL,NULL),
 (992,1,0,'delete_this','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Delete This','23124123123123','deletethis@lppm.com',NULL,NULL,NULL,NULL),
 (993,2,1,'edit_this','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Edit This','084323515536','editthis@lppm.com',NULL,11,NULL,1);
