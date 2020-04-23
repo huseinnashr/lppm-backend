@@ -19,6 +19,7 @@ const indexingInstitutionCtrl = require("./controllers/indexing-institution");
 const reviewQuestionCtrl = require("./controllers/review-question");
 const periodeCtrl = require("./controllers/periode");
 const kegiatanCtrl = require("./controllers/kegiatan");
+const util = require("util");
 
 module.exports = (app) => {
   app.route("/").get(authCtrl.onlyAuthenticated, (req, res) => {
@@ -93,7 +94,7 @@ module.exports = (app) => {
     .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.get));
 
   app.route("/test-500").all((req, res, next) => {
-    next("Test 500");
+    next(new Error("Test 500"));
   });
 
   app.route("*").all((req, res) => {
@@ -103,7 +104,12 @@ module.exports = (app) => {
   });
 
   app.use((err, req, res, next) => {
-    console.log(err);
-    res.status(500).send({ error: "Something broke!" });
+    if (err instanceof Error) {
+      res.status(500).send({ error: "Something broke!" });
+      console.log(err);
+    } else {
+      const { status, message } = err;
+      res.status(status).send({ error: message });
+    }
   });
 };

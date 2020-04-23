@@ -217,7 +217,8 @@ const __get = async (db, { id_kegiatan, user }) => {
   const results = await db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
     id_kegiatan,
   ]);
-  if (results.length == 0) return null;
+  if (results.length == 0)
+    throw { status: HTTPStatus.NOT_FOUND, message: "Kegiatan tidak ditemukan" };
 
   const kegiatan = (await __mapAddStatus(db, results))[0];
   return await __addEditable(db, { kegiatan, user });
@@ -226,10 +227,6 @@ const __get = async (db, { id_kegiatan, user }) => {
 const get = async (req, res) => {
   const { id_kegiatan } = req.params;
   const kegiatan = await __get(req.db, { id_kegiatan, user: req.session.user });
-  if (!kegiatan) {
-    res.status(HTTPStatus.NOT_FOUND).send({ error: "Kegiatan tidak ditemukan" });
-    return;
-  }
   res.status(HTTPStatus.OK).send(kegiatan);
 };
 
