@@ -269,6 +269,7 @@ const remove = async (req, res) => {
 
 module.exports = {
   getKegiatanDosen,
+  __get,
   get,
   add,
   update,

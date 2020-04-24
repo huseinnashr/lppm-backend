@@ -418,7 +418,7 @@ CREATE TABLE `kegiatan_anggota` (
   `posisi` enum('KETUA','ANGGOTA') NOT NULL,
   `status` enum('DITERIMA','DITOLAK','BELUM') NOT NULL DEFAULT 'BELUM',
   PRIMARY KEY (`id_kegiatan_anggota`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_anggota` */
 
@@ -426,7 +426,9 @@ insert  into `kegiatan_anggota`(`id_kegiatan_anggota`,`id_kegiatan`,`id_user`,`p
 (1,1,1,'KETUA','DITERIMA'),
 (2,1,2,'ANGGOTA','BELUM'),
 (3,2,2,'KETUA','DITERIMA'),
-(4,2,3,'ANGGOTA','BELUM');
+(4,2,3,'ANGGOTA','BELUM'),
+(5,10,1,'KETUA','DITERIMA'),
+(6,10,2,'ANGGOTA','BELUM');
 
 /*Table structure for table `kegiatan_feedback` */
 

@@ -12,7 +12,7 @@ describe("Route GET /kegiatan/dosen", () => {
       .get("/kegiatan/dosen")
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
-    expect(kegiatan.length).toBe(1);
+    expect(kegiatan.length).toBe(2);
     expect(kegiatan[0]).toMatchObject({
       judul: "Are we alone in this universe?",
       light: "GREEN",
