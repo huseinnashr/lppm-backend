@@ -331,14 +331,8 @@ describe("Check editable rule of /kegiatan/:id_kegiatan", () => {
 });
 
 describe("Route POST /kegiatan", () => {
-  afterAll(async () => {
-    await periodeTable.reset();
-  });
-
-  test_auth_forbidden(agent, "POST", "/kegiatan", ADMIN_CRED);
-
   test("It should response 200 OK and return kegiatan when dosen", async () => {
-    periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
     const newKegiatan = {
       judul: "Don't Give Up on Me!",
       id_skema: "0101",
@@ -359,5 +353,35 @@ describe("Route POST /kegiatan", () => {
       message: "Usulan belum di submit",
     });
     expect(kegiatan["anggota"][0]).toMatchObject({ username: DOSEN1_CRED.username });
+    await periodeTable.reset();
+  });
+});
+
+describe("Route PATCH /kegiatan/:id_kegiatan", () => {
+  test_auth_forbidden(agent, "PATCH", "/kegiatan/1", DOSEN4_CRED);
+
+  test("It should response 200 OK and return kegiatan when dosen", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const updatedKegiatan = {
+      id_tkt: 5,
+    };
+    const { statusCode, body: kegiatan } = await agent
+      .patch("/kegiatan/1")
+      .send(updatedKegiatan)
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(kegiatan).toMatchObject(updatedKegiatan);
+    await periodeTable.reset();
+  });
+});
+
+describe("Route DELETE /kegiatan/:id_kegiatan", () => {
+  test("It should response 200 OK", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const { statusCode } = await agent
+      .delete("/kegiatan/11")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    await periodeTable.reset();
   });
 });

@@ -213,15 +213,20 @@ const getKegiatanDosen = async (req, res) => {
   res.status(HTTPStatus.OK).send(await __mapAddStatus(req.db, results));
 };
 
-const __get = async (db, { id_kegiatan, user }) => {
+const __get = async (db, { id_kegiatan, user, id_tahap = null }) => {
   const results = await db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
     id_kegiatan,
   ]);
   if (results.length == 0)
     throw { status: HTTPStatus.NOT_FOUND, message: "Kegiatan tidak ditemukan" };
 
-  const kegiatan = (await __mapAddStatus(db, results))[0];
-  return await __addEditable(db, { kegiatan, user });
+  kegiatan = await __addEditable(db, { kegiatan: (await __mapAddStatus(db, results))[0], user });
+
+  if (id_tahap) {
+    const { editable, message } = kegiatan["editables"].find((e) => e.id_tahap == id_tahap);
+    if (!editable) throw { status: HTTPStatus.FORBIDDEN, message };
+  }
+  return kegiatan;
 };
 
 const get = async (req, res) => {
@@ -239,14 +244,33 @@ const add = async (req, res) => {
   const newAnggota = { id_kegiatan: insertId, id_user, posisi: "KETUA", status: "DITERIMA" };
   await req.db.asyncQuery("INSERT INTO `kegiatan_anggota` SET ?", newAnggota);
 
-  const results = await req.db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
-    insertId,
-  ]);
-  res.status(HTTPStatus.OK).send((await __mapAddStatus(req.db, results))[0]);
+  const kegiatan = await __get(req.db, { id_kegiatan: insertId, user: req.session.user });
+
+  res.status(HTTPStatus.OK).send(kegiatan);
+};
+
+const update = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const updates = req.body;
+  const oldKegiatan = await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
+
+  await req.db.asyncQuery("UPDATE kegiatan SET ? WHERE id_kegiatan = ?", [updates, id_kegiatan]);
+  const kegiatan = { ...oldKegiatan, ...updates };
+
+  res.status(HTTPStatus.OK).send(kegiatan);
+};
+
+const remove = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
+  await req.db.asyncQuery("DELETE FROM kegiatan WHERE id_kegiatan = ?", [id_kegiatan]);
+  res.status(HTTPStatus.OK).send("");
 };
 
 module.exports = {
   getKegiatanDosen,
   get,
   add,
+  update,
+  remove,
 };

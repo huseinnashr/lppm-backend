@@ -8,7 +8,7 @@ const DATABASE_OPTIONS = {
 const ADMIN_CRED = {
   username: "admin",
   password: "wasdwasd",
-  nama_role: "Dosen",
+  nama_role: "Admin",
 };
 
 const DOSEN1_CRED = {

@@ -91,7 +91,9 @@ module.exports = (app) => {
   app.route("/kegiatan").post(authCtrl.onlyRoles(["dosen"]), asyncHandler(kegiatanCtrl.add));
   app
     .route("/kegiatan/:id_kegiatan")
-    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.get));
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.get))
+    .patch(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.update))
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.remove));
 
   app.route("/test-500").all((req, res, next) => {
     next(new Error("Test 500"));

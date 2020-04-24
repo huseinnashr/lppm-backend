@@ -390,7 +390,7 @@ CREATE TABLE `kegiatan` (
   `approval` enum('DITERIMA','DITOLAK','BELUM') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'BELUM',
   `is_submitted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_kegiatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan` */
 
@@ -404,7 +404,8 @@ insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_
 (7,2,'0103','101010',2,6,'Living Matrix, a meal experiment 6','2020-04-20 19:25:15',2020,1,'1a','1a',NULL,'DITERIMA',1),
 (8,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a',NULL,'DITERIMA',1),
 (9,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a','1a','DITERIMA',1),
-(10,1,'0103','101010',2,6,'Test Kegiatan','2020-04-22 16:28:05',2020,1,NULL,NULL,NULL,'BELUM',0);
+(10,1,'0103','101010',2,6,'Test Kegiatan','2020-04-22 16:28:05',2020,1,NULL,NULL,NULL,'BELUM',0),
+(11,1,'0101','101010',2,6,'Delete This','2020-04-24 21:22:36',2020,1,NULL,NULL,NULL,'BELUM',0);
 
 /*Table structure for table `kegiatan_anggota` */
 

@@ -24,7 +24,7 @@ const test_not_auth_unauthorized = (agent, method, endpoint) => {
 };
 
 const test_auth_forbidden = (agent, method, endpoint, CRED) => {
-  test("It should not accept request from " + CRED.nama_role + " role", async () => {
+  test("It should not accept request from " + CRED.nama_role + "::" + CRED.username, async () => {
     const { headers } = await agent.post("/login").send(CRED);
     const { statusCode } = await stringAgentRequest(agent, method, endpoint).set(
       "cookie",
