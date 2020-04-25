@@ -34,11 +34,27 @@ describe("Route POST /kegiatan/:id_kegiatan/mahasiswa", () => {
   });
 });
 
+describe("Route PATCH /kegiatan/:id_kegiatan/mahasiswa", () => {
+  test("It should response 200 OK and return kegiatan mahasiswa when dosen", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const newMahasiswa = {
+      nama_mahasiswa: "Updated",
+    };
+    const { statusCode, body: mahasiswa } = await agent
+      .patch("/kegiatan/10/mahasiswa/3")
+      .send(newMahasiswa)
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(mahasiswa).toMatchObject(newMahasiswa);
+    await periodeTable.reset();
+  });
+});
+
 describe("Route DELETE /kegiatan/:id_kegiatan/mahasiswa/:id_kegiatan_mahasiswa", () => {
   test("It should response 200 OK and return kegiatan mahasiswa when dosen", async () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
     const { statusCode } = await agent
-      .delete("/kegiatan/10/mahasiswa/3")
+      .delete("/kegiatan/10/mahasiswa/4")
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     await periodeTable.reset();

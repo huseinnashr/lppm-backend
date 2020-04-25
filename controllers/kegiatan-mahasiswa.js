@@ -31,6 +31,24 @@ const add = async (req, res) => {
   res.status(HTTPStatus.OK).send(mahasiswa[0]);
 };
 
+const update = async (req, res) => {
+  const { id_kegiatan, id_kegiatan_mahasiswa } = req.params;
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user });
+
+  const newMahasiswa = { ...req.body, id_kegiatan };
+  await req.db.asyncQuery("UPDATE kegiatan_mahasiswa SET ? WHERE id_kegiatan_mahasiswa = ?", [
+    newMahasiswa,
+    id_kegiatan_mahasiswa,
+  ]);
+
+  const mahasiswa = await req.db.asyncQuery(
+    ALL_KEGIATAN_MAHASISWA_QUERY + " WHERE kema.id_kegiatan_mahasiswa = ? LIMIT 1",
+    [id_kegiatan_mahasiswa]
+  );
+
+  res.status(HTTPStatus.OK).send(mahasiswa[0]);
+};
+
 const remove = async (req, res) => {
   const { id_kegiatan, id_kegiatan_mahasiswa } = req.params;
   await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
@@ -43,5 +61,6 @@ const remove = async (req, res) => {
 module.exports = {
   getAll,
   add,
+  update,
   remove,
 };

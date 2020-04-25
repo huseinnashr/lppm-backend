@@ -110,6 +110,7 @@ module.exports = (app) => {
     .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.add));
   app
     .route("/kegiatan/:id_kegiatan/mahasiswa/:id_kegiatan_mahasiswa")
+    .patch(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.update))
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.remove));
 
   app.route("/test-500").all((req, res, next) => {

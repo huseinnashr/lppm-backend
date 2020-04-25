@@ -517,14 +517,15 @@ CREATE TABLE `kegiatan_mahasiswa` (
   `nama_mahasiswa` varchar(255) NOT NULL,
   `angkatan` year NOT NULL,
   PRIMARY KEY (`id_kegiatan_mahasiswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_mahasiswa` */
 
 insert  into `kegiatan_mahasiswa`(`id_kegiatan_mahasiswa`,`id_kegiatan`,`id_program_studi`,`id_mahasiswa`,`nama_mahasiswa`,`angkatan`) values 
 (1,1,3,'123123123','Mahasiswa #1',2019),
 (2,1,2,'456456456','Mahasiswa 2',2017),
-(3,10,1,'23232323','Delete This',2020);
+(3,10,1,'23232323','Update This',2020),
+(4,10,1,'23232323','Delete This',2020);
 
 /*Table structure for table `kegiatan_rab` */
 
