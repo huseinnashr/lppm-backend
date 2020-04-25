@@ -20,6 +20,7 @@ const reviewQuestionCtrl = require("./controllers/review-question");
 const periodeCtrl = require("./controllers/periode");
 const kegiatanCtrl = require("./controllers/kegiatan");
 const kegiatanAnggotaCtrl = require("./controllers/kegiatan-anggota");
+const kegiatanMahasiswaCtrl = require("./controllers/kegiatan-mahasiswa");
 
 module.exports = (app) => {
   app.route("/").get(authCtrl.onlyAuthenticated, (req, res) => {
@@ -102,6 +103,14 @@ module.exports = (app) => {
   app
     .route("/kegiatan/:id_kegiatan/anggota/:id_kegiatan_anggota")
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanAnggotaCtrl.remove));
+
+  app
+    .route("/kegiatan/:id_kegiatan/mahasiswa")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.getAll))
+    .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.add));
+  app
+    .route("/kegiatan/:id_kegiatan/mahasiswa/:id_kegiatan_mahasiswa")
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.remove));
 
   app.route("/test-500").all((req, res, next) => {
     next(new Error("Test 500"));
