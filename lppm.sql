@@ -496,14 +496,17 @@ CREATE TABLE `kegiatan_luaran` (
   `id_luaran` int unsigned DEFAULT NULL,
   `deskripsi_luaran` varchar(255) NOT NULL,
   PRIMARY KEY (`id_kegiatan_luaran`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_luaran` */
 
 insert  into `kegiatan_luaran`(`id_kegiatan_luaran`,`id_kegiatan`,`id_jenis_luaran`,`id_luaran`,`deskripsi_luaran`) values 
-(1,1,'2',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi'),
-(2,1,'4',NULL,'Deskripsi Luaran #2'),
-(3,2,'2',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi');
+(1,1,'02',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi'),
+(2,1,'04',NULL,'Deskripsi Luaran #2'),
+(3,2,'02',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi'),
+(4,10,'02',NULL,'Tambah Realisasi'),
+(5,10,'04',2,'Delete Realisasi'),
+(6,10,'04',NULL,'Delete This');
 
 /*Table structure for table `kegiatan_mahasiswa` */
 
