@@ -544,7 +544,7 @@ CREATE TABLE `kegiatan_rab` (
   `vol` int unsigned NOT NULL,
   `biaya_satuan` int unsigned NOT NULL,
   PRIMARY KEY (`id_kegiatan_rab`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_rab` */
 
@@ -552,7 +552,9 @@ insert  into `kegiatan_rab`(`id_kegiatan_rab`,`id_kegiatan`,`id_jenis_belanja`,`
 (1,1,'03',1,'Printer #1','Buah',2,2000000),
 (2,1,'01',1,'Gaji Mahasiswa','Orang',4,1500000),
 (3,2,'03',1,'Scanner #1','Buah',3,1200000),
-(4,2,'03',1,'Laptop #1','Buah',2,6000000);
+(4,2,'03',1,'Laptop #1','Buah',2,6000000),
+(5,10,'01',1,'Edit This ','Planck',42,1040300),
+(6,10,'03',1,'Delete This','Vacuum',22,23332450);
 
 /*Table structure for table `kegiatan_reviewer` */
 

@@ -22,6 +22,7 @@ const kegiatanCtrl = require("./controllers/kegiatan");
 const kegiatanAnggotaCtrl = require("./controllers/kegiatan-anggota");
 const kegiatanMahasiswaCtrl = require("./controllers/kegiatan-mahasiswa");
 const kegiatanLuaranCtrl = require("./controllers/kegiatan-luaran");
+const kegiatanRABCtrl = require("./controllers/kegiatan-rab");
 
 module.exports = (app) => {
   app.route("/").get(authCtrl.onlyAuthenticated, (req, res) => {
@@ -125,6 +126,15 @@ module.exports = (app) => {
     .route("/kegiatan/:id_kegiatan/luaran/:id_kegiatan_luaran/realisasi")
     .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanLuaranCtrl.addRealisasi))
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanLuaranCtrl.removeRealisasi));
+
+  app
+    .route("/kegiatan/:id_kegiatan/rab")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanRABCtrl.getAll))
+    .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanRABCtrl.add));
+  app
+    .route("/kegiatan/:id_kegiatan/rab/:id_kegiatan_rab")
+    .patch(authCtrl.onlyAuthenticated, asyncHandler(kegiatanRABCtrl.update))
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanRABCtrl.remove));
 
   app.route("/test-500").all((req, res, next) => {
     next(new Error("Test 500"));
