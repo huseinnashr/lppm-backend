@@ -213,7 +213,7 @@ const getKegiatanDosen = async (req, res) => {
   res.status(HTTPStatus.OK).send(await __mapAddStatus(req.db, results));
 };
 
-const __get = async (db, { id_kegiatan, user, id_tahap = null }) => {
+const __get = async (db, { id_kegiatan, user, id_tahap = [] }) => {
   const results = await db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
     id_kegiatan,
   ]);
@@ -222,9 +222,15 @@ const __get = async (db, { id_kegiatan, user, id_tahap = null }) => {
 
   kegiatan = await __addEditable(db, { kegiatan: (await __mapAddStatus(db, results))[0], user });
 
-  if (id_tahap) {
-    const { editable, message } = kegiatan["editables"].find((e) => e.id_tahap == id_tahap);
-    if (!editable) throw { status: HTTPStatus.FORBIDDEN, message };
+  if (id_tahap.length != 0) {
+    const editables = kegiatan["editables"].filter((e) => id_tahap.includes(e.id_tahap));
+    const editable = editables.reduce((accEditable, { editable }) => {
+      return accEditable || editable;
+    }, false);
+    if (!editable) {
+      const message = editables.map((e) => e.message).join("; ");
+      throw { status: HTTPStatus.FORBIDDEN, message };
+    }
   }
   return kegiatan;
 };
@@ -252,7 +258,11 @@ const add = async (req, res) => {
 const update = async (req, res) => {
   const { id_kegiatan } = req.params;
   const updates = req.body;
-  const oldKegiatan = await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
+  const oldKegiatan = await __get(req.db, {
+    id_kegiatan,
+    user: req.session.user,
+    id_tahap: [1, 5],
+  });
 
   await req.db.asyncQuery("UPDATE kegiatan SET ? WHERE id_kegiatan = ?", [updates, id_kegiatan]);
   const kegiatan = { ...oldKegiatan, ...updates };
@@ -262,7 +272,7 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   const { id_kegiatan } = req.params;
-  await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
+  await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1] });
   await req.db.asyncQuery("DELETE FROM kegiatan WHERE id_kegiatan = ?", [id_kegiatan]);
   res.status(HTTPStatus.OK).send("");
 };

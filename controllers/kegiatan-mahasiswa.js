@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
 
 const add = async (req, res) => {
   const { id_kegiatan } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1, 5] });
 
   const newMahasiswa = { ...req.body, id_kegiatan };
   const { insertId } = await req.db.asyncQuery(
@@ -33,7 +33,7 @@ const add = async (req, res) => {
 
 const update = async (req, res) => {
   const { id_kegiatan, id_kegiatan_mahasiswa } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1, 5] });
 
   const newMahasiswa = { ...req.body, id_kegiatan };
   await req.db.asyncQuery("UPDATE kegiatan_mahasiswa SET ? WHERE id_kegiatan_mahasiswa = ?", [
@@ -51,7 +51,7 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   const { id_kegiatan, id_kegiatan_mahasiswa } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1, 5] });
   await req.db.asyncQuery("DELETE FROM kegiatan_mahasiswa WHERE id_kegiatan_mahasiswa = ?", [
     id_kegiatan_mahasiswa,
   ]);

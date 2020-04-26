@@ -26,7 +26,7 @@ const getAll = async (req, res) => {
 
 const add = async (req, res) => {
   const { id_kegiatan } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1, 5] });
 
   const newLuaran = { ...req.body, id_kegiatan };
   const { insertId } = await req.db.asyncQuery("INSERT INTO kegiatan_luaran SET ?", newLuaran);
@@ -42,7 +42,7 @@ const add = async (req, res) => {
 const addRealisasi = async (req, res) => {
   const { id_kegiatan, id_kegiatan_luaran } = req.params;
   const { id_luaran } = req.body;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [6] });
 
   const newLuaran = { id_luaran };
   await req.db.asyncQuery("UPDATE kegiatan_luaran SET ? WHERE id_kegiatan_luaran = ?", [
@@ -60,7 +60,7 @@ const addRealisasi = async (req, res) => {
 
 const removeRealisasi = async (req, res) => {
   const { id_kegiatan, id_kegiatan_luaran } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [6] });
 
   const newLuaran = { id_luaran: null };
   await req.db.asyncQuery("UPDATE kegiatan_luaran SET ? WHERE id_kegiatan_luaran = ?", [
@@ -78,7 +78,7 @@ const removeRealisasi = async (req, res) => {
 
 const remove = async (req, res) => {
   const { id_kegiatan, id_kegiatan_luaran } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1, 5] });
   await req.db.asyncQuery("DELETE FROM kegiatan_luaran WHERE id_kegiatan_luaran = ?", [
     id_kegiatan_luaran,
   ]);

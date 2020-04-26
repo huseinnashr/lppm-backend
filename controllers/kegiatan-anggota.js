@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
 
 const add = async (req, res) => {
   const { id_kegiatan } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1] });
 
   const { id_user } = req.body;
   const newUser = { id_user, id_kegiatan, posisi: "ANGGOTA" };
@@ -31,7 +31,7 @@ const add = async (req, res) => {
 
 const remove = async (req, res) => {
   const { id_kegiatan, id_kegiatan_anggota } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: 1 });
+  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1] });
   await req.db.asyncQuery("DELETE FROM kegiatan_anggota WHERE id_kegiatan_anggota = ?", [
     id_kegiatan_anggota,
   ]);

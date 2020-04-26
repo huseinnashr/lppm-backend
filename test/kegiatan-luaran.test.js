@@ -36,7 +36,7 @@ describe("Route POST /kegiatan/:id_kegiatan/luaran", () => {
 
 describe("Route POST /kegiatan/:id_kegiatan/luaran/:id_luaran/realisasi", () => {
   test("It should response 200 OK and return kegiatan luaran when dosen", async () => {
-    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 5 }, 0);
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, 0);
     const realisasi = { id_luaran: 1 };
     const { statusCode, body: luaran } = await agent
       .post("/kegiatan/10/luaran/4/realisasi")
@@ -50,7 +50,7 @@ describe("Route POST /kegiatan/:id_kegiatan/luaran/:id_luaran/realisasi", () => 
 
 describe("Route DELETE /kegiatan/:id_kegiatan/luaran/:id_kegiatan_luaran/realisasi", () => {
   test("It should response 200 OK and return kegiatan luaran when dosen", async () => {
-    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 5 }, 0);
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, 0);
     const { statusCode, body: luaran } = await agent
       .delete("/kegiatan/10/luaran/5/realisasi")
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
