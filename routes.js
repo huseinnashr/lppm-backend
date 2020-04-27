@@ -23,6 +23,7 @@ const kegiatanAnggotaCtrl = require("./controllers/kegiatan-anggota");
 const kegiatanMahasiswaCtrl = require("./controllers/kegiatan-mahasiswa");
 const kegiatanLuaranCtrl = require("./controllers/kegiatan-luaran");
 const kegiatanRABCtrl = require("./controllers/kegiatan-rab");
+const kegiatanReviewerCtrl = require("./controllers/kegiatan-reviewer");
 const luaranCtrl = require("./controllers/luaran");
 const luaranAnggotaCtrl = require("./controllers/luaran-anggota");
 
@@ -137,6 +138,14 @@ module.exports = (app) => {
     .route("/kegiatan/:id_kegiatan/rab/:id_kegiatan_rab")
     .patch(authCtrl.onlyAuthenticated, asyncHandler(kegiatanRABCtrl.update))
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanRABCtrl.remove));
+
+  app
+    .route("/kegiatan/:id_kegiatan/reviewer")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewerCtrl.getAll))
+    .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewerCtrl.add));
+  app
+    .route("/kegiatan/:id_kegiatan/reviewer/:id_kegiatan_reviewer")
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewerCtrl.remove));
 
   app
     .route("/luaran")

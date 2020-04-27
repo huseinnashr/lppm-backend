@@ -576,7 +576,8 @@ insert  into `kegiatan_reviewer`(`id_kegiatan_reviewer`,`id_kegiatan`,`id_user`)
 (6,6,5),
 (7,7,5),
 (8,8,5),
-(9,9,5);
+(9,9,5),
+(10,10,5);
 
 /*Table structure for table `luaran` */
 
