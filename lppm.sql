@@ -595,14 +595,16 @@ CREATE TABLE `luaran` (
   `url` varchar(255) DEFAULT NULL,
   `attachment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_luaran`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `luaran` */
 
 insert  into `luaran`(`id_luaran`,`id_user`,`id_sub_jenis_luaran`,`id_indexing_institution`,`judul`,`tahun`,`penerbit`,`jumlah_halaman`,`isbn`,`url`,`attachment`) values 
-(1,1,'0201','1','The effect of long sleep',2018,'Dark Room',666,'s-t-n-230','https://www.youtube.com/watch?v=oHg5SJYRHA0',NULL),
-(2,1,'0401','1','Portable Bed',2017,'IKEA',10,'bbb-sleep','ikea.com',NULL),
-(3,2,'0201','1','Purple & Bad Luck, study of corelation',2016,'PSA',313,'ttt-ygood','brian.com',NULL);
+(1,1,'0201','01','The effect of long sleep',2018,'Dark Room',666,'s-t-n-230','https://www.youtube.com/watch?v=oHg5SJYRHA0',NULL),
+(2,1,'0401','01','Portable Bed',2017,'IKEA',10,'bbb-sleep','ikea.com',NULL),
+(3,2,'0201','01','Purple & Bad Luck, study of corelation',2016,'PSA',313,'ttt-ygood','brian.com',NULL),
+(4,2,'0201','02','Edit This',2020,'OWH',33,'xx-tres','bob.com',NULL),
+(5,2,'0401','01','Delete This',1994,'GG',1,'ee-2f','x.com',NULL);
 
 /*Table structure for table `luaran_anggota` */
 
@@ -614,7 +616,7 @@ CREATE TABLE `luaran_anggota` (
   `id_user` int NOT NULL,
   `posisi` enum('KETUA','ANGGOTA') NOT NULL,
   PRIMARY KEY (`id_luaran_anggota`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `luaran_anggota` */
 
@@ -623,7 +625,9 @@ insert  into `luaran_anggota`(`id_luaran_anggota`,`id_luaran`,`id_user`,`posisi`
 (2,1,2,'ANGGOTA'),
 (3,2,1,'KETUA'),
 (4,3,2,'KETUA'),
-(5,2,1,'ANGGOTA');
+(5,3,1,'ANGGOTA'),
+(6,4,2,'KETUA'),
+(7,4,3,'ANGGOTA');
 
 /*Table structure for table `periode` */
 
