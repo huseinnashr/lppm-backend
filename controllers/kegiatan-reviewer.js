@@ -2,7 +2,7 @@ const HTTPStatus = require("http-status");
 const { __get: getKegiatan } = require("./kegiatan");
 
 const ALL_KEGIATAN_REVIEWER_QUERY =
-  "SELECT kega.*, u.username, u.nama_user FROM kegiatan_reviewer AS kega JOIN USER AS u ON u.id_user = kega.id_user";
+  "SELECT kega.*, u.username, u.nama_user FROM kegiatan_reviewer AS kega JOIN user AS u ON u.id_user = kega.id_user";
 
 const getAll = async (req, res) => {
   const { id_kegiatan } = req.params;

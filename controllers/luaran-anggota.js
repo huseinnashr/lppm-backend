@@ -2,7 +2,7 @@ const HTTPStatus = require("http-status");
 const { __get: getLuaran } = require("./luaran");
 
 const ALL_LUARAN_ANGGOTA_QUERY =
-  "SELECT luan.*, u.username, u.nama_user FROM luaran_anggota AS luan JOIN USER AS u ON u.id_user = luan.id_user";
+  "SELECT luan.*, u.username, u.nama_user FROM luaran_anggota AS luan JOIN user AS u ON u.id_user = luan.id_user";
 
 const getAll = async (req, res) => {
   const { id_luaran } = req.params;
