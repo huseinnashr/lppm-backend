@@ -1,6 +1,6 @@
 const HTTPStatus = require("http-status");
 const { __getAll: getAllPeriode } = require("./periode");
-const { __isReviewer: isReviewer } = require("./kegiatan-reviewer");
+const { __isReviewer: isReviewer } = require("./kegiatan-reviewer.fun");
 const { toAssocCompositeKey } = require("../helper-functions");
 
 const KEGIATAN_REVIEWER_STATUS = `
