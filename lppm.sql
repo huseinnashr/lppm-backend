@@ -455,7 +455,8 @@ insert  into `kegiatan_feedback`(`id_kegiatan_reviewer`,`id_tahap`,`feedback`) v
 (8,4,'84'),
 (8,7,'87'),
 (9,4,'94'),
-(9,7,'97');
+(9,7,'97'),
+(11,7,'Delete This');
 
 /*Table structure for table `kegiatan_grade` */
 
@@ -483,7 +484,8 @@ insert  into `kegiatan_grade`(`id_kegiatan_reviewer`,`id_tahap`,`id_review_quest
 (8,4,'040201','04220101'),
 (8,7,'040201','04220101'),
 (9,4,'040201','04220101'),
-(9,7,'040201','04220101');
+(9,7,'040201','04220101'),
+(11,7,'040201','04220101');
 
 /*Table structure for table `kegiatan_luaran` */
 
@@ -577,7 +579,8 @@ insert  into `kegiatan_reviewer`(`id_kegiatan_reviewer`,`id_kegiatan`,`id_user`)
 (7,7,5),
 (8,8,5),
 (9,9,5),
-(10,10,5);
+(10,10,5),
+(11,10,4);
 
 /*Table structure for table `luaran` */
 

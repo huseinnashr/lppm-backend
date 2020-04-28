@@ -24,6 +24,7 @@ const kegiatanMahasiswaCtrl = require("./controllers/kegiatan-mahasiswa");
 const kegiatanLuaranCtrl = require("./controllers/kegiatan-luaran");
 const kegiatanRABCtrl = require("./controllers/kegiatan-rab");
 const kegiatanReviewerCtrl = require("./controllers/kegiatan-reviewer");
+const kegiatanReviewCtrl = require("./controllers/kegiatan-review");
 const luaranCtrl = require("./controllers/luaran");
 const luaranAnggotaCtrl = require("./controllers/luaran-anggota");
 
@@ -146,6 +147,20 @@ module.exports = (app) => {
   app
     .route("/kegiatan/:id_kegiatan/reviewer/:id_kegiatan_reviewer")
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewerCtrl.remove));
+
+  app
+    .route("/kegiatan/:id_kegiatan/tahap/:id_tahap/review")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewCtrl.getAll));
+
+  app
+    .route("/kegiatan/:id_kegiatan/tahap/:id_tahap/feedback/:id_kegiatan_reviewer")
+    .put(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewCtrl.replaceFeedback))
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewCtrl.removeFeedback));
+
+  app
+    .route("/kegiatan/:id_kegiatan/tahap/:id_tahap/grade/:id_kegiatan_reviewer")
+    .put(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewCtrl.replaceGrade))
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanReviewCtrl.removeGrade));
 
   app
     .route("/luaran")
