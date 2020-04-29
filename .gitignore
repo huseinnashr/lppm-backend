@@ -1,4 +1,7 @@
 /node_modules/*
-/uploads/profile_pictures
+/uploads/profile-pictures
+/uploads/proposal
+/uploads/laporan-kemajuan
+/uploads/laporan-akhir
 package-lock.json
 /coverage

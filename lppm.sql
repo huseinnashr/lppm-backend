@@ -1246,12 +1246,6 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-/*Data for the table `sessions` */
-
-insert  into `sessions`(`session_id`,`expires`,`data`) values 
-('L_W1NdBAMBgaJjNHxU5mAJVHEjTCD0SS',1586248341,'{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"id_user\":1,\"id_role\":1,\"id_program_studi\":901,\"username\":\"admin\",\"nama_user\":\"Admin LPPM\",\"nohp\":\"084323515536\",\"email\":\"admin@lppm.com\",\"profile_picture\":\"http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3\",\"nama_role\":\"admin\",\"title_role\":\"Admin\"}}'),
-('_UFXNtdPuJ1Xab7D9jYYsiOG2wnb-8YR',1586250586,'{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"id_user\":28,\"id_role\":1,\"id_program_studi\":1,\"username\":\"husein\",\"nama_user\":\"Husein nashr\",\"nohp\":\"1231231231241\",\"email\":\"husein@gmail.com\",\"profile_picture\":\"http://localhost:8888/profile_picture/6d8272809413e2b6ceb284f1c3205c89\",\"nama_role\":\"admin\",\"title_role\":\"Admin\"}}');
-
 /*Table structure for table `skema` */
 
 DROP TABLE IF EXISTS `skema`;
@@ -1432,7 +1426,7 @@ insert  into `user`(`id_user`,`id_role`,`id_program_studi`,`username`,`password`
 (5,2,2,'dosen5','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #5','084323515536','dosen5@lppm.com',NULL,1,NULL,3),
 (6,2,2,'dosen6','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Dosen #6','084323515536','dosen6@lppm.com',NULL,11,NULL,1),
 (900,4,1,'pimpinan1','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Pimpinan Fakultas #1','2202','pimpinanfakultas1@lppm.com',NULL,1,NULL,3),
-(991,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile_picture/ed7f4836c70302f37508119a841165e3',NULL,NULL,NULL),
+(991,1,901,'admin','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Admin LPPM','084323515536','admin@lppm.com','http://localhost:8888/profile-picture/ed7f4836c70302f37508119a841165e3',NULL,NULL,NULL),
 (992,1,0,'delete_this','$2b$08$n5MJoayA3kcDGRxlgBO.MutNQLy9RfThQr9hkuCLog5UMpYapwlNy','Delete This','23124123123123','deletethis@lppm.com',NULL,NULL,NULL,NULL),
 (993,2,1,'edit_this','$2b$08$3AMO2a5IouGvRv76CjqfROUQsrL/8EyKdLYOVdg8XVHAw2sLW11/i','Edit This','084323515536','editthis@lppm.com',NULL,11,NULL,1);
 

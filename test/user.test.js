@@ -118,42 +118,42 @@ describe("Route DELETE /user/:id_user", () => {
   });
 });
 
-describe("Route GET /profile_picture/:id_profile_picture", () => {
-  test_not_auth_unauthorized(agent, "GET", "/profile_picture/id");
+describe("Route GET /profile-picture/:id_profile-picture", () => {
+  test_not_auth_unauthorized(agent, "GET", "/profile-picture/id");
 
   test("It should response 400 Bad Request and return error when bad id", async () => {
     const { statusCode, body } = await agent
-      .get("/profile_picture/bad_param")
+      .get("/profile-picture/bad_param")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.BAD_REQUEST);
     expect(body).toMatchObject({ error: "Sepesifikasi request tidak bisa dipenuhi" });
   });
   test("It should response 404 Not Found and return error when not exist", async () => {
     const { statusCode, body } = await agent
-      .get("/profile_picture/ed7f4836c70302f37508119a841165e4")
+      .get("/profile-picture/ed7f4836c70302f37508119a841165e4")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.NOT_FOUND);
     expect(body).toMatchObject({ error: "File tidak ditemukan" });
   });
   test("It should response 200 OK and return buffer when exist", async () => {
     const { statusCode, body } = await agent
-      .get("/profile_picture/ed7f4836c70302f37508119a841165e3")
+      .get("/profile-picture/ed7f4836c70302f37508119a841165e3")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(Buffer.isBuffer(body)).toBeTruthy();
   });
 });
 
-describe("Route POST /profile_picture/", () => {
-  test_not_auth_unauthorized(agent, "POST", "/profile_picture");
+describe("Route POST /profile-picture/", () => {
+  test_not_auth_unauthorized(agent, "POST", "/profile-picture");
 
   test("It should response 200 OK and return url on correct payload", async () => {
     const { statusCode, body } = await agent
-      .post("/profile_picture")
+      .post("/profile-picture")
       .attach("profile_picture", "./test/files/profile-pictures.jpg")
       .set("cookie", await get_auth(agent, ADMIN_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(body).toHaveProperty("url");
-    delete_uploaded_file(body.url, "./uploads/profile_pictures/");
+    delete_uploaded_file(body.url, "./uploads/profile-pictures/");
   });
 });

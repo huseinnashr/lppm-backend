@@ -62,10 +62,10 @@ const remove = async (req, res) => {
   res.status(HTTPStatus.OK).send("");
 };
 
-const ppUploader = multer({ dest: "uploads/profile_pictures" }).single("profile_picture");
+const ppUploader = multer({ dest: "uploads/profile-pictures" }).single("profile_picture");
 
 const getProfilePicture = async (req, res) => {
-  await serveFile(req.params.id, res, "uploads/profile_pictures");
+  await serveFile(req.params.id, res, "uploads/profile-pictures");
 };
 
 const addProfilePicture = async (req, res) => {

@@ -73,14 +73,14 @@ module.exports = (app) => {
     .get(authCtrl.onlyAuthenticated, asyncHandler(reviewQuestionCtrl.getAll));
 
   app
-    .route("/profile_picture")
+    .route("/profile-picture")
     .post(
       authCtrl.onlyAuthenticated,
       userCtrl.ppUploader,
       asyncHandler(userCtrl.addProfilePicture)
     );
   app
-    .route("/profile_picture/:id")
+    .route("/profile-picture/:id")
     .get(authCtrl.onlyAuthenticated, asyncHandler(userCtrl.getProfilePicture));
 
   app.route("/program").get(authCtrl.onlyAuthenticated, asyncHandler(programCtrl.getAll));
