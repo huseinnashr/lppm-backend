@@ -426,7 +426,7 @@ describe("Route DELETE /kegiatan/:id_kegiatan/proposal/:proposal", () => {
   });
 });
 
-describe.only("Route GET kegiatan/:id_kegiatan/laporan-kemajuan/:laporan_kemajuan", () => {
+describe("Route GET kegiatan/:id_kegiatan/laporan-kemajuan/:laporan_kemajuan", () => {
   test("It should response 200 OK and return buffer when exist", async () => {
     const { statusCode, body } = await agent
       .get("/kegiatan/1/laporan-kemajuan/ea1a4f7d22e24417dfa53e462e8d52aa")
@@ -436,7 +436,7 @@ describe.only("Route GET kegiatan/:id_kegiatan/laporan-kemajuan/:laporan_kemajua
   });
 });
 
-describe.only("Route POST /kegiatan/:id_kegiatan/laporan-kemajuan", () => {
+describe("Route POST /kegiatan/:id_kegiatan/laporan-kemajuan", () => {
   test("It should response 200 OK and return url on correct payload", async () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, 0);
     const { statusCode, body } = await agent
@@ -450,11 +450,46 @@ describe.only("Route POST /kegiatan/:id_kegiatan/laporan-kemajuan", () => {
   });
 });
 
-describe.only("Route DELETE /kegiatan/:id_kegiatan/laporan-kemajuan/:laporan_kemajuan", () => {
+describe("Route DELETE /kegiatan/:id_kegiatan/laporan-kemajuan/:laporan_kemajuan", () => {
   test("It should response 200 OK and return url on correct payload", async () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, 0);
     const { statusCode } = await agent
       .delete("/kegiatan/12/laporan-kemajuan/ea1a4f7d22e24417dfa53e462e8d52ab")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    await periodeTable.reset();
+  });
+});
+
+describe("Route GET kegiatan/:id_kegiatan/laporan-akhir/:laporan_akhir", () => {
+  test("It should response 200 OK and return buffer when exist", async () => {
+    const { statusCode, body } = await agent
+      .get("/kegiatan/1/laporan-akhir/b7ca1276cb62dc3e2663592abf3365a0")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(Buffer.isBuffer(body)).toBeTruthy();
+  });
+});
+
+describe("Route POST /kegiatan/:id_kegiatan/laporan-akhir", () => {
+  test("It should response 200 OK and return url on correct payload", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 8 }, 0);
+    const { statusCode, body } = await agent
+      .post("/kegiatan/10/laporan-akhir")
+      .attach("laporan_akhir", "./test/files/laporan-akhir.pdf")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(body).toHaveProperty("laporan_akhir");
+    delete_uploaded_file(body.laporan_akhir, "./uploads/laporan-akhir/");
+    await periodeTable.reset();
+  });
+});
+
+describe("Route DELETE /kegiatan/:id_kegiatan/laporan-akhir/:laporan_akhir", () => {
+  test("It should response 200 OK and return url on correct payload", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 8 }, 0);
+    const { statusCode } = await agent
+      .delete("/kegiatan/12/laporan-akhir/b7ca1276cb62dc3e2663592abf3365a1")
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     await periodeTable.reset();

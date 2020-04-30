@@ -344,6 +344,37 @@ const deleteLaporanKemajuan = async (req, res) => {
   res.status(HTTPStatus.OK).send("");
 };
 
+const uploadLaporanAkhir = multer({ dest: "uploads/laporan-akhir" }).single("laporan_akhir");
+
+const addLaporanAkhir = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const laporan_akhir = `${HOSTNAME}kegiatan/${id_kegiatan}/${req.file.fieldname}/${req.file.filename}`;
+  await req.db.asyncQuery("UPDATE kegiatan SET laporan_akhir = ? WHERE id_kegiatan = ?", [
+    laporan_akhir,
+    id_kegiatan,
+  ]);
+
+  res.status(HTTPStatus.OK).send({ status: "done", laporan_akhir });
+};
+
+const getLaporanAkhir = async (req, res) => {
+  await serveFile(req.params.laporan_akhir, res, "uploads/laporan-akhir");
+};
+
+const deleteLaporanAkhir = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const { laporan_akhir } = await __get(req.db, {
+    id_kegiatan,
+    user: req.session.user,
+    id_tahap: [8],
+  });
+  deleteFile(laporan_akhir, "./uploads/laporan-akhir/");
+  await req.db.asyncQuery("UPDATE kegiatan SET laporan_akhir = NULL WHERE id_kegiatan = ?", [
+    id_kegiatan,
+  ]);
+  res.status(HTTPStatus.OK).send("");
+};
+
 module.exports = {
   getKegiatanDosen,
   __get,
@@ -360,4 +391,8 @@ module.exports = {
   addLaporanKemajuan,
   getLaporanKemajuan,
   deleteLaporanKemajuan,
+  uploadLaporanAkhir,
+  addLaporanAkhir,
+  getLaporanAkhir,
+  deleteLaporanAkhir,
 };
