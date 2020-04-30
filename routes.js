@@ -116,6 +116,19 @@ module.exports = (app) => {
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.deleteProposal));
 
   app
+    .route("/kegiatan/:id_kegiatan/laporan-kemajuan")
+    .post(
+      authCtrl.onlyAuthenticated,
+      asyncHandler(kegiatanCtrl.getKegiatanMiddleware({ id_tahap: [6] })),
+      kegiatanCtrl.uploadLaporanKemajuan,
+      asyncHandler(kegiatanCtrl.addLaporanKemajuan)
+    );
+  app
+    .route("/kegiatan/:id_kegiatan/laporan-kemajuan/:laporan_kemajuan")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.getLaporanKemajuan))
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.deleteLaporanKemajuan));
+
+  app
     .route("/kegiatan/:id_kegiatan/anggota")
     .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanAnggotaCtrl.getAll))
     .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanAnggotaCtrl.add));

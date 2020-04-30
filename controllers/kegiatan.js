@@ -311,6 +311,39 @@ const deleteProposal = async (req, res) => {
   res.status(HTTPStatus.OK).send("");
 };
 
+const uploadLaporanKemajuan = multer({ dest: "uploads/laporan-kemajuan" }).single(
+  "laporan_kemajuan"
+);
+
+const addLaporanKemajuan = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const laporan_kemajuan = `${HOSTNAME}kegiatan/${id_kegiatan}/${req.file.fieldname}/${req.file.filename}`;
+  await req.db.asyncQuery("UPDATE kegiatan SET laporan_kemajuan = ? WHERE id_kegiatan = ?", [
+    laporan_kemajuan,
+    id_kegiatan,
+  ]);
+
+  res.status(HTTPStatus.OK).send({ status: "done", laporan_kemajuan });
+};
+
+const getLaporanKemajuan = async (req, res) => {
+  await serveFile(req.params.laporan_kemajuan, res, "uploads/laporan-kemajuan");
+};
+
+const deleteLaporanKemajuan = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const { laporan_kemajuan } = await __get(req.db, {
+    id_kegiatan,
+    user: req.session.user,
+    id_tahap: [6],
+  });
+  deleteFile(laporan_kemajuan, "./uploads/laporan-kemajuan/");
+  await req.db.asyncQuery("UPDATE kegiatan SET laporan_kemajuan = NULL WHERE id_kegiatan = ?", [
+    id_kegiatan,
+  ]);
+  res.status(HTTPStatus.OK).send("");
+};
+
 module.exports = {
   getKegiatanDosen,
   __get,
@@ -323,4 +356,8 @@ module.exports = {
   addProposal,
   getProposal,
   deleteProposal,
+  uploadLaporanKemajuan,
+  addLaporanKemajuan,
+  getLaporanKemajuan,
+  deleteLaporanKemajuan,
 };
