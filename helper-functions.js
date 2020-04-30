@@ -32,6 +32,14 @@ const toAssocCompositeKey = (arr = [], keys = [], separator = "") => {
   return newArr;
 };
 
+const deleteFile = (url, folder) => {
+  const url_segments = url.split("/");
+  const id = url_segments[url_segments.length - 1];
+  try {
+    fs.unlinkSync(folder + id);
+  } catch (err) {}
+};
+
 const HOSTNAME = "http://" + process.env.LOCAL_IP + ":8888/";
 
-module.exports = { serveFile, toAssocCompositeKey, HOSTNAME };
+module.exports = { serveFile, toAssocCompositeKey, deleteFile, HOSTNAME };

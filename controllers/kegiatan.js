@@ -1,7 +1,8 @@
 const HTTPStatus = require("http-status");
+const multer = require("multer");
 const { __getAll: getAllPeriode } = require("./periode");
 const { __isReviewer: isReviewer } = require("./kegiatan-reviewer.fun");
-const { toAssocCompositeKey } = require("../helper-functions");
+const { toAssocCompositeKey, serveFile, deleteFile, HOSTNAME } = require("../helper-functions");
 
 const KEGIATAN_REVIEWER_STATUS = `
   SELECT
@@ -277,6 +278,39 @@ const remove = async (req, res) => {
   res.status(HTTPStatus.OK).send("");
 };
 
+const getKegiatanMiddleware = ({ id_tahap }) => async (req, _, next) => {
+  const { id_kegiatan } = req.params;
+  req.kegiatan = await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap });
+  next();
+};
+
+const uploadProposal = multer({ dest: "uploads/proposal" }).single("proposal");
+
+const addProposal = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const proposal = `${HOSTNAME}kegiatan/${id_kegiatan}/${req.file.fieldname}/${req.file.filename}`;
+  await req.db.asyncQuery("UPDATE kegiatan SET proposal = ? WHERE id_kegiatan = ?", [
+    proposal,
+    id_kegiatan,
+  ]);
+
+  res.status(HTTPStatus.OK).send({ status: "done", proposal });
+};
+
+const getProposal = async (req, res) => {
+  await serveFile(req.params.proposal, res, "uploads/proposal");
+};
+
+const deleteProposal = async (req, res) => {
+  const { id_kegiatan } = req.params;
+  const { proposal } = await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1] });
+  deleteFile(proposal, "./uploads/proposal/");
+  await req.db.asyncQuery("UPDATE kegiatan SET proposal = NULL WHERE id_kegiatan = ?", [
+    id_kegiatan,
+  ]);
+  res.status(HTTPStatus.OK).send("");
+};
+
 module.exports = {
   getKegiatanDosen,
   __get,
@@ -284,4 +318,9 @@ module.exports = {
   add,
   update,
   remove,
+  getKegiatanMiddleware,
+  uploadProposal,
+  addProposal,
+  getProposal,
+  deleteProposal,
 };

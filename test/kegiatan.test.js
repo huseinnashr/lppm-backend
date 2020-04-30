@@ -1,6 +1,11 @@
 const HTTPStatus = require("http-status");
 const { ADMIN_CRED, DOSEN1_CRED, DOSEN4_CRED, PIMPINAN1_CRED } = require("./consts");
-const { test_not_auth_unauthorized, test_auth_forbidden, get_auth } = require("./helpers");
+const {
+  test_not_auth_unauthorized,
+  test_auth_forbidden,
+  get_auth,
+  delete_uploaded_file,
+} = require("./helpers");
 const agent = require("supertest")(require("../app"));
 const periodeTable = require("./periode.table");
 
@@ -380,6 +385,41 @@ describe("Route DELETE /kegiatan/:id_kegiatan", () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
     const { statusCode } = await agent
       .delete("/kegiatan/11")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    await periodeTable.reset();
+  });
+});
+
+describe("Route GET kegiatan/1/proposal/:id_proposal", () => {
+  test("It should response 200 OK and return buffer when exist", async () => {
+    const { statusCode, body } = await agent
+      .get("/kegiatan/1/proposal/972c97bdc47dfc8def0e74c55da0bbfd")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(Buffer.isBuffer(body)).toBeTruthy();
+  });
+});
+
+describe("Route POST /kegiatan/:id_kegiatan/proposal", () => {
+  test("It should response 200 OK and return url on correct payload", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const { statusCode, body } = await agent
+      .post("/kegiatan/10/proposal")
+      .attach("proposal", "./test/files/proposal.pdf")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(body).toHaveProperty("proposal");
+    delete_uploaded_file(body.proposal, "./uploads/proposal/");
+    await periodeTable.reset();
+  });
+});
+
+describe("Route DELETE /kegiatan/:id_kegiatan/proposal/:id_proposal", () => {
+  test("It should response 200 OK and return url on correct payload", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const { statusCode } = await agent
+      .delete("/kegiatan/12/proposal/972c97bdc47dfc8def0e74c55da0bbfe")
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
     await periodeTable.reset();

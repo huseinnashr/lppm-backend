@@ -390,12 +390,12 @@ CREATE TABLE `kegiatan` (
   `approval` enum('DITERIMA','DITOLAK','BELUM') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'BELUM',
   `is_submitted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_kegiatan`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan` */
 
 insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_sbk`,`id_tkt`,`judul`,`tanggal_entri`,`tahun`,`lama`,`proposal`,`laporan_kemajuan`,`laporan_akhir`,`approval`,`is_submitted`) values 
-(1,1,'0102','101020',2,4,'Are we alone in this universe?','2020-04-14 18:52:19',2020,2,'p','lk','la','DITERIMA',1),
+(1,1,'0102','101020',2,4,'Are we alone in this universe?','2020-04-14 18:52:19',2020,2,'http://localhost:8888/kegiatan/1/proposal/972c97bdc47dfc8def0e74c55da0bbfd','http://localhost:8888/kegiatan/1/laporan-kemajuan/ea1a4f7d22e24417dfa53e462e8d52aa','http://localhost:8888/kegiatan/1/laporan-akhir/b7ca1276cb62dc3e2663592abf3365a0','DITERIMA',1),
 (2,2,'0103','101010',2,6,'Living Simulation, a thought experiment','2020-04-16 16:10:16',2020,1,'1a',NULL,NULL,'BELUM',0),
 (3,2,'0103','101010',2,6,'Living Matrix, a meal experiment','2020-04-20 01:44:36',2020,1,'1a',NULL,NULL,'BELUM',1),
 (4,2,'0103','101010',2,6,'Living Matrix, a meal experiment 4','2020-04-20 19:24:33',2020,1,'1a',NULL,NULL,'DITERIMA',1),
@@ -405,7 +405,8 @@ insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_
 (8,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a',NULL,'DITERIMA',1),
 (9,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a','1a','DITERIMA',1),
 (10,1,'0103','101010',2,6,'Test Kegiatan','2020-04-22 16:28:05',2020,1,NULL,NULL,NULL,'BELUM',0),
-(11,1,'0101','101010',2,6,'Delete This','2020-04-24 21:22:36',2020,1,NULL,NULL,NULL,'BELUM',0);
+(11,1,'0101','101010',2,6,'Delete This','2020-04-24 21:22:36',2020,1,NULL,NULL,NULL,'BELUM',0),
+(12,1,'0103','101010',2,6,'Test Kegiatan Delete Upload','2020-04-22 16:28:05',2020,1,'http://localhost:8888/kegiatan/11/proposal/972c97bdc47dfc8def0e74c55da0bbfe','http://localhost:8888/kegiatan/11/laporan-kemajuan/ea1a4f7d22e24417dfa53e462e8d52ab','http://localhost:8888/kegiatan/11/laporan-akhir/b7ca1276cb62dc3e2663592abf3365a1','BELUM',0);
 
 /*Table structure for table `kegiatan_anggota` */
 
@@ -567,7 +568,7 @@ CREATE TABLE `kegiatan_reviewer` (
   `id_kegiatan` int unsigned NOT NULL,
   `id_user` int unsigned NOT NULL,
   PRIMARY KEY (`id_kegiatan_reviewer`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_reviewer` */
 
@@ -1245,6 +1246,8 @@ CREATE TABLE `sessions` (
   `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `sessions` */
 
 /*Table structure for table `skema` */
 

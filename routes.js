@@ -103,6 +103,19 @@ module.exports = (app) => {
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.remove));
 
   app
+    .route("/kegiatan/:id_kegiatan/proposal")
+    .post(
+      authCtrl.onlyAuthenticated,
+      asyncHandler(kegiatanCtrl.getKegiatanMiddleware({ id_tahap: [1] })),
+      kegiatanCtrl.uploadProposal,
+      asyncHandler(kegiatanCtrl.addProposal)
+    );
+  app
+    .route("/kegiatan/:id_kegiatan/proposal/:proposal")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.getProposal))
+    .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.deleteProposal));
+
+  app
     .route("/kegiatan/:id_kegiatan/anggota")
     .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanAnggotaCtrl.getAll))
     .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanAnggotaCtrl.add));
