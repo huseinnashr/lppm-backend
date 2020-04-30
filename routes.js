@@ -212,6 +212,17 @@ module.exports = (app) => {
     .delete(authCtrl.onlyAuthenticated, asyncHandler(luaranCtrl.remove));
 
   app
+    .route("/attachment-luaran")
+    .post(
+      authCtrl.onlyAuthenticated,
+      luaranCtrl.attachmentLuaranUploader,
+      asyncHandler(luaranCtrl.addAttachmentLuaran)
+    );
+  app
+    .route("/attachment-luaran/:attachment_luaran")
+    .get(authCtrl.onlyAuthenticated, asyncHandler(luaranCtrl.getAttachmentLuaran));
+
+  app
     .route("/luaran/:id_luaran/anggota")
     .get(authCtrl.onlyAuthenticated, asyncHandler(luaranAnggotaCtrl.getAll))
     .post(authCtrl.onlyAuthenticated, asyncHandler(luaranAnggotaCtrl.add));

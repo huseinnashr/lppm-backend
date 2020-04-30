@@ -1,6 +1,11 @@
 const HTTPStatus = require("http-status");
 const { ADMIN_CRED, DOSEN1_CRED, DOSEN2_CRED, DOSEN4_CRED } = require("./consts");
-const { test_not_auth_unauthorized, test_auth_forbidden, get_auth } = require("./helpers");
+const {
+  test_not_auth_unauthorized,
+  test_auth_forbidden,
+  get_auth,
+  delete_uploaded_file,
+} = require("./helpers");
 const agent = require("supertest")(require("../app"));
 
 describe("Route GET /luaran", () => {
@@ -86,5 +91,27 @@ describe("Route DELETE /luaran/:id_luaran", () => {
       .delete("/luaran/5")
       .set("cookie", await get_auth(agent, DOSEN2_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
+  });
+});
+
+describe("Route GET /attachment-luaran/:id_attachment-luaran", () => {
+  test("It should response 200 OK and return buffer when exist", async () => {
+    const { statusCode, body } = await agent
+      .get("/attachment-luaran/9336ebf25087d91c818ee6e9ec29f8c1")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(Buffer.isBuffer(body)).toBeTruthy();
+  });
+});
+
+describe("Route POST /attachment-luaran/", () => {
+  test("It should response 200 OK and return url on correct payload", async () => {
+    const { statusCode, body } = await agent
+      .post("/attachment-luaran")
+      .attach("attachment_luaran", "./test/files/attachment-luaran.pdf")
+      .set("cookie", await get_auth(agent, ADMIN_CRED));
+    expect(statusCode).toBe(HTTPStatus.OK);
+    expect(body).toHaveProperty("url");
+    delete_uploaded_file(body.url, "./uploads/attachment-luaran/");
   });
 });

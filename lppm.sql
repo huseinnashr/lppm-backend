@@ -598,14 +598,14 @@ CREATE TABLE `luaran` (
   `jumlah_halaman` int DEFAULT NULL,
   `isbn` varchar(40) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
-  `attachment` varchar(255) DEFAULT NULL,
+  `attachment_luaran` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id_luaran`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `luaran` */
 
-insert  into `luaran`(`id_luaran`,`id_user`,`id_sub_jenis_luaran`,`id_indexing_institution`,`judul`,`tahun`,`penerbit`,`jumlah_halaman`,`isbn`,`url`,`attachment`) values 
-(1,1,'0201','01','The effect of long sleep',2018,'Dark Room',666,'s-t-n-230','https://www.youtube.com/watch?v=oHg5SJYRHA0',NULL),
+insert  into `luaran`(`id_luaran`,`id_user`,`id_sub_jenis_luaran`,`id_indexing_institution`,`judul`,`tahun`,`penerbit`,`jumlah_halaman`,`isbn`,`url`,`attachment_luaran`) values 
+(1,1,'0201','01','The effect of long sleep',2018,'Dark Room',666,'s-t-n-230','https://www.youtube.com/watch?v=oHg5SJYRHA0','http://localhost:8888/attachment-luaran/9336ebf25087d91c818ee6e9ec29f8c1'),
 (2,1,'0401','01','Portable Bed',2017,'IKEA',10,'bbb-sleep','ikea.com',NULL),
 (3,2,'0201','01','Purple & Bad Luck, study of corelation',2016,'PSA',313,'ttt-ygood','brian.com',NULL),
 (4,2,'0201','02','Edit This',2020,'OWH',33,'xx-tres','bob.com',NULL),

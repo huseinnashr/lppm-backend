@@ -1,4 +1,6 @@
 const HTTPStatus = require("http-status");
+const multer = require("multer");
+const { serveFile, HOSTNAME } = require("../helper-functions");
 
 const ALL_LUARAN_QUERY = (where) => `
   SELECT
@@ -80,6 +82,21 @@ const remove = async (req, res) => {
   res.status(HTTPStatus.OK).send("");
 };
 
+const attachmentLuaranUploader = multer({ dest: "uploads/attachment-luaran" }).single(
+  "attachment_luaran"
+);
+
+const getAttachmentLuaran = async (req, res) => {
+  await serveFile(req.params.attachment_luaran, res, "uploads/attachment-luaran");
+};
+
+const addAttachmentLuaran = async (req, res) => {
+  res.status(HTTPStatus.OK).send({
+    status: "done",
+    url: HOSTNAME + req.file.fieldname + "/" + req.file.filename,
+  });
+};
+
 module.exports = {
   getAll,
   __get,
@@ -87,4 +104,7 @@ module.exports = {
   add,
   update,
   remove,
+  attachmentLuaranUploader,
+  getAttachmentLuaran,
+  addAttachmentLuaran,
 };
