@@ -3,6 +3,7 @@ const multer = require("multer");
 const { __getAll: getAllPeriode } = require("./periode");
 const { __isReviewer: isReviewer } = require("./kegiatan-reviewer.fun");
 const { toAssocCompositeKey, serveFile, deleteFile, HOSTNAME } = require("../helper-functions");
+const msg = require("../messages");
 
 const KEGIATAN_REVIEWER_STATUS = `
   SELECT
@@ -188,15 +189,15 @@ const __addEditable = async (db, { kegiatan, user }) => {
 
   const editables = periode.map(({ id_tahap, status, nama_tahap }) => {
     if (!is_owner && (id_tahap == 1 || id_tahap == 5 || id_tahap == 6 || id_tahap == 8))
-      return { id_tahap, editable: false, message: "Bukan owner kegiatan" };
+      return { id_tahap, editable: false, message: msg.KEG_FBD_OWN };
     if (!is_reviewer && (id_tahap == 4 || id_tahap == 7 || id_tahap == 9))
-      return { id_tahap, editable: false, message: "Bukan reviewer kegiatan" };
+      return { id_tahap, editable: false, message: msg.KEG_FBD_REV };
     if (!is_pimpinan && id_tahap == 2)
-      return { id_tahap, editable: false, message: "Bukan Pimpinan Fakultas" };
-    if (!is_admin && id_tahap == 3) return { id_tahap, editable: false, message: "Bukan Admin" };
+      return { id_tahap, editable: false, message: msg.KEG_FBD_PIF };
+    if (!is_admin && id_tahap == 3) return { id_tahap, editable: false, message: msg.KEG_FBD_ADM };
 
     if (status != "BERJALAN")
-      return { id_tahap, editable: false, message: "Tidak dalam periode " + nama_tahap };
+      return { id_tahap, editable: false, message: msg.KEG_FBD_PER + " " + nama_tahap };
 
     return { id_tahap, editable: true, message: null };
   });
@@ -218,8 +219,7 @@ const __get = async (db, { id_kegiatan, user, id_tahap = [] }) => {
   const results = await db.asyncQuery(ALL_KEGIATAN_QUERY("WHERE keg.id_kegiatan = ?"), [
     id_kegiatan,
   ]);
-  if (results.length == 0)
-    throw { status: HTTPStatus.NOT_FOUND, message: "Kegiatan tidak ditemukan" };
+  if (results.length == 0) throw { status: HTTPStatus.NOT_FOUND, message: msg.KEG_NFO };
 
   kegiatan = await __addEditable(db, { kegiatan: (await __mapAddStatus(db, results))[0], user });
 

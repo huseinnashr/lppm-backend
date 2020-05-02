@@ -150,6 +150,10 @@ module.exports = (app) => {
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanAnggotaCtrl.remove));
 
   app
+    .route("/kegiatan/:id_kegiatan/anggota/:id_kegiatan_anggota/status/:status")
+    .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanAnggotaCtrl.changeStatus));
+
+  app
     .route("/kegiatan/:id_kegiatan/mahasiswa")
     .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.getAll))
     .post(authCtrl.onlyAuthenticated, asyncHandler(kegiatanMahasiswaCtrl.add));

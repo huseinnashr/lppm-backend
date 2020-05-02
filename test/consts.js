@@ -23,6 +23,12 @@ const DOSEN2_CRED = {
   nama_role: "Dosen",
 };
 
+const DOSEN3_CRED = {
+  username: "dosen3",
+  password: "wasdwasd",
+  nama_role: "Dosen",
+};
+
 const DOSEN4_CRED = {
   username: "dosen4",
   password: "wasdwasd",
@@ -67,6 +73,7 @@ module.exports = {
   ADMIN_CRED,
   DOSEN1_CRED,
   DOSEN2_CRED,
+  DOSEN3_CRED,
   DOSEN4_CRED,
   PIMPINAN1_CRED,
   UNKNOWN_CRED,
