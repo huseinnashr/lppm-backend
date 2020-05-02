@@ -336,7 +336,7 @@ describe("Check editable rule of /kegiatan/:id_kegiatan", () => {
 });
 
 describe("Route POST /kegiatan", () => {
-  test("It should response 200 OK and return kegiatan when dosen", async () => {
+  test.only("It should response 200 OK and return kegiatan when dosen", async () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
     const newKegiatan = {
       judul: "Don't Give Up on Me!",
@@ -347,10 +347,11 @@ describe("Route POST /kegiatan", () => {
       lama: 1,
       tahun: 2020,
     };
+    const auth = await get_auth(agent, DOSEN1_CRED);
     const { statusCode, body: kegiatan } = await agent
       .post("/kegiatan")
       .send(newKegiatan)
-      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+      .set("cookie", auth);
     expect(statusCode).toBe(HTTPStatus.OK);
     expect(kegiatan).toMatchObject({
       ...newKegiatan,
@@ -358,6 +359,16 @@ describe("Route POST /kegiatan", () => {
       message: "Usulan belum di submit",
     });
     expect(kegiatan["anggota"][0]).toMatchObject({ username: DOSEN1_CRED.username });
+
+    const { id_kegiatan } = kegiatan;
+    const { body: luaran } = await agent
+      .get("/kegiatan/" + id_kegiatan + "/luaran")
+      .set("cookie", auth);
+    expect(luaran[0]).toMatchObject({
+      deskripsi_luaran:
+        "Sertifikat Sebagai Penyaji Pada Seminar Internasional Bereputasi Terindeks Scopus",
+    });
+
     await periodeTable.reset();
   });
 });

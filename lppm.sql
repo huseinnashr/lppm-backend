@@ -497,21 +497,22 @@ DROP TABLE IF EXISTS `kegiatan_luaran`;
 CREATE TABLE `kegiatan_luaran` (
   `id_kegiatan_luaran` int unsigned NOT NULL AUTO_INCREMENT,
   `id_kegiatan` int unsigned NOT NULL,
-  `id_jenis_luaran` varchar(2) NOT NULL,
   `id_luaran` int unsigned DEFAULT NULL,
+  `id_jenis_luaran` varchar(2) NOT NULL,
   `deskripsi_luaran` varchar(255) NOT NULL,
+  `is_wajib` tinyint(1) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id_kegiatan_luaran`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `kegiatan_luaran` */
 
-insert  into `kegiatan_luaran`(`id_kegiatan_luaran`,`id_kegiatan`,`id_jenis_luaran`,`id_luaran`,`deskripsi_luaran`) values 
-(1,1,'02',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi'),
-(2,1,'04',NULL,'Deskripsi Luaran #2'),
-(3,2,'02',NULL,'Artikel Ilmiah Pada Jurnal Internasional bereputasi'),
-(4,10,'02',NULL,'Tambah Realisasi'),
-(5,10,'04',2,'Delete Realisasi'),
-(6,10,'04',NULL,'Delete This');
+insert  into `kegiatan_luaran`(`id_kegiatan_luaran`,`id_kegiatan`,`id_luaran`,`id_jenis_luaran`,`deskripsi_luaran`, `is_wajib`) values 
+(1,1,NULL,'02','Artikel Ilmiah Pada Jurnal Internasional bereputasi', 1),
+(2,1,NULL,'04','Deskripsi Luaran #2', 0),
+(3,2,NULL,'02','Artikel Ilmiah Pada Jurnal Internasional bereputasi', 1),
+(4,10,NULL,'02','Tambah Realisasi', 0),
+(5,10,'04',2,'Delete Realisasi', 0),
+(6,10,NULL,'04','Delete This', 0);
 
 /*Table structure for table `kegiatan_mahasiswa` */
 
@@ -1273,13 +1274,13 @@ CREATE TABLE `skema` (
 /*Data for the table `skema` */
 
 insert  into `skema`(`id_skema`,`id_program`,`nama_skema`,`dana_maksimum`,`lama_maksimum`,`tkt_min`,`tkt_max`,`luaran_wajib`,`luaran_pilihan`,`min_jabatan_fungsional`,`min_jenjang_pendidikan`) values 
-('0101','01','Sains dan Teknologi',40000000,1,1,3,'1;Sertifikat Sebagai Penyaji Pada Seminar Internasional Bereputasi Terindeks Scopus','5',11,1),
-('0102','01','Unggulan Kompetitif',75000000,2,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5',11,1),
-('0103','01','Unggulan Profesi',250000000,4,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5',1,3),
-('0104','01','Unggulan Profesi (NIDK)',75000000,4,4,6,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi','4#5',1,3),
-('0105','01','Unggulan Inovasi',150000000,3,7,9,'6;Purwarupa Hasil Kerjasama','4#5',11,0),
-('0106','01','Matching Grant',200000000,2,5,9,'2;Artikel Ilmiah Pada Jurnal Internasional bereputasi#6;Purwarupa Hasil Kerjasama','',11,0),
-('0107','01','Tenaga Kependidikan (Tendik)',15000000,1,2,3,'5;Dokumen SOP','2',11,0),
+('0101','01','Sains dan Teknologi',40000000,1,1,3,'01;Sertifikat Sebagai Penyaji Pada Seminar Internasional Bereputasi Terindeks Scopus','05',11,1),
+('0102','01','Unggulan Kompetitif',75000000,2,4,6,'02;Artikel Ilmiah Pada Jurnal Internasional bereputasi','04#05',11,1),
+('0103','01','Unggulan Profesi',250000000,4,4,6,'02;Artikel Ilmiah Pada Jurnal Internasional bereputasi','04#05',1,3),
+('0104','01','Unggulan Profesi (NIDK)',75000000,4,4,6,'02;Artikel Ilmiah Pada Jurnal Internasional bereputasi','04#05',1,3),
+('0105','01','Unggulan Inovasi',150000000,3,7,9,'06;Purwarupa Hasil Kerjasama','04#05',11,0),
+('0106','01','Matching Grant',200000000,2,5,9,'02;Artikel Ilmiah Pada Jurnal Internasional bereputasi#6;Purwarupa Hasil Kerjasama','',11,0),
+('0107','01','Tenaga Kependidikan (Tendik)',15000000,1,2,3,'05;Dokumen SOP','02',11,0),
 ('0201','02','Sains dan Teknologi',40000000,1,1,9,'','',11,0),
 ('0202','02','Unggulan Fakultas',4294967295,1,1,9,'','',11,0),
 ('0203','02','Kerjasama',4294967295,1,1,9,'','',11,0),
@@ -1291,8 +1292,8 @@ insert  into `skema`(`id_skema`,`id_program`,`nama_skema`,`dana_maksimum`,`lama_
 ('0306','03','Penelitian Pendidikan Magister menuju Doktor untuk Sarjana Unggul',4294967295,1,1,9,'','',11,0),
 ('0307','03','Penelitian Dasar\r\n',4294967295,1,1,9,'','',11,0),
 ('0308','03','Penelitian Terapan\r\n',4294967295,1,1,9,'','',11,0),
-('0401','04','Pengabdian Regular',12500000,1,1,9,'2;Artikel Ilmiah Pada Jurnal Nasional/Internasional Bereputasi','',11,0),
-('0402','04','Pengabdian Inovasi',30000000,1,1,9,'5;produk berupa alat, protitpe, sistem, aplikasi, software','',11,0),
+('0401','04','Pengabdian Regular',12500000,1,1,9,'02;Artikel Ilmiah Pada Jurnal Nasional/Internasional Bereputasi','',11,0),
+('0402','04','Pengabdian Inovasi',30000000,1,1,9,'05;produk berupa alat, protitpe, sistem, aplikasi, software','',11,0),
 ('0403','04','KKN Tematik',20000000,1,1,9,'','',11,0),
 ('0404','04','Pengabdian Desa Binaan',25000000,1,1,9,'','',11,0),
 ('0501','05','Pengabdian Regular',12500000,1,1,9,'','',11,0);

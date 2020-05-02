@@ -251,6 +251,18 @@ const add = async (req, res) => {
   const newAnggota = { id_kegiatan: insertId, id_user, posisi: "KETUA", status: "DITERIMA" };
   await req.db.asyncQuery("INSERT INTO `kegiatan_anggota` SET ?", newAnggota);
 
+  const { id_skema } = newKegiatan;
+  const { luaran_wajib } = (
+    await req.db.asyncQuery("SELECT * FROM skema where id_skema = ? LIMIT 1", id_skema)
+  )[0];
+  if (luaran_wajib) {
+    const newLuaran = luaran_wajib.split("#").map((l) => [insertId, null, ...l.split(";"), true]);
+    await req.db.asyncQuery(
+      "INSERT INTO kegiatan_luaran (id_kegiatan, id_luaran, id_jenis_luaran, deskripsi_luaran, is_wajib) VALUES ?",
+      [newLuaran]
+    );
+  }
+
   const kegiatan = await __get(req.db, { id_kegiatan: insertId, user: req.session.user });
 
   res.status(HTTPStatus.OK).send(kegiatan);
