@@ -74,18 +74,16 @@ const __get = async (db, { id_kegiatan, id_kegiatan_anggota, user, edit = null }
 
 const add = async (req, res) => {
   const { id_kegiatan } = req.params;
-  await getKegiatan(req.db, { id_kegiatan, user: req.session.user, id_tahap: [1] });
+  const { user } = req.session;
+  await getKegiatan(req.db, { id_kegiatan, user, id_tahap: [1] });
 
   const { id_user } = req.body;
   const newUser = { id_user, id_kegiatan, posisi: "ANGGOTA" };
   const { insertId } = await req.db.asyncQuery("INSERT INTO kegiatan_anggota SET ?", newUser);
 
-  const anggota = await req.db.asyncQuery(
-    ALL_KEGIATAN_ANGGOTA_QUERY + " WHERE kega.id_kegiatan_anggota = ? LIMIT 1",
-    [insertId]
-  );
+  const anggota = await __get(req.db, { id_kegiatan, id_kegiatan_anggota: insertId, user });
 
-  res.status(HTTPStatus.OK).send(anggota[0]);
+  res.status(HTTPStatus.OK).send(anggota);
 };
 
 const remove = async (req, res) => {

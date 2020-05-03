@@ -41,6 +41,8 @@ describe("Route POST /kegiatan/:id_kegiatan/anggota", () => {
       ...newAnggota,
       username: "dosen4",
       nama_user: "Dosen #4",
+      editable: true,
+      editable_stat: false,
     });
     await periodeTable.reset();
   });
