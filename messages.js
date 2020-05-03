@@ -9,4 +9,6 @@ module.exports = {
   KAN_FBD_KET: "Ketua tidak bisa dihapus",
   KAN_FBD_SLF: "Bukan user yang bersangkutan",
   KAN_FBD_ACC: "Keanggotaan tidak bisa dibatalkan",
+  KLU_NFO: "Kegiatan Luaran tidak ditemukan",
+  KLU_FBD_WAJ: "Luaran wajib tidak bisa dihapus",
 };

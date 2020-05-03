@@ -511,7 +511,7 @@ insert  into `kegiatan_luaran`(`id_kegiatan_luaran`,`id_kegiatan`,`id_luaran`,`i
 (2,1,NULL,'04','Deskripsi Luaran #2', 0),
 (3,2,NULL,'02','Artikel Ilmiah Pada Jurnal Internasional bereputasi', 1),
 (4,10,NULL,'02','Tambah Realisasi', 0),
-(5,10,'04',2,'Delete Realisasi', 0),
+(5,10,4,'02','Delete Realisasi', 0),
 (6,10,NULL,'04','Delete This', 0);
 
 /*Table structure for table `kegiatan_mahasiswa` */
