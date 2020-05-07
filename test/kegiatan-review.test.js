@@ -3,6 +3,7 @@ const { DOSEN1_CRED, DOSEN4_CRED } = require("./consts");
 const { test_auth_forbidden, get_auth } = require("./helpers");
 const agent = require("supertest")(require("../app"));
 const periodeTable = require("./periode.table");
+const msg = require("../messages");
 
 describe("Route GET /kegiatan/:id_kegiatan/tahap/:id_tahap/review", () => {
   test("It'd 200 OK and return review ", async () => {
@@ -63,6 +64,15 @@ describe("Route PUT /kegiatan/:id_kegiatan/tahap/:id_tahap/grade/:id_kegiatan_re
 });
 
 describe("Route DELETE /kegiatan/:id_kegiatan/tahap/:id_tahap/feedback/:id_kegiatan_reviewer", () => {
+  test("It'd 404 Not Found when deleting non existing feedback", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 7 }, 0);
+    const { body } = await agent
+      .delete("/kegiatan/10/tahap/not_exist/feedback/11")
+      .set("cookie", await get_auth(agent, DOSEN4_CRED));
+    expect(body).toMatchObject({ error: msg.KRV_NFO });
+    await periodeTable.reset();
+  });
+
   test("It should response 200 OK and return kegiatan review when dosen", async () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 7 }, 0);
     const { statusCode } = await agent

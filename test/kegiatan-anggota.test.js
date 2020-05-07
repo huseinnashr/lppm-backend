@@ -59,6 +59,15 @@ describe("Route DELETE /kegiatan/:id_kegiatan/anggota/:id_kegiatan_anggota", () 
     await periodeTable.reset();
   });
 
+  test("It'd 404 Not Found when deleting non existing anggota", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const { body } = await agent
+      .delete("/kegiatan/10/anggota/not_exist")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(body).toMatchObject({ error: msg.KAN_NFO });
+    await periodeTable.reset();
+  });
+
   test("It should response 200 OK and return kegiatan anggota when dosen", async () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
     const { statusCode } = await agent

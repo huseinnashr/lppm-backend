@@ -55,6 +55,15 @@ describe("Route POST /kegiatan/:id_kegiatan/luaran/:id_luaran/realisasi", () => 
 });
 
 describe("Route DELETE /kegiatan/:id_kegiatan/luaran/:id_kegiatan_luaran/realisasi", () => {
+  test("It'd 403 Forbidden when deleting realsasi", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, 2);
+    const { body } = await agent
+      .delete("/kegiatan/10/luaran/5/realisasi")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(body.error.startsWith(msg.KEG_FBD_PER)).toBeTruthy();
+    await periodeTable.reset();
+  });
+
   test("It should response 200 OK and return kegiatan luaran when dosen", async () => {
     await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 6 }, 0);
     const { statusCode, body: luaran } = await agent
@@ -74,6 +83,15 @@ describe("Route DELETE /kegiatan/:id_kegiatan/luaran/:id_kegiatan_luaran", () =>
       .delete("/kegiatan/1/luaran/1")
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(body).toEqual({ error: msg.KLU_FBD_WAJ });
+    await periodeTable.reset();
+  });
+
+  test("It'd 404 Not Found when deleting non existing kegiatan luaran", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 1 }, 0);
+    const { body } = await agent
+      .delete("/kegiatan/1/luaran/not_exist")
+      .set("cookie", await get_auth(agent, DOSEN1_CRED));
+    expect(body).toMatchObject({ error: msg.KLU_NFO });
     await periodeTable.reset();
   });
 

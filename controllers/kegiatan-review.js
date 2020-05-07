@@ -1,5 +1,6 @@
 const HTTPStatus = require("http-status");
 const { __get: getKegiatan } = require("./kegiatan");
+const msg = require("../messages");
 
 const ALL_KEGIATAN_REVIEW_QUERY = (where) => `
   SELECT
@@ -50,8 +51,7 @@ const __get = async (db, { id_kegiatan, id_kegiatan_reviewer, id_tahap, user, ed
     ALL_KEGIATAN_REVIEW_QUERY("WHERE kr.id_kegiatan_reviewer = ? AND t.id_tahap = ?"),
     [id_kegiatan_reviewer, id_tahap]
   );
-  if (reviews.length == 0)
-    throw { status: HTTPStatus.NOT_FOUND, message: "Kegiatan Reviewer tidak ditemukan" };
+  if (reviews.length == 0) throw { status: HTTPStatus.NOT_FOUND, message: msg.KRV_NFO };
 
   review = __addEditable({ kegiatan, reviews, user })[0];
 

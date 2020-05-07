@@ -11,4 +11,5 @@ module.exports = {
   KAN_FBD_ACC: "Keanggotaan tidak bisa dibatalkan",
   KLU_NFO: "Kegiatan Luaran tidak ditemukan",
   KLU_FBD_WAJ: "Luaran wajib tidak bisa dihapus",
+  KRV_NFO: "Kegiatan Reviewer tidak ditemukan",
 };
