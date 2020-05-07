@@ -101,6 +101,9 @@ module.exports = (app) => {
     .get(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.get))
     .patch(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.update))
     .delete(authCtrl.onlyAuthenticated, asyncHandler(kegiatanCtrl.remove));
+  app
+    .route("/kegiatan/:id_kegiatan/approval/:approval")
+    .post(authCtrl.onlyRoles(["pimpinan_fakultas"]), asyncHandler(kegiatanCtrl.changeApproval));
 
   app
     .route("/kegiatan/:id_kegiatan/proposal")

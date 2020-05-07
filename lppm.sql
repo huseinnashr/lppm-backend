@@ -406,7 +406,8 @@ insert  into `kegiatan`(`id_kegiatan`,`id_user`,`id_skema`,`id_jenis_topik`,`id_
 (9,2,'0103','101010',2,6,'Living Matrix, a meal experiment 8','2020-04-20 19:27:30',2020,1,'1a','1a','1a','DITERIMA',1),
 (10,1,'0103','101010',2,6,'Test Kegiatan','2020-04-22 16:28:05',2020,1,NULL,NULL,NULL,'BELUM',0),
 (11,1,'0101','101010',2,6,'Delete This','2020-04-24 21:22:36',2020,1,NULL,NULL,NULL,'BELUM',0),
-(12,1,'0103','101010',2,6,'Test Kegiatan Delete Upload','2020-04-22 16:28:05',2020,1,'http://localhost:8888/kegiatan/11/proposal/972c97bdc47dfc8def0e74c55da0bbfe','http://localhost:8888/kegiatan/11/laporan-kemajuan/ea1a4f7d22e24417dfa53e462e8d52ab','http://localhost:8888/kegiatan/11/laporan-akhir/b7ca1276cb62dc3e2663592abf3365a1','BELUM',0);
+(12,1,'0103','101010',2,6,'Test Kegiatan Delete Upload','2020-04-22 16:28:05',2020,1,'http://localhost:8888/kegiatan/11/proposal/972c97bdc47dfc8def0e74c55da0bbfe','http://localhost:8888/kegiatan/11/laporan-kemajuan/ea1a4f7d22e24417dfa53e462e8d52ab','http://localhost:8888/kegiatan/11/laporan-akhir/b7ca1276cb62dc3e2663592abf3365a1','BELUM',0),
+(13,2,'0103','101010',2,6,'Approve This','2020-04-22 16:28:05',2020,1,NULL,NULL,NULL,'BELUM',1);
 
 /*Table structure for table `kegiatan_anggota` */
 

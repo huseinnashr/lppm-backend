@@ -8,6 +8,7 @@ const {
 } = require("./helpers");
 const agent = require("supertest")(require("../app"));
 const periodeTable = require("./periode.table");
+const msg = require("../messages");
 
 describe("Route GET /kegiatan/dosen", () => {
   test_auth_forbidden(agent, "GET", "/kegiatan/dosen", ADMIN_CRED);
@@ -503,6 +504,17 @@ describe("Route DELETE /kegiatan/:id_kegiatan/laporan-akhir/:laporan_akhir", () 
       .delete("/kegiatan/12/laporan-akhir/b7ca1276cb62dc3e2663592abf3365a1")
       .set("cookie", await get_auth(agent, DOSEN1_CRED));
     expect(statusCode).toBe(HTTPStatus.OK);
+    await periodeTable.reset();
+  });
+});
+
+describe("Route POST /kegiatan/:id_kegiatan/approval/:approval", () => {
+  test("It'd 200 OK and return kegiatan", async () => {
+    await periodeTable.replace({ tahun: "2020", id_program: "01", id_tahap: 2 }, 0);
+    const { body: kegiatan } = await agent
+      .post("/kegiatan/13/approval/DITERIMA")
+      .set("cookie", await get_auth(agent, PIMPINAN1_CRED));
+    expect(kegiatan).toMatchObject({ approval: "DITERIMA" });
     await periodeTable.reset();
   });
 });

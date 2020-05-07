@@ -290,6 +290,16 @@ const remove = async (req, res) => {
   res.status(HTTPStatus.OK).send("");
 };
 
+const changeApproval = async (req, res) => {
+  const { id_kegiatan, approval } = req.params;
+  const oldKegiatan = await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap: [2] });
+  await req.db.asyncQuery("UPDATE kegiatan SET approval = ? WHERE id_kegiatan = ?", [
+    approval,
+    id_kegiatan,
+  ]);
+  res.status(HTTPStatus.OK).send({ ...oldKegiatan, approval });
+};
+
 const getKegiatanMiddleware = ({ id_tahap }) => async (req, _, next) => {
   const { id_kegiatan } = req.params;
   req.kegiatan = await __get(req.db, { id_kegiatan, user: req.session.user, id_tahap });
@@ -394,6 +404,7 @@ module.exports = {
   add,
   update,
   remove,
+  changeApproval,
   getKegiatanMiddleware,
   uploadProposal,
   addProposal,
